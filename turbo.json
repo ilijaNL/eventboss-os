@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["NEXT_APP_GRAPHQL"],
+      "outputs": [".next/**", "dist/**", "public/**"]
+    },
+    "tc": {
+      "outputs": []
+    },
+    "gen": {
+      "cache": false
+    },
+    "lint": {
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    }
+  }
+}

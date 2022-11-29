@@ -1,0 +1,30 @@
+query GetEventActions($event_slug: String!) {
+  app_events(where: { slug: { _eq: $event_slug } }, limit: 1) {
+    id
+    name
+    app_id
+    extra_data
+    event_actions {
+      action {
+        id
+        name
+        slug
+        type
+        config: type_configuration
+        extra_data
+        retry_backoff
+        retry_delay
+        retry_limit
+        run_after
+      }
+    }
+  }
+}
+
+query GetEvent($event_id: uuid!) {
+  app_events_by_pk(id: $event_id) {
+    id
+    slug
+    name
+  }
+}

@@ -1,0 +1,9 @@
+query GetAction($action_id: uuid!) {
+  app_actions_by_pk(id: $action_id) {
+    id
+    type
+    type_configuration
+    slug
+    name
+  }
+}

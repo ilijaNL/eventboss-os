@@ -1,0 +1,38 @@
+FROM node:16-alpine as builder
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+RUN yarn global add turbo
+# Set working directory
+COPY . .
+ARG NODE_APP
+RUN turbo prune --scope=$NODE_APP --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM node:16-alpine AS installer
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/yarn.lock ./yarn.lock
+COPY --from=builder /app/out/full/ .
+COPY .gitignore .gitignore
+COPY turbo.json turbo.json
+
+RUN yarn install --frozen-lockfile --ignore-scripts
+ARG NODE_APP
+RUN yarn turbo run build --filter=$NODE_APP...
+
+FROM node:16-alpine AS runner
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+
+USER node
+COPY --from=installer --chown=node:node /app .
+
+ARG APP_DIR
+WORKDIR /app/$APP_DIR
+
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+
+EXPOSE 3000
+CMD ["yarn", "start"]

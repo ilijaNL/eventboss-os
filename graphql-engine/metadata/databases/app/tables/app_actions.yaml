@@ -1,0 +1,24 @@
+table:
+  name: actions
+  schema: app
+select_permissions:
+  - role: app
+    permission:
+      columns:
+        - retry_backoff
+        - retry_delay
+        - retry_limit
+        - run_after
+        - extra_data
+        - type_configuration
+        - name
+        - slug
+        - type
+        - created_at
+        - updated_at
+        - app_id
+        - id
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id
+      limit: 100

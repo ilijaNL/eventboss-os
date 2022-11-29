@@ -1,0 +1,16 @@
+{
+  "extends": "tsconfig/node.json",
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "lib": ["esnext", "esnext.asynciterable"],
+    "outDir": "./dist",
+    "sourceMap": true
+  },
+  "include": ["./src"]
+}

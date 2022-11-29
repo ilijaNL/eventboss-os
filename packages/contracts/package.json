@@ -1,0 +1,24 @@
+{
+  "name": "api-contracts",
+  "version": "0.0.1",
+  "description": "",
+  "types": "src/index.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "tc": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@sinclair/typebox": "^0.24.28",
+    "@typed-doc/core": "*",
+    "typescript": "4.7.3"
+  },
+  "peerDependencies": {
+    "@sinclair/typebox": "^0.24.28",
+    "@typed-doc/core": "*"
+  }
+}
