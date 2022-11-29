@@ -1,5 +1,5 @@
 table:
-  name: job
+  name: archive
   schema: system
 object_relationships:
   - name: action_log
@@ -16,6 +16,7 @@ select_permissions:
     permission:
       columns:
         - completedon
+        - createdon
         - id
         - output
         - retrycount
@@ -25,5 +26,6 @@ select_permissions:
         action_log:
           app_id:
             _eq: X-Hasura-App-Id
+      limit: 100
       query_root_fields: []
       subscription_root_fields: []

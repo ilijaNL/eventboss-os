@@ -247,7 +247,6 @@ const PageHeader: React.FC<{ onBurgerClick: () => void; menuOpen: boolean }> = (
                 <Link href={routes.home} passHref>
                   <Menu.Item icon={<IconDashboard size={20} />}>Dashboard</Menu.Item>
                 </Link>
-                <Menu.Label>Settings</Menu.Label>
               </Menu.Dropdown>
             </Menu>
           </Group>

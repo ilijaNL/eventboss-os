@@ -235,6 +235,27 @@ export interface _TimescaledbConfigBgwJob {
   scheduled: Generated<boolean>;
 }
 
+export interface _TimescaledbInternalHyper11Chunk {
+  app_id: string;
+  created_at: Timestamp;
+  event_id: string;
+  id: string;
+  payload: Json;
+  trace: string | null;
+}
+
+export interface _TimescaledbInternalHyper22Chunk {
+  action_id: string;
+  app_id: string;
+  created_at: Timestamp;
+  event_id: string;
+  event_log_id: string;
+  id: string;
+  job_id: string;
+  payload: Json;
+  trace: string | null;
+}
+
 export interface _TimescaledbInternalBgwJobStat {
   consecutive_crashes: number;
   consecutive_failures: number;
@@ -498,6 +519,8 @@ export interface DB {
   "_timescaledb_catalog.remote_txn": _TimescaledbCatalogRemoteTxn;
   "_timescaledb_catalog.tablespace": _TimescaledbCatalogTablespace;
   "_timescaledb_config.bgw_job": _TimescaledbConfigBgwJob;
+  "_timescaledb_internal._hyper_1_1_chunk": _TimescaledbInternalHyper11Chunk;
+  "_timescaledb_internal._hyper_2_2_chunk": _TimescaledbInternalHyper22Chunk;
   "_timescaledb_internal.bgw_job_stat": _TimescaledbInternalBgwJobStat;
   "_timescaledb_internal.bgw_policy_chunk_stats": _TimescaledbInternalBgwPolicyChunkStats;
   "app.action_logs": AppActionLogs;

@@ -2,13 +2,20 @@ fragment ActionLogItem on app_action_logs {
   id
   created_at
   trace
-  # job {
-  #   id
-  #   state
-  #   startafter
-  #   startedon
-  #   retrycount
-  # }
+  # when not archived yet
+  job {
+    id
+    state
+    startedon
+    retrycount
+  }
+  # when job is archived
+  a_job {
+    id
+    state
+    startedon
+    retrycount
+  }
   event {
     name
     slug

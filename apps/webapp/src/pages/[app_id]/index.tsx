@@ -118,7 +118,7 @@ const LatestActionLogs: React.FC = () => {
                       </Text>
                     </Stack>
                   </td>
-                  <td>{item.job?.state}</td>
+                  <td>{item.job?.state ?? item.a_job?.state}</td>
                   <td>
                     <Group spacing="xs" position="center">
                       <ActionIcon title="retry" variant="outline">

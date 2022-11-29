@@ -11,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  job_state: any;
   jsonb: Record<string, any>;
   timestamptz: string;
   uuid: string;
@@ -78,6 +79,8 @@ export type String_Comparison_Exp = {
 /** log of all actions */
 export type App_Action_Logs = {
   /** An object relationship */
+  a_job: Maybe<System_Job>;
+  /** An object relationship */
   action: Maybe<App_Actions>;
   action_id: Scalars['uuid'];
   app_id: Scalars['uuid'];
@@ -87,6 +90,8 @@ export type App_Action_Logs = {
   event_id: Scalars['uuid'];
   event_log_id: Scalars['uuid'];
   id: Scalars['uuid'];
+  /** An object relationship */
+  job: Maybe<System_Job>;
   job_id: Scalars['uuid'];
   payload: Scalars['jsonb'];
   trace: Maybe<Scalars['String']>;
@@ -103,6 +108,7 @@ export type App_Action_Logs_Bool_Exp = {
   _and?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
   _not?: InputMaybe<App_Action_Logs_Bool_Exp>;
   _or?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
+  a_job?: InputMaybe<System_Job_Bool_Exp>;
   action?: InputMaybe<App_Actions_Bool_Exp>;
   action_id?: InputMaybe<Uuid_Comparison_Exp>;
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -111,6 +117,7 @@ export type App_Action_Logs_Bool_Exp = {
   event_id?: InputMaybe<Uuid_Comparison_Exp>;
   event_log_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  job?: InputMaybe<System_Job_Bool_Exp>;
   job_id?: InputMaybe<Uuid_Comparison_Exp>;
   payload?: InputMaybe<Jsonb_Comparison_Exp>;
   trace?: InputMaybe<String_Comparison_Exp>;
@@ -118,6 +125,7 @@ export type App_Action_Logs_Bool_Exp = {
 
 /** Ordering options when selecting data from "app.action_logs". */
 export type App_Action_Logs_Order_By = {
+  a_job?: InputMaybe<System_Job_Order_By>;
   action?: InputMaybe<App_Actions_Order_By>;
   action_id?: InputMaybe<Order_By>;
   app_id?: InputMaybe<Order_By>;
@@ -126,6 +134,7 @@ export type App_Action_Logs_Order_By = {
   event_id?: InputMaybe<Order_By>;
   event_log_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  job?: InputMaybe<System_Job_Order_By>;
   job_id?: InputMaybe<Order_By>;
   payload?: InputMaybe<Order_By>;
   trace?: InputMaybe<Order_By>;
@@ -727,6 +736,19 @@ export enum Cursor_Ordering {
   Desc = 'DESC'
 }
 
+/** Boolean expression to compare columns of type "job_state". All fields are combined with logical 'AND'. */
+export type Job_State_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['job_state']>;
+  _gt?: InputMaybe<Scalars['job_state']>;
+  _gte?: InputMaybe<Scalars['job_state']>;
+  _in?: InputMaybe<Array<Scalars['job_state']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['job_state']>;
+  _lte?: InputMaybe<Scalars['job_state']>;
+  _neq?: InputMaybe<Scalars['job_state']>;
+  _nin?: InputMaybe<Array<Scalars['job_state']>>;
+};
+
 export type Jsonb_Cast_Exp = {
   String?: InputMaybe<String_Comparison_Exp>;
 };
@@ -1130,6 +1152,49 @@ export type Subscription_RootApp_Events_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<App_Events_Stream_Cursor_Input>>;
   where: InputMaybe<App_Events_Bool_Exp>;
+};
+
+/** columns and relationships of "system.job" */
+export type System_Job = {
+  /** An object relationship */
+  action_log: Maybe<App_Action_Logs>;
+  completedon: Maybe<Scalars['timestamptz']>;
+  id: Scalars['uuid'];
+  output: Maybe<Scalars['jsonb']>;
+  retrycount: Scalars['Int'];
+  startedon: Maybe<Scalars['timestamptz']>;
+  state: Scalars['job_state'];
+};
+
+
+/** columns and relationships of "system.job" */
+export type System_JobOutputArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "system.job". All fields are combined with a logical 'AND'. */
+export type System_Job_Bool_Exp = {
+  _and?: InputMaybe<Array<System_Job_Bool_Exp>>;
+  _not?: InputMaybe<System_Job_Bool_Exp>;
+  _or?: InputMaybe<Array<System_Job_Bool_Exp>>;
+  action_log?: InputMaybe<App_Action_Logs_Bool_Exp>;
+  completedon?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  output?: InputMaybe<Jsonb_Comparison_Exp>;
+  retrycount?: InputMaybe<Int_Comparison_Exp>;
+  startedon?: InputMaybe<Timestamptz_Comparison_Exp>;
+  state?: InputMaybe<Job_State_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "system.job". */
+export type System_Job_Order_By = {
+  action_log?: InputMaybe<App_Action_Logs_Order_By>;
+  completedon?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  output?: InputMaybe<Order_By>;
+  retrycount?: InputMaybe<Order_By>;
+  startedon?: InputMaybe<Order_By>;
+  state?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */

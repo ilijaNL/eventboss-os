@@ -2,6 +2,15 @@ table:
   name: action_logs
   schema: app
 object_relationships:
+  - name: a_job
+    using:
+      manual_configuration:
+        column_mapping:
+          job_id: id
+        insertion_order: null
+        remote_table:
+          name: job
+          schema: system
   - name: action
     using:
       manual_configuration:
@@ -20,6 +29,15 @@ object_relationships:
         remote_table:
           name: events
           schema: app
+  - name: job
+    using:
+      manual_configuration:
+        column_mapping:
+          job_id: id
+        insertion_order: null
+        remote_table:
+          name: job
+          schema: system
 select_permissions:
   - role: app
     permission:
