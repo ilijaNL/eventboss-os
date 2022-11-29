@@ -1,0 +1,55 @@
+query GetEventLogs($after: timestamptz!, $limit: Int) {
+  app_event_logs(order_by: { created_at: desc_nulls_last }, where: { created_at: { _lte: $after } }, limit: $limit) {
+    ...EventLogItem
+  }
+}
+
+query GetLogsForEvent($event_id: uuid!, $after: timestamptz!, $limit: Int!) {
+  app_event_logs(
+    order_by: { created_at: desc_nulls_last }
+    where: { _and: [{ event_id: { _eq: $event_id } }, { created_at: { _lte: $after } }] }
+    limit: $limit
+  ) {
+    ...EventLogItem
+  }
+}
+
+query GetEvents {
+  app_events(order_by: { name: asc_nulls_last }, limit: 30) {
+    id
+    name
+    slug
+    event_actions {
+      id
+    }
+  }
+}
+
+query GetEventById($event_id: uuid!) {
+  app_events_by_pk(id: $event_id) {
+    name
+    slug
+    created_at
+    event_actions(order_by: { action: { name: asc } }) {
+      id
+      created_at
+      action {
+        action_id: id
+        slug
+        name
+      }
+    }
+  }
+}
+
+mutation RemoveActionFromEvent($id: uuid!) {
+  delete_app_event_actions_by_pk(id: $id) {
+    id
+  }
+}
+
+mutation DeleteEvent($event_id: uuid!) {
+  delete_app_events_by_pk(id: $event_id) {
+    id
+  }
+}

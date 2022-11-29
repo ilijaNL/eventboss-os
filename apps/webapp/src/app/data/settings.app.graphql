@@ -1,0 +1,14 @@
+query GetEnvironments {
+  envs: app_environments(order_by: { key: asc }) {
+    id
+    key
+    preview
+    created_at
+  }
+}
+
+mutation DeleteEnv($env_id: uuid!) {
+  delete_app_environments_by_pk(id: $env_id) {
+    id
+  }
+}

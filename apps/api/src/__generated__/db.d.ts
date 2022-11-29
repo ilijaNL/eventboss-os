@@ -263,6 +263,7 @@ export interface AppActionLogs {
   app_id: string;
   created_at: Timestamp;
   event_id: string;
+  event_log_id: string;
   id: string;
   job_id: string;
   payload: Json;

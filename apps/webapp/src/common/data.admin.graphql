@@ -1,0 +1,14 @@
+query GetApps {
+  app_apps {
+    id
+    name
+    created_at
+  }
+}
+
+query GetApp($app_id: uuid!) {
+  app_apps_by_pk(id: $app_id) {
+    id
+    name
+  }
+}

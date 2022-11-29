@@ -9,7 +9,8 @@ const platformService: FastifyPluginAsync<{}> = async (fastify) => {
   fastify.register(actionsPlugin, { prefix: '/actions' });
   fastify.register(appPlugin, { prefix: '/app' });
 
-  fastify.post('/test', async () => {
+  fastify.post('/test', async (req) => {
+    fastify.log.info(req.headers);
     return {
       success: true,
     };

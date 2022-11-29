@@ -21,3 +21,10 @@ select_permissions:
           app_id:
             _eq: X-Hasura-App-Id
       limit: 500
+delete_permissions:
+  - role: app
+    permission:
+      filter:
+        event:
+          app_id:
+            _eq: X-Hasura-App-Id

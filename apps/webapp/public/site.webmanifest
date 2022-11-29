@@ -1,0 +1,7 @@
+{
+  "name": "EventBoss",
+  "short_name": "Eventboss",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

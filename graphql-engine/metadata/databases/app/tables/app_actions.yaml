@@ -1,6 +1,14 @@
 table:
   name: actions
   schema: app
+array_relationships:
+  - name: event_actions
+    using:
+      foreign_key_constraint_on:
+        column: action_id
+        table:
+          name: event_actions
+          schema: app
 select_permissions:
   - role: app
     permission:
@@ -22,3 +30,9 @@ select_permissions:
         app_id:
           _eq: X-Hasura-App-Id
       limit: 100
+delete_permissions:
+  - role: app
+    permission:
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id

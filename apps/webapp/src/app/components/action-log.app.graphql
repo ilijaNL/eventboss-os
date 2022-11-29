@@ -1,0 +1,21 @@
+fragment ActionLogItem on app_action_logs {
+  id
+  created_at
+  trace
+  # job {
+  #   id
+  #   state
+  #   startafter
+  #   startedon
+  #   retrycount
+  # }
+  event {
+    name
+    slug
+  }
+  action {
+    slug
+    type
+    name
+  }
+}

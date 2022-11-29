@@ -1,0 +1,116 @@
+query GetActionLogs($after: timestamptz!, $limit: Int!) {
+  app_action_logs(order_by: { created_at: desc_nulls_last }, where: { created_at: { _lte: $after } }, limit: $limit) {
+    ...ActionLogItem
+  }
+}
+
+query GetLogsForAction($action_id: uuid!, $after: timestamptz!, $limit: Int!) {
+  app_action_logs(
+    order_by: { created_at: desc_nulls_last }
+    where: { _and: [{ action_id: { _eq: $action_id } }, { created_at: { _lte: $after } }] }
+    limit: $limit
+  ) {
+    ...ActionLogItem
+  }
+}
+
+# query GetFailedActions($after: timestamptz!, $limit: Int!) {
+#   app_action_logs(
+#     order_by: { created_at: desc_nulls_last }
+#     where: { created_at: { _lte: $after }, job: { state: { _eq: "failed" } } }
+#     limit: $limit
+#   ) {
+#     id
+#     created_at
+#     trace
+#     job {
+#       id
+#       state
+#       startafter
+#       startedon
+#       retrycount
+#     }
+#     event_log: event {
+#       id
+#       event {
+#         name
+#         slug
+#       }
+#     }
+#     action {
+#       slug
+#       type
+#       name
+#     }
+#   }
+# }
+
+# query GetActiveActions($after: timestamptz!, $limit: Int!) {
+#   events_action_logs(
+#     order_by: { created_at: desc_nulls_last }
+#     where: { created_at: { _lte: $after }, job: { state: { _in: ["active", "created", "retry"] } } }
+#     limit: $limit
+#   ) {
+#     id
+#     created_at
+#     trace
+#     job {
+#       id
+#       state
+#       startafter
+#       startedon
+#       retrycount
+#     }
+#     event_log: event {
+#       id
+#       event {
+#         name
+#         slug
+#       }
+#     }
+#     action {
+#       slug
+#       type
+#       name
+#     }
+#   }
+# }
+
+query GetActions {
+  actions: app_actions(order_by: { slug: asc }) {
+    id
+    slug
+    name
+    type
+    created_at
+  }
+}
+
+query GetActionById($action_id: uuid!) {
+  app_actions_by_pk(id: $action_id) {
+    id
+    slug
+    type
+    type_configuration
+    name
+    retry_backoff
+    retry_delay
+    retry_limit
+    run_after
+    event_actions {
+      id
+      created_at
+      event {
+        name
+        id
+        slug
+      }
+    }
+  }
+}
+
+mutation DeleteAction($action_id: uuid!) {
+  delete_app_actions_by_pk(id: $action_id) {
+    id
+  }
+}

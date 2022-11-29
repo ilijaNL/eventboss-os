@@ -77,10 +77,15 @@ export type String_Comparison_Exp = {
 
 /** log of all actions */
 export type App_Action_Logs = {
+  /** An object relationship */
+  action: Maybe<App_Actions>;
   action_id: Scalars['uuid'];
   app_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  event: Maybe<App_Events>;
   event_id: Scalars['uuid'];
+  event_log_id: Scalars['uuid'];
   id: Scalars['uuid'];
   job_id: Scalars['uuid'];
   payload: Scalars['jsonb'];
@@ -123,10 +128,13 @@ export type App_Action_Logs_Bool_Exp = {
   _and?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
   _not?: InputMaybe<App_Action_Logs_Bool_Exp>;
   _or?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
+  action?: InputMaybe<App_Actions_Bool_Exp>;
   action_id?: InputMaybe<Uuid_Comparison_Exp>;
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  event?: InputMaybe<App_Events_Bool_Exp>;
   event_id?: InputMaybe<Uuid_Comparison_Exp>;
+  event_log_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   job_id?: InputMaybe<Uuid_Comparison_Exp>;
   payload?: InputMaybe<Jsonb_Comparison_Exp>;
@@ -150,10 +158,13 @@ export type App_Action_Logs_Delete_Key_Input = {
 
 /** input type for inserting data into table "app.action_logs" */
 export type App_Action_Logs_Insert_Input = {
+  action?: InputMaybe<App_Actions_Obj_Rel_Insert_Input>;
   action_id?: InputMaybe<Scalars['uuid']>;
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  event?: InputMaybe<App_Events_Obj_Rel_Insert_Input>;
   event_id?: InputMaybe<Scalars['uuid']>;
+  event_log_id?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   job_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
@@ -166,6 +177,7 @@ export type App_Action_Logs_Max_Fields = {
   app_id: Maybe<Scalars['uuid']>;
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['uuid']>;
+  event_log_id: Maybe<Scalars['uuid']>;
   id: Maybe<Scalars['uuid']>;
   job_id: Maybe<Scalars['uuid']>;
   trace: Maybe<Scalars['String']>;
@@ -177,6 +189,7 @@ export type App_Action_Logs_Min_Fields = {
   app_id: Maybe<Scalars['uuid']>;
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['uuid']>;
+  event_log_id: Maybe<Scalars['uuid']>;
   id: Maybe<Scalars['uuid']>;
   job_id: Maybe<Scalars['uuid']>;
   trace: Maybe<Scalars['String']>;
@@ -192,10 +205,13 @@ export type App_Action_Logs_Mutation_Response = {
 
 /** Ordering options when selecting data from "app.action_logs". */
 export type App_Action_Logs_Order_By = {
+  action?: InputMaybe<App_Actions_Order_By>;
   action_id?: InputMaybe<Order_By>;
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  event?: InputMaybe<App_Events_Order_By>;
   event_id?: InputMaybe<Order_By>;
+  event_log_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   job_id?: InputMaybe<Order_By>;
   payload?: InputMaybe<Order_By>;
@@ -218,6 +234,8 @@ export enum App_Action_Logs_Select_Column {
   /** column name */
   EventId = 'event_id',
   /** column name */
+  EventLogId = 'event_log_id',
+  /** column name */
   Id = 'id',
   /** column name */
   JobId = 'job_id',
@@ -233,6 +251,7 @@ export type App_Action_Logs_Set_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event_id?: InputMaybe<Scalars['uuid']>;
+  event_log_id?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   job_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
@@ -253,6 +272,7 @@ export type App_Action_Logs_Stream_Cursor_Value_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event_id?: InputMaybe<Scalars['uuid']>;
+  event_log_id?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   job_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
@@ -279,6 +299,10 @@ export type App_Action_Logs_Updates = {
 export type App_Actions = {
   app_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
+  /** An array relationship */
+  event_actions: Array<App_Event_Actions>;
+  /** An aggregate relationship */
+  event_actions_aggregate: App_Event_Actions_Aggregate;
   extra_data: Scalars['jsonb'];
   id: Scalars['uuid'];
   name: Scalars['String'];
@@ -290,6 +314,26 @@ export type App_Actions = {
   type: Scalars['String'];
   type_configuration: Scalars['jsonb'];
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** action definitions */
+export type App_ActionsEvent_ActionsArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<App_Event_Actions_Order_By>>;
+  where: InputMaybe<App_Event_Actions_Bool_Exp>;
+};
+
+
+/** action definitions */
+export type App_ActionsEvent_Actions_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<App_Event_Actions_Order_By>>;
+  where: InputMaybe<App_Event_Actions_Bool_Exp>;
 };
 
 
@@ -352,6 +396,8 @@ export type App_Actions_Bool_Exp = {
   _or?: InputMaybe<Array<App_Actions_Bool_Exp>>;
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  event_actions?: InputMaybe<App_Event_Actions_Bool_Exp>;
+  event_actions_aggregate?: InputMaybe<App_Event_Actions_Aggregate_Bool_Exp>;
   extra_data?: InputMaybe<Jsonb_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
@@ -402,6 +448,7 @@ export type App_Actions_Inc_Input = {
 export type App_Actions_Insert_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  event_actions?: InputMaybe<App_Event_Actions_Arr_Rel_Insert_Input>;
   extra_data?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
@@ -469,6 +516,7 @@ export type App_Actions_On_Conflict = {
 export type App_Actions_Order_By = {
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  event_actions_aggregate?: InputMaybe<App_Event_Actions_Aggregate_Order_By>;
   extra_data?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -1235,6 +1283,8 @@ export type App_Event_Actions_Updates = {
 export type App_Event_Logs = {
   app_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  event: Maybe<App_Events>;
   event_id: Scalars['uuid'];
   id: Scalars['uuid'];
   payload: Scalars['jsonb'];
@@ -1279,6 +1329,7 @@ export type App_Event_Logs_Bool_Exp = {
   _or?: InputMaybe<Array<App_Event_Logs_Bool_Exp>>;
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  event?: InputMaybe<App_Events_Bool_Exp>;
   event_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   payload?: InputMaybe<Jsonb_Comparison_Exp>;
@@ -1304,6 +1355,7 @@ export type App_Event_Logs_Delete_Key_Input = {
 export type App_Event_Logs_Insert_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  event?: InputMaybe<App_Events_Obj_Rel_Insert_Input>;
   event_id?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
@@ -1340,6 +1392,7 @@ export type App_Event_Logs_Mutation_Response = {
 export type App_Event_Logs_Order_By = {
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  event?: InputMaybe<App_Events_Order_By>;
   event_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   payload?: InputMaybe<Order_By>;

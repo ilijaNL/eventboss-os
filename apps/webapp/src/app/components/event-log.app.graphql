@@ -1,0 +1,11 @@
+fragment EventLogItem on app_event_logs {
+  id
+  event {
+    name
+    id
+    slug
+  }
+  payload
+  created_at
+  trace
+}

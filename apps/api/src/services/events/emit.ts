@@ -95,7 +95,8 @@ export async function emitEvent(context: AppContext, input: { event_slug: string
         jobPayloads.map((p) => ({
           id: v4(),
           action_id: p.action_id,
-          event_id: event_log_id,
+          event_log_id: event_log_id,
+          event_id: event.id,
           job_id: p.id as string,
           payload: jsonPayload,
           app_id: context.app_id,
