@@ -19,7 +19,14 @@ const swr = createStaleWhileRevalidateCache({
   maxTimeToLive: 1000 * 5, // in milliseconds
 });
 
-export async function emitEvent(context: AppContext, input: { event_slug: string; payload: any }) {
+/**
+ *
+ * Possible optimalisation is to move more work to the database
+ * - create action logs + jobs with one query, especially when many actions can be linked
+ * @param context
+ * @param input
+ */
+export async function dispatchEvent(context: AppContext, input: { event_slug: string; payload: any }) {
   const event = await swr(fastJson({ ...context.graphqlContext, slug: input.event_slug }), async () => {
     return execute(context.graphqlContext, GetEventActionsDocument, {
       event_slug: input.event_slug,

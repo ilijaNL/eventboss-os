@@ -2,7 +2,7 @@ import { Success } from './common';
 import { Type } from '@sinclair/typebox';
 import { createContract } from '@typed-doc/core';
 
-export const appSettings = createContract({
+export const appContract = createContract({
   add_env: {
     type: 'mutation',
     input: Type.Object({

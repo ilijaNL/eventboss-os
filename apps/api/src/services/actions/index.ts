@@ -7,23 +7,22 @@ import { v4 } from 'uuid';
 import { execute } from '@/utils/graphql/graphql-client';
 import { GetActionDocument } from '@/__generated__/app-documents';
 import createHttpError from 'http-errors';
-import { createExecutor } from '@/db';
-import { actionEffects, create_action, update_action } from './domain';
+import { execute as dbExec } from '@/db';
+import { create_action, update_action } from './domain';
+import { createPublisher } from '../listeners';
 
 const actionService = toServer(actionContract)<AppContext>({
   create: {
     resolve: async ({ context, input }) => {
       const action_id = v4();
+      const publisher = createPublisher(context);
 
-      const executor = createExecutor(context);
-
-      executor.add({
-        result: create_action(null, input),
-        effects: actionEffects,
+      publisher.emit({
+        events: create_action(null, input).events,
         entity: { id: action_id, version: 0 },
       });
 
-      await executor.commit();
+      await dbExec(publisher.getCommands());
 
       return {
         id: action_id,
@@ -41,15 +40,14 @@ const actionService = toServer(actionContract)<AppContext>({
         throw new createHttpError.NotFound();
       }
 
-      const executor = createExecutor(context);
+      const publisher = createPublisher(context);
 
-      executor.add({
-        result: update_action(null, info),
-        effects: actionEffects,
-        entity: { id: result.id, version: 0 },
+      publisher.emit({
+        entity: { id: action_id, version: 0 },
+        events: update_action(null, info).events,
       });
 
-      await executor.commit();
+      await dbExec(publisher.getCommands());
 
       return {
         success: true,

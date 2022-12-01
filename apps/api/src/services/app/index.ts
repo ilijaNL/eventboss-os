@@ -2,24 +2,27 @@ import { toServer } from '@typed-doc/core';
 import { createPlugin } from '@/plugins/fastify-typed-doc';
 import { AppContext, createAppContext } from '@/utils/context';
 import { FastifyPluginAsync } from 'fastify';
-import { appSettings } from 'api-contracts';
+import { appContract } from 'api-contracts';
 import { encrypt } from '@/utils/encryption';
-import db from '@/db';
+import { execute } from '@/db';
+import { createPublisher } from '../listeners';
+import { appEvents } from './domain';
 
-const appService = toServer(appSettings)<AppContext>({
+const appService = toServer(appContract)<AppContext>({
   add_env: {
     resolve: async ({ context, input }) => {
       const rawValue = input.value;
       const encryptedValue = encrypt(input.value);
       const preview = rawValue.slice(0, rawValue.length < 15 ? 5 : 10);
 
-      await db
-        .insertInto('app.environments')
-        .values({ key: input.key, preview: preview, app_id: context.app_id, value: encryptedValue })
-        .onConflict((oc) =>
-          oc.constraint('environments_app_id_key_key').doUpdateSet({ value: encryptedValue, preview: preview })
-        )
-        .execute();
+      const publisher = createPublisher(context);
+
+      publisher.emit({
+        events: [appEvents.app_env_changed({ key: input.key, encryptedValue, preview })],
+        entity: { id: context.app_id, version: 0 },
+      });
+
+      await execute(publisher.getCommands());
 
       return {
         success: true,

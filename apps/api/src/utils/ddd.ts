@@ -1,4 +1,5 @@
 import { Static, TSchema } from '@sinclair/typebox';
+import { createValidateFn } from './schema';
 
 export interface Event<Name = string, Data = {}> {
   event_name: Name;
@@ -29,19 +30,28 @@ export type Effects<T extends Event, R, Context = unknown> = {
   [P in T['event_name']]: (event: T extends { event_name: P } ? OutputEvent<T> : never, context: Context) => R;
 };
 
-export const createEventsFactory = <T extends EventsSpecification>(definitions: T): EventsFactory<T> => {
-  return (Object.keys(definitions) as Array<keyof T>).reduce((agg, event_name) => {
-    function factory<TData>(input: TData): Event<keyof T, TData> {
-      // todo create validation
-      return {
-        event_name: event_name,
-        data: input,
-      };
+export const defineEvent = <TName, T extends TSchema>(event_name: TName, schema: T): EventFactory<TName, T> => {
+  const validate = createValidateFn(schema);
+  function factory<TData>(input: TData): Event<TName, TData> {
+    if (!validate(input)) {
+      throw new Error(`invalid event input for ${event_name}`);
     }
 
-    factory.event_name = event_name;
-    factory.schema = definitions[event_name];
+    return {
+      event_name: event_name,
+      data: input,
+    };
+  }
 
+  factory.event_name = event_name;
+  factory.schema = schema;
+
+  return factory;
+};
+
+export const createEventsFactory = <T extends EventsSpecification>(definitions: T): EventsFactory<T> => {
+  return (Object.keys(definitions) as Array<keyof T>).reduce((agg, event_name) => {
+    const factory = defineEvent(event_name, definitions[event_name]);
     agg[event_name] = factory;
     return agg;
   }, {} as EventsFactory<T>);
@@ -95,15 +105,3 @@ export const createActionFromEvent = <T extends EventsSpecification, Name extend
     },
   });
 };
-
-export interface Executor<TCommand, TContext> {
-  add: <TEvent extends Event<string, {}>>(props: {
-    result: ActionResult<TEvent>;
-    entity: {
-      id: string;
-      version: number;
-    };
-    effects: Effects<TEvent, TCommand[], TContext>;
-  }) => { id: string; version: number };
-  commit: (context?: TContext) => Promise<any>;
-}
