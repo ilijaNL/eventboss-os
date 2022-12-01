@@ -68,7 +68,7 @@ const InputWithEnvs: React.FC<Omit<AutocompleteProps, 'data'> & React.RefAttribu
 
   return (
     <Autocomplete
-      data={(data ?? []).map((d) => `ENV::${d.key}`)}
+      data={(data ?? []).map((d) => `{{${d.key}}}`)}
       rightSection={isLoadingEnvs ? <Loader size={16} /> : null}
       {...props}
     />
@@ -167,10 +167,15 @@ const ActionForm: React.FC<{
   });
 
   const actionType = watch('config.type');
-  console.log({ errors });
 
   return (
-    <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
+    <form
+      autoComplete="off"
+      noValidate
+      onSubmit={handleSubmit(onSubmit, (errors) => {
+        console.log({ errors });
+      })}
+    >
       <Stack>
         <TextInput
           placeholder="Send Welcome Email"

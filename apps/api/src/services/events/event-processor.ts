@@ -55,19 +55,30 @@ const envSWR = createStaleWhileRevalidateCache({
   maxTimeToLive: 1000 * 30, // will fetch new
 });
 
-function interpolateValue(selector: string, value: string, map: Array<{ key: string; value: string }>): string {
-  if (value.startsWith(selector)) {
-    const valueKey = value.split(selector)[1];
-    const foundValue = map.find((m) => m.key === valueKey)?.value;
-    if (!foundValue) {
-      return value;
+function interpolateValue(delimiters: [string, string], value: string, vars: Record<string, string>): string {
+  const template = value.split(new RegExp(`(?:${delimiters[0]}|${delimiters[1]})`));
+  let result = '';
+  for (let i = 0; i < template.length; i++) {
+    let s = template[i]!;
+
+    if (i % 2 === 1) {
+      // if odd then is placeholder
+      if (s in vars) {
+        result += decrypt(vars[s]!);
+      } else {
+        // if a variable isnt given in vars
+        // concatenate the variable name with delimiters instead
+        result += delimiters[0] + s + delimiters[1];
+      }
+    } else {
+      // else is just regular text
+      result += s;
     }
-    return decrypt(foundValue);
   }
-  return value;
+  return result;
 }
 
-const ENV_SELECTOR = 'ENV::';
+const DELIMITER: [string, string] = ['{{', '}}'];
 
 /**
  * Map for event handlers
@@ -76,12 +87,18 @@ export const eventHandlers: EventHandlers<TJobEventPayload, FastifyInstance> = {
   webhook: async (event, _) => {
     const appEnvs = await envSWR(`env_${event.a_id}`, () => getAppEnvs(event.a_id));
     const headers = { ...event.h };
+
+    const envs = appEnvs.reduce((agg, item) => {
+      agg[item.key] = item.value;
+      return agg;
+    }, {} as Record<string, string>);
+
     // interpolate headers
     Object.keys(headers).forEach((headerKey) => {
-      headers[headerKey] = interpolateValue(ENV_SELECTOR, event.h[headerKey]!, appEnvs);
+      headers[headerKey] = interpolateValue(DELIMITER, event.h[headerKey]!, envs);
     });
     // interpolate url
-    const url = interpolateValue(ENV_SELECTOR, event.u, appEnvs);
+    const url = interpolateValue(DELIMITER, event.u, envs);
 
     return fetch(url, { headers: headers, body: fastJson(event.ed), method: event.m }).then((r) => {
       if (r.ok) {

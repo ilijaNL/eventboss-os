@@ -22,7 +22,7 @@ import { showNotification } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { appSettings } from 'api-contracts';
+import { appContract } from 'api-contracts';
 import { createFormResolver } from '@/utils/typebox-resolver';
 import { appHooks } from '@/app/data/appRPC';
 
@@ -32,7 +32,7 @@ const NewEnvForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: createFormResolver(appSettings.add_env.input),
+    resolver: createFormResolver(appContract.add_env.input),
     defaultValues: {
       key: '',
       value: '',
