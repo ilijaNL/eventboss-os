@@ -15,6 +15,7 @@ query GetEventActions($event_slug: String!) {
         retry_backoff
         retry_delay
         retry_limit
+        expire_in
         run_after
       }
     }

@@ -16,6 +16,7 @@ export default createEventListener(actionEvents.action_created)<AppContext, Comp
       retry_backoff: e.data.retry_backoff,
       retry_delay: e.data.retry_delay,
       retry_limit: e.data.retry_limit,
+      expire_in: e.data.expire_in_seconds,
       run_after: e.data.run_after,
       slug: e.data.slug,
       type: e.data.config.type,

@@ -243,37 +243,55 @@ const ActionForm: React.FC<{
           .with('test', () => <input hidden {...register('config.config', { shouldUnregister: true })}></input>)
           .exhaustive()}
         <Grid grow align="center">
-          <Grid.Col span={4}>
+          <Grid.Col span={3}>
             <Controller
               control={control}
-              name="retry_limit"
-              render={({ field: { onChange, ...rest } }) => (
+              name="expire_in_seconds"
+              render={({ field: { onChange, ...rest }, fieldState: { error } }) => (
                 <NumberInput
-                  defaultValue={18}
                   {...rest}
                   onChange={(v) => onChange(v)}
-                  label="Retry Limit (sec)"
+                  label="Expire in (sec)"
+                  error={error?.message}
                   withAsterisk
                 />
               )}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={3}>
             <Controller
               control={control}
-              name="retry_delay"
-              render={({ field: { onChange, ...rest } }) => (
+              name="retry_limit"
+              render={({ field: { onChange, ...rest }, fieldState: { error } }) => (
                 <NumberInput
                   defaultValue={18}
                   {...rest}
                   onChange={(v) => onChange(v)}
+                  error={error?.message}
+                  label="Retry Limit"
+                  withAsterisk
+                />
+              )}
+            />
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <Controller
+              control={control}
+              name="retry_delay"
+              render={({ field: { onChange, ...rest }, fieldState: { error } }) => (
+                <NumberInput
+                  defaultValue={18}
+                  {...rest}
+                  onChange={(v) => onChange(v)}
+                  error={error?.message}
                   label="Retry Delay (sec)"
                   withAsterisk
                 />
               )}
             />
           </Grid.Col>
-          <Grid.Col span={4} sx={{ alignSelf: 'flex-end' }}>
+
+          <Grid.Col span={3} sx={{ alignSelf: 'flex-end' }}>
             <Controller
               control={control}
               name="retry_backoff"
@@ -322,7 +340,7 @@ const LogsTab: React.FC<{ action_id: string }> = ({ action_id }) => {
     queryKey: ['actions', 'logs', action_id],
     queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
       authFetch(GetLogsForActionDocument, { after: pageParam, limit: PAGE_SIZE, action_id }, auth.app),
-    getNextPageParam: (lastPage) => lastPage?.app_action_logs[PAGE_SIZE - 1]?.created_at ?? undefined,
+    getNextPageParam: (lastPage) => lastPage?.events[PAGE_SIZE - 1]?.created_at ?? undefined,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -332,7 +350,7 @@ const LogsTab: React.FC<{ action_id: string }> = ({ action_id }) => {
       <ActionLogs
         fetchMore={fetchNextPage}
         has_more={!!hasNextPage}
-        items={data?.pages.flatMap((m) => m.app_action_logs) ?? []}
+        items={data?.pages.flatMap((m) => m.events) ?? []}
       />
     </Box>
   );
@@ -483,6 +501,7 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
                     defaultValues={{
                       name: action.name,
                       slug: action.slug,
+                      expire_in_seconds: action.expire_in,
                       config: {
                         type: action.type as any,
                         config: action.type_configuration,
@@ -561,6 +580,7 @@ const page = createAppPage({
               retry_backoff: false,
               retry_delay: 10,
               retry_limit: 3,
+              expire_in_seconds: 30,
               run_after: 0,
             }}
             submitSection={
@@ -617,7 +637,7 @@ const page = createAppPage({
               />
             </Card>
           </Grid.Col>
-          <Grid.Col sm={7} md={7} lg={8}>
+          <Grid.Col sm={7} md={8} lg={8}>
             <Card withBorder>
               <Card.Section>
                 {selectedAction ? (

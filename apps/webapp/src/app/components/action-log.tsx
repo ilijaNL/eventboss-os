@@ -69,7 +69,7 @@ const ActionLogs: React.FC<{ items: Array<ActionLogItemFragment>; has_more: bool
                 </Text>
               </Stack>
             </td>
-            <td>{item.job?.state ?? item.a_job?.state}</td>
+            <td>{item.event_name}</td>
             <td>
               <Group spacing="xs" position="center">
                 <ActionIcon title="retry" variant="outline">

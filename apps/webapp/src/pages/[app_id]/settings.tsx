@@ -167,13 +167,29 @@ const EnvSettings: React.FC<{}> = () => {
   );
 };
 
+const Config: React.FC = () => {
+  return (
+    <>
+      <Title order={2}>Configuration</Title>
+      <Stack mt="md">
+        <Button fullWidth>Export</Button>
+      </Stack>
+    </>
+  );
+};
+
 const page = createAppPage({
   pageComponent: function Page() {
     return (
       <Container size="md" py="lg">
-        <Card withBorder>
-          <EnvSettings />
-        </Card>
+        <Stack>
+          <Card withBorder>
+            <Config />
+          </Card>
+          <Card withBorder>
+            <EnvSettings />
+          </Card>
+        </Stack>
       </Container>
     );
   },

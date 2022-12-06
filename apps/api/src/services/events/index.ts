@@ -3,16 +3,17 @@ import { createAppContext } from '@/utils/context';
 import { FastifyPluginAsync } from 'fastify';
 import { eventsServer } from './resolver';
 import { eventHandlers, TJobEventPayload } from './event-processor';
-import { createWorker } from './job-worker';
+import { createWorker } from './worker';
+import { expireJobsAndFail, expireJobsAndRetry, getScheduledJobs, Job } from './jobs';
 
 export const eventService: FastifyPluginAsync = async (fastify) => {
-  const subscription = createWorker({
-    pgBoss: fastify.pg_boss,
-    fetchSize: 200,
+  const subscription = createWorker<Job<TJobEventPayload, any>>({
+    fetch: getScheduledJobs,
+    fetchSize: 100,
     maxConcurrency: 1000,
     poolInternvalInMs: 1500,
     handler: async ({ data }) => {
-      const event = data as TJobEventPayload;
+      const event = data.job;
       const handler = eventHandlers[event.type];
 
       if (!handler) {
@@ -22,6 +23,10 @@ export const eventService: FastifyPluginAsync = async (fastify) => {
       return handler(event as any, fastify);
     },
   });
+
+  // this should be moved to a seperate job
+  setInterval(expireJobsAndRetry, 15 * 1000);
+  setInterval(expireJobsAndFail, 15 * 1000);
 
   fastify.addHook('onClose', async () => {
     await subscription.stop();

@@ -12,9 +12,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   interval: string;
-  job_state: any;
   jsonb: Record<string, any>;
-  timestamp: string;
   timestamptz: string;
   uuid: string;
 };
@@ -78,241 +76,6 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
-/** log of all actions */
-export type App_Action_Logs = {
-  /** An object relationship */
-  a_job: Maybe<System_Job>;
-  /** An object relationship */
-  action: Maybe<App_Actions>;
-  action_id: Scalars['uuid'];
-  app_id: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
-  /** An object relationship */
-  event: Maybe<App_Events>;
-  event_id: Scalars['uuid'];
-  event_log_id: Scalars['uuid'];
-  id: Scalars['uuid'];
-  /** An object relationship */
-  job: Maybe<System_Job>;
-  job_id: Scalars['uuid'];
-  payload: Scalars['jsonb'];
-  trace: Maybe<Scalars['String']>;
-};
-
-
-/** log of all actions */
-export type App_Action_LogsPayloadArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** aggregated selection of "app.action_logs" */
-export type App_Action_Logs_Aggregate = {
-  aggregate: Maybe<App_Action_Logs_Aggregate_Fields>;
-  nodes: Array<App_Action_Logs>;
-};
-
-/** aggregate fields of "app.action_logs" */
-export type App_Action_Logs_Aggregate_Fields = {
-  count: Scalars['Int'];
-  max: Maybe<App_Action_Logs_Max_Fields>;
-  min: Maybe<App_Action_Logs_Min_Fields>;
-};
-
-
-/** aggregate fields of "app.action_logs" */
-export type App_Action_Logs_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type App_Action_Logs_Append_Input = {
-  payload?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** Boolean expression to filter rows from the table "app.action_logs". All fields are combined with a logical 'AND'. */
-export type App_Action_Logs_Bool_Exp = {
-  _and?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
-  _not?: InputMaybe<App_Action_Logs_Bool_Exp>;
-  _or?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
-  a_job?: InputMaybe<System_Job_Bool_Exp>;
-  action?: InputMaybe<App_Actions_Bool_Exp>;
-  action_id?: InputMaybe<Uuid_Comparison_Exp>;
-  app_id?: InputMaybe<Uuid_Comparison_Exp>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  event?: InputMaybe<App_Events_Bool_Exp>;
-  event_id?: InputMaybe<Uuid_Comparison_Exp>;
-  event_log_id?: InputMaybe<Uuid_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  job?: InputMaybe<System_Job_Bool_Exp>;
-  job_id?: InputMaybe<Uuid_Comparison_Exp>;
-  payload?: InputMaybe<Jsonb_Comparison_Exp>;
-  trace?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type App_Action_Logs_Delete_At_Path_Input = {
-  payload?: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type App_Action_Logs_Delete_Elem_Input = {
-  payload?: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type App_Action_Logs_Delete_Key_Input = {
-  payload?: InputMaybe<Scalars['String']>;
-};
-
-/** input type for inserting data into table "app.action_logs" */
-export type App_Action_Logs_Insert_Input = {
-  a_job?: InputMaybe<System_Job_Obj_Rel_Insert_Input>;
-  action?: InputMaybe<App_Actions_Obj_Rel_Insert_Input>;
-  action_id?: InputMaybe<Scalars['uuid']>;
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  event?: InputMaybe<App_Events_Obj_Rel_Insert_Input>;
-  event_id?: InputMaybe<Scalars['uuid']>;
-  event_log_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  job?: InputMaybe<System_Job_Obj_Rel_Insert_Input>;
-  job_id?: InputMaybe<Scalars['uuid']>;
-  payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type App_Action_Logs_Max_Fields = {
-  action_id: Maybe<Scalars['uuid']>;
-  app_id: Maybe<Scalars['uuid']>;
-  created_at: Maybe<Scalars['timestamptz']>;
-  event_id: Maybe<Scalars['uuid']>;
-  event_log_id: Maybe<Scalars['uuid']>;
-  id: Maybe<Scalars['uuid']>;
-  job_id: Maybe<Scalars['uuid']>;
-  trace: Maybe<Scalars['String']>;
-};
-
-/** aggregate min on columns */
-export type App_Action_Logs_Min_Fields = {
-  action_id: Maybe<Scalars['uuid']>;
-  app_id: Maybe<Scalars['uuid']>;
-  created_at: Maybe<Scalars['timestamptz']>;
-  event_id: Maybe<Scalars['uuid']>;
-  event_log_id: Maybe<Scalars['uuid']>;
-  id: Maybe<Scalars['uuid']>;
-  job_id: Maybe<Scalars['uuid']>;
-  trace: Maybe<Scalars['String']>;
-};
-
-/** response of any mutation on the table "app.action_logs" */
-export type App_Action_Logs_Mutation_Response = {
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<App_Action_Logs>;
-};
-
-/** input type for inserting object relation for remote table "app.action_logs" */
-export type App_Action_Logs_Obj_Rel_Insert_Input = {
-  data: App_Action_Logs_Insert_Input;
-};
-
-/** Ordering options when selecting data from "app.action_logs". */
-export type App_Action_Logs_Order_By = {
-  a_job?: InputMaybe<System_Job_Order_By>;
-  action?: InputMaybe<App_Actions_Order_By>;
-  action_id?: InputMaybe<Order_By>;
-  app_id?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  event?: InputMaybe<App_Events_Order_By>;
-  event_id?: InputMaybe<Order_By>;
-  event_log_id?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  job?: InputMaybe<System_Job_Order_By>;
-  job_id?: InputMaybe<Order_By>;
-  payload?: InputMaybe<Order_By>;
-  trace?: InputMaybe<Order_By>;
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type App_Action_Logs_Prepend_Input = {
-  payload?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** select columns of table "app.action_logs" */
-export enum App_Action_Logs_Select_Column {
-  /** column name */
-  ActionId = 'action_id',
-  /** column name */
-  AppId = 'app_id',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  EventId = 'event_id',
-  /** column name */
-  EventLogId = 'event_log_id',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  JobId = 'job_id',
-  /** column name */
-  Payload = 'payload',
-  /** column name */
-  Trace = 'trace'
-}
-
-/** input type for updating data in table "app.action_logs" */
-export type App_Action_Logs_Set_Input = {
-  action_id?: InputMaybe<Scalars['uuid']>;
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  event_id?: InputMaybe<Scalars['uuid']>;
-  event_log_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  job_id?: InputMaybe<Scalars['uuid']>;
-  payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
-};
-
-/** Streaming cursor of the table "app_action_logs" */
-export type App_Action_Logs_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: App_Action_Logs_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type App_Action_Logs_Stream_Cursor_Value_Input = {
-  action_id?: InputMaybe<Scalars['uuid']>;
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  event_id?: InputMaybe<Scalars['uuid']>;
-  event_log_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  job_id?: InputMaybe<Scalars['uuid']>;
-  payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
-};
-
-export type App_Action_Logs_Updates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append?: InputMaybe<App_Action_Logs_Append_Input>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _delete_at_path?: InputMaybe<App_Action_Logs_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _delete_elem?: InputMaybe<App_Action_Logs_Delete_Elem_Input>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _delete_key?: InputMaybe<App_Action_Logs_Delete_Key_Input>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend?: InputMaybe<App_Action_Logs_Prepend_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<App_Action_Logs_Set_Input>;
-  where: App_Action_Logs_Bool_Exp;
-};
-
 /** action definitions */
 export type App_Actions = {
   app_id: Scalars['uuid'];
@@ -321,6 +84,7 @@ export type App_Actions = {
   event_actions: Array<App_Event_Actions>;
   /** An aggregate relationship */
   event_actions_aggregate: App_Event_Actions_Aggregate;
+  expire_in: Scalars['Int'];
   extra_data: Scalars['jsonb'];
   id: Scalars['uuid'];
   name: Scalars['String'];
@@ -402,6 +166,7 @@ export type App_Actions_Append_Input = {
 
 /** aggregate avg on columns */
 export type App_Actions_Avg_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -416,6 +181,7 @@ export type App_Actions_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   event_actions?: InputMaybe<App_Event_Actions_Bool_Exp>;
   event_actions_aggregate?: InputMaybe<App_Event_Actions_Aggregate_Bool_Exp>;
+  expire_in?: InputMaybe<Int_Comparison_Exp>;
   extra_data?: InputMaybe<Jsonb_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
@@ -457,6 +223,7 @@ export type App_Actions_Delete_Key_Input = {
 
 /** input type for incrementing numeric columns in table "app.actions" */
 export type App_Actions_Inc_Input = {
+  expire_in?: InputMaybe<Scalars['Int']>;
   retry_delay?: InputMaybe<Scalars['Int']>;
   retry_limit?: InputMaybe<Scalars['Int']>;
   run_after?: InputMaybe<Scalars['Int']>;
@@ -467,6 +234,7 @@ export type App_Actions_Insert_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event_actions?: InputMaybe<App_Event_Actions_Arr_Rel_Insert_Input>;
+  expire_in?: InputMaybe<Scalars['Int']>;
   extra_data?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
@@ -484,6 +252,7 @@ export type App_Actions_Insert_Input = {
 export type App_Actions_Max_Fields = {
   app_id: Maybe<Scalars['uuid']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  expire_in: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['uuid']>;
   name: Maybe<Scalars['String']>;
   retry_delay: Maybe<Scalars['Int']>;
@@ -498,6 +267,7 @@ export type App_Actions_Max_Fields = {
 export type App_Actions_Min_Fields = {
   app_id: Maybe<Scalars['uuid']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  expire_in: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['uuid']>;
   name: Maybe<Scalars['String']>;
   retry_delay: Maybe<Scalars['Int']>;
@@ -535,6 +305,7 @@ export type App_Actions_Order_By = {
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   event_actions_aggregate?: InputMaybe<App_Event_Actions_Aggregate_Order_By>;
+  expire_in?: InputMaybe<Order_By>;
   extra_data?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -566,6 +337,8 @@ export enum App_Actions_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  ExpireIn = 'expire_in',
+  /** column name */
   ExtraData = 'extra_data',
   /** column name */
   Id = 'id',
@@ -593,6 +366,7 @@ export enum App_Actions_Select_Column {
 export type App_Actions_Set_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  expire_in?: InputMaybe<Scalars['Int']>;
   extra_data?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
@@ -608,6 +382,7 @@ export type App_Actions_Set_Input = {
 
 /** aggregate stddev on columns */
 export type App_Actions_Stddev_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -615,6 +390,7 @@ export type App_Actions_Stddev_Fields = {
 
 /** aggregate stddev_pop on columns */
 export type App_Actions_Stddev_Pop_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -622,6 +398,7 @@ export type App_Actions_Stddev_Pop_Fields = {
 
 /** aggregate stddev_samp on columns */
 export type App_Actions_Stddev_Samp_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -639,6 +416,7 @@ export type App_Actions_Stream_Cursor_Input = {
 export type App_Actions_Stream_Cursor_Value_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  expire_in?: InputMaybe<Scalars['Int']>;
   extra_data?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
@@ -654,6 +432,7 @@ export type App_Actions_Stream_Cursor_Value_Input = {
 
 /** aggregate sum on columns */
 export type App_Actions_Sum_Fields = {
+  expire_in: Maybe<Scalars['Int']>;
   retry_delay: Maybe<Scalars['Int']>;
   retry_limit: Maybe<Scalars['Int']>;
   run_after: Maybe<Scalars['Int']>;
@@ -665,6 +444,8 @@ export enum App_Actions_Update_Column {
   AppId = 'app_id',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  ExpireIn = 'expire_in',
   /** column name */
   ExtraData = 'extra_data',
   /** column name */
@@ -709,6 +490,7 @@ export type App_Actions_Updates = {
 
 /** aggregate var_pop on columns */
 export type App_Actions_Var_Pop_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -716,6 +498,7 @@ export type App_Actions_Var_Pop_Fields = {
 
 /** aggregate var_samp on columns */
 export type App_Actions_Var_Samp_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -723,6 +506,7 @@ export type App_Actions_Var_Samp_Fields = {
 
 /** aggregate variance on columns */
 export type App_Actions_Variance_Fields = {
+  expire_in: Maybe<Scalars['Float']>;
   retry_delay: Maybe<Scalars['Float']>;
   retry_limit: Maybe<Scalars['Float']>;
   run_after: Maybe<Scalars['Float']>;
@@ -1297,133 +1081,127 @@ export type App_Event_Actions_Updates = {
   where: App_Event_Actions_Bool_Exp;
 };
 
-/** columns and relationships of "app.event_logs" */
-export type App_Event_Logs = {
+/** columns and relationships of "app.event_executions" */
+export type App_Event_Executions = {
   app_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
   event: Maybe<App_Events>;
   event_id: Scalars['uuid'];
-  id: Scalars['uuid'];
+  exec_id: Scalars['uuid'];
   payload: Scalars['jsonb'];
-  trace: Maybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "app.event_logs" */
-export type App_Event_LogsPayloadArgs = {
+/** columns and relationships of "app.event_executions" */
+export type App_Event_ExecutionsPayloadArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
-/** aggregated selection of "app.event_logs" */
-export type App_Event_Logs_Aggregate = {
-  aggregate: Maybe<App_Event_Logs_Aggregate_Fields>;
-  nodes: Array<App_Event_Logs>;
+/** aggregated selection of "app.event_executions" */
+export type App_Event_Executions_Aggregate = {
+  aggregate: Maybe<App_Event_Executions_Aggregate_Fields>;
+  nodes: Array<App_Event_Executions>;
 };
 
-/** aggregate fields of "app.event_logs" */
-export type App_Event_Logs_Aggregate_Fields = {
+/** aggregate fields of "app.event_executions" */
+export type App_Event_Executions_Aggregate_Fields = {
   count: Scalars['Int'];
-  max: Maybe<App_Event_Logs_Max_Fields>;
-  min: Maybe<App_Event_Logs_Min_Fields>;
+  max: Maybe<App_Event_Executions_Max_Fields>;
+  min: Maybe<App_Event_Executions_Min_Fields>;
 };
 
 
-/** aggregate fields of "app.event_logs" */
-export type App_Event_Logs_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+/** aggregate fields of "app.event_executions" */
+export type App_Event_Executions_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
-export type App_Event_Logs_Append_Input = {
+export type App_Event_Executions_Append_Input = {
   payload?: InputMaybe<Scalars['jsonb']>;
 };
 
-/** Boolean expression to filter rows from the table "app.event_logs". All fields are combined with a logical 'AND'. */
-export type App_Event_Logs_Bool_Exp = {
-  _and?: InputMaybe<Array<App_Event_Logs_Bool_Exp>>;
-  _not?: InputMaybe<App_Event_Logs_Bool_Exp>;
-  _or?: InputMaybe<Array<App_Event_Logs_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "app.event_executions". All fields are combined with a logical 'AND'. */
+export type App_Event_Executions_Bool_Exp = {
+  _and?: InputMaybe<Array<App_Event_Executions_Bool_Exp>>;
+  _not?: InputMaybe<App_Event_Executions_Bool_Exp>;
+  _or?: InputMaybe<Array<App_Event_Executions_Bool_Exp>>;
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   event?: InputMaybe<App_Events_Bool_Exp>;
   event_id?: InputMaybe<Uuid_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
+  exec_id?: InputMaybe<Uuid_Comparison_Exp>;
   payload?: InputMaybe<Jsonb_Comparison_Exp>;
-  trace?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type App_Event_Logs_Delete_At_Path_Input = {
+export type App_Event_Executions_Delete_At_Path_Input = {
   payload?: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type App_Event_Logs_Delete_Elem_Input = {
+export type App_Event_Executions_Delete_Elem_Input = {
   payload?: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type App_Event_Logs_Delete_Key_Input = {
+export type App_Event_Executions_Delete_Key_Input = {
   payload?: InputMaybe<Scalars['String']>;
 };
 
-/** input type for inserting data into table "app.event_logs" */
-export type App_Event_Logs_Insert_Input = {
+/** input type for inserting data into table "app.event_executions" */
+export type App_Event_Executions_Insert_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event?: InputMaybe<App_Events_Obj_Rel_Insert_Input>;
   event_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
-export type App_Event_Logs_Max_Fields = {
+export type App_Event_Executions_Max_Fields = {
   app_id: Maybe<Scalars['uuid']>;
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['uuid']>;
-  id: Maybe<Scalars['uuid']>;
-  trace: Maybe<Scalars['String']>;
+  exec_id: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
-export type App_Event_Logs_Min_Fields = {
+export type App_Event_Executions_Min_Fields = {
   app_id: Maybe<Scalars['uuid']>;
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['uuid']>;
-  id: Maybe<Scalars['uuid']>;
-  trace: Maybe<Scalars['String']>;
+  exec_id: Maybe<Scalars['uuid']>;
 };
 
-/** response of any mutation on the table "app.event_logs" */
-export type App_Event_Logs_Mutation_Response = {
+/** response of any mutation on the table "app.event_executions" */
+export type App_Event_Executions_Mutation_Response = {
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<App_Event_Logs>;
+  returning: Array<App_Event_Executions>;
 };
 
-/** Ordering options when selecting data from "app.event_logs". */
-export type App_Event_Logs_Order_By = {
+/** Ordering options when selecting data from "app.event_executions". */
+export type App_Event_Executions_Order_By = {
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   event?: InputMaybe<App_Events_Order_By>;
   event_id?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
+  exec_id?: InputMaybe<Order_By>;
   payload?: InputMaybe<Order_By>;
-  trace?: InputMaybe<Order_By>;
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
-export type App_Event_Logs_Prepend_Input = {
+export type App_Event_Executions_Prepend_Input = {
   payload?: InputMaybe<Scalars['jsonb']>;
 };
 
-/** select columns of table "app.event_logs" */
-export enum App_Event_Logs_Select_Column {
+/** select columns of table "app.event_executions" */
+export enum App_Event_Executions_Select_Column {
   /** column name */
   AppId = 'app_id',
   /** column name */
@@ -1431,55 +1209,51 @@ export enum App_Event_Logs_Select_Column {
   /** column name */
   EventId = 'event_id',
   /** column name */
-  Id = 'id',
+  ExecId = 'exec_id',
   /** column name */
-  Payload = 'payload',
-  /** column name */
-  Trace = 'trace'
+  Payload = 'payload'
 }
 
-/** input type for updating data in table "app.event_logs" */
-export type App_Event_Logs_Set_Input = {
+/** input type for updating data in table "app.event_executions" */
+export type App_Event_Executions_Set_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
 };
 
-/** Streaming cursor of the table "app_event_logs" */
-export type App_Event_Logs_Stream_Cursor_Input = {
+/** Streaming cursor of the table "app_event_executions" */
+export type App_Event_Executions_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: App_Event_Logs_Stream_Cursor_Value_Input;
+  initial_value: App_Event_Executions_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type App_Event_Logs_Stream_Cursor_Value_Input = {
+export type App_Event_Executions_Stream_Cursor_Value_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
 };
 
-export type App_Event_Logs_Updates = {
+export type App_Event_Executions_Updates = {
   /** append existing jsonb value of filtered columns with new jsonb value */
-  _append?: InputMaybe<App_Event_Logs_Append_Input>;
+  _append?: InputMaybe<App_Event_Executions_Append_Input>;
   /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _delete_at_path?: InputMaybe<App_Event_Logs_Delete_At_Path_Input>;
+  _delete_at_path?: InputMaybe<App_Event_Executions_Delete_At_Path_Input>;
   /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _delete_elem?: InputMaybe<App_Event_Logs_Delete_Elem_Input>;
+  _delete_elem?: InputMaybe<App_Event_Executions_Delete_Elem_Input>;
   /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _delete_key?: InputMaybe<App_Event_Logs_Delete_Key_Input>;
+  _delete_key?: InputMaybe<App_Event_Executions_Delete_Key_Input>;
   /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend?: InputMaybe<App_Event_Logs_Prepend_Input>;
+  _prepend?: InputMaybe<App_Event_Executions_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<App_Event_Logs_Set_Input>;
-  where: App_Event_Logs_Bool_Exp;
+  _set?: InputMaybe<App_Event_Executions_Set_Input>;
+  where: App_Event_Executions_Bool_Exp;
 };
 
 /** columns and relationships of "app.events" */
@@ -1745,6 +1519,601 @@ export type App_Events_Updates = {
   where: App_Events_Bool_Exp;
 };
 
+/** columns and relationships of "app.job_events" */
+export type App_Job_Events = {
+  /** An object relationship */
+  action: Maybe<App_Actions>;
+  action_id: Scalars['uuid'];
+  app_id: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  data: Scalars['jsonb'];
+  /** An object relationship */
+  event: Maybe<App_Events>;
+  event_id: Scalars['uuid'];
+  event_name: Scalars['String'];
+  exec_id: Scalars['uuid'];
+  job_id: Scalars['uuid'];
+};
+
+
+/** columns and relationships of "app.job_events" */
+export type App_Job_EventsDataArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "app.job_events" */
+export type App_Job_Events_Aggregate = {
+  aggregate: Maybe<App_Job_Events_Aggregate_Fields>;
+  nodes: Array<App_Job_Events>;
+};
+
+/** aggregate fields of "app.job_events" */
+export type App_Job_Events_Aggregate_Fields = {
+  count: Scalars['Int'];
+  max: Maybe<App_Job_Events_Max_Fields>;
+  min: Maybe<App_Job_Events_Min_Fields>;
+};
+
+
+/** aggregate fields of "app.job_events" */
+export type App_Job_Events_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<App_Job_Events_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type App_Job_Events_Append_Input = {
+  data?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** Boolean expression to filter rows from the table "app.job_events". All fields are combined with a logical 'AND'. */
+export type App_Job_Events_Bool_Exp = {
+  _and?: InputMaybe<Array<App_Job_Events_Bool_Exp>>;
+  _not?: InputMaybe<App_Job_Events_Bool_Exp>;
+  _or?: InputMaybe<Array<App_Job_Events_Bool_Exp>>;
+  action?: InputMaybe<App_Actions_Bool_Exp>;
+  action_id?: InputMaybe<Uuid_Comparison_Exp>;
+  app_id?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  data?: InputMaybe<Jsonb_Comparison_Exp>;
+  event?: InputMaybe<App_Events_Bool_Exp>;
+  event_id?: InputMaybe<Uuid_Comparison_Exp>;
+  event_name?: InputMaybe<String_Comparison_Exp>;
+  exec_id?: InputMaybe<Uuid_Comparison_Exp>;
+  job_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type App_Job_Events_Delete_At_Path_Input = {
+  data?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type App_Job_Events_Delete_Elem_Input = {
+  data?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type App_Job_Events_Delete_Key_Input = {
+  data?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for inserting data into table "app.job_events" */
+export type App_Job_Events_Insert_Input = {
+  action?: InputMaybe<App_Actions_Obj_Rel_Insert_Input>;
+  action_id?: InputMaybe<Scalars['uuid']>;
+  app_id?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  event?: InputMaybe<App_Events_Obj_Rel_Insert_Input>;
+  event_id?: InputMaybe<Scalars['uuid']>;
+  event_name?: InputMaybe<Scalars['String']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
+  job_id?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type App_Job_Events_Max_Fields = {
+  action_id: Maybe<Scalars['uuid']>;
+  app_id: Maybe<Scalars['uuid']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_id: Maybe<Scalars['uuid']>;
+  event_name: Maybe<Scalars['String']>;
+  exec_id: Maybe<Scalars['uuid']>;
+  job_id: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type App_Job_Events_Min_Fields = {
+  action_id: Maybe<Scalars['uuid']>;
+  app_id: Maybe<Scalars['uuid']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_id: Maybe<Scalars['uuid']>;
+  event_name: Maybe<Scalars['String']>;
+  exec_id: Maybe<Scalars['uuid']>;
+  job_id: Maybe<Scalars['uuid']>;
+};
+
+/** response of any mutation on the table "app.job_events" */
+export type App_Job_Events_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<App_Job_Events>;
+};
+
+/** Ordering options when selecting data from "app.job_events". */
+export type App_Job_Events_Order_By = {
+  action?: InputMaybe<App_Actions_Order_By>;
+  action_id?: InputMaybe<Order_By>;
+  app_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  data?: InputMaybe<Order_By>;
+  event?: InputMaybe<App_Events_Order_By>;
+  event_id?: InputMaybe<Order_By>;
+  event_name?: InputMaybe<Order_By>;
+  exec_id?: InputMaybe<Order_By>;
+  job_id?: InputMaybe<Order_By>;
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type App_Job_Events_Prepend_Input = {
+  data?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "app.job_events" */
+export enum App_Job_Events_Select_Column {
+  /** column name */
+  ActionId = 'action_id',
+  /** column name */
+  AppId = 'app_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Data = 'data',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  EventName = 'event_name',
+  /** column name */
+  ExecId = 'exec_id',
+  /** column name */
+  JobId = 'job_id'
+}
+
+/** input type for updating data in table "app.job_events" */
+export type App_Job_Events_Set_Input = {
+  action_id?: InputMaybe<Scalars['uuid']>;
+  app_id?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  event_id?: InputMaybe<Scalars['uuid']>;
+  event_name?: InputMaybe<Scalars['String']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
+  job_id?: InputMaybe<Scalars['uuid']>;
+};
+
+/** Streaming cursor of the table "app_job_events" */
+export type App_Job_Events_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: App_Job_Events_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type App_Job_Events_Stream_Cursor_Value_Input = {
+  action_id?: InputMaybe<Scalars['uuid']>;
+  app_id?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  event_id?: InputMaybe<Scalars['uuid']>;
+  event_name?: InputMaybe<Scalars['String']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
+  job_id?: InputMaybe<Scalars['uuid']>;
+};
+
+export type App_Job_Events_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<App_Job_Events_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<App_Job_Events_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<App_Job_Events_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<App_Job_Events_Delete_Key_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<App_Job_Events_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<App_Job_Events_Set_Input>;
+  where: App_Job_Events_Bool_Exp;
+};
+
+/** columns and relationships of "app.jobs" */
+export type App_Jobs = {
+  app_id: Scalars['uuid'];
+  data: Scalars['jsonb'];
+  expire_in: Scalars['interval'];
+  id: Scalars['uuid'];
+  idempotence_key: Maybe<Scalars['String']>;
+  result: Maybe<Scalars['jsonb']>;
+  retry_backoff: Scalars['Boolean'];
+  retry_count: Scalars['Int'];
+  retry_delay: Scalars['Int'];
+  retry_limit: Scalars['Int'];
+  scheduled_at: Scalars['timestamptz'];
+  started_at: Maybe<Scalars['timestamptz']>;
+  state: Scalars['Int'];
+};
+
+
+/** columns and relationships of "app.jobs" */
+export type App_JobsDataArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "app.jobs" */
+export type App_JobsResultArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "app.jobs" */
+export type App_Jobs_Aggregate = {
+  aggregate: Maybe<App_Jobs_Aggregate_Fields>;
+  nodes: Array<App_Jobs>;
+};
+
+/** aggregate fields of "app.jobs" */
+export type App_Jobs_Aggregate_Fields = {
+  avg: Maybe<App_Jobs_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<App_Jobs_Max_Fields>;
+  min: Maybe<App_Jobs_Min_Fields>;
+  stddev: Maybe<App_Jobs_Stddev_Fields>;
+  stddev_pop: Maybe<App_Jobs_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<App_Jobs_Stddev_Samp_Fields>;
+  sum: Maybe<App_Jobs_Sum_Fields>;
+  var_pop: Maybe<App_Jobs_Var_Pop_Fields>;
+  var_samp: Maybe<App_Jobs_Var_Samp_Fields>;
+  variance: Maybe<App_Jobs_Variance_Fields>;
+};
+
+
+/** aggregate fields of "app.jobs" */
+export type App_Jobs_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<App_Jobs_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type App_Jobs_Append_Input = {
+  data?: InputMaybe<Scalars['jsonb']>;
+  result?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type App_Jobs_Avg_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "app.jobs". All fields are combined with a logical 'AND'. */
+export type App_Jobs_Bool_Exp = {
+  _and?: InputMaybe<Array<App_Jobs_Bool_Exp>>;
+  _not?: InputMaybe<App_Jobs_Bool_Exp>;
+  _or?: InputMaybe<Array<App_Jobs_Bool_Exp>>;
+  app_id?: InputMaybe<Uuid_Comparison_Exp>;
+  data?: InputMaybe<Jsonb_Comparison_Exp>;
+  expire_in?: InputMaybe<Interval_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  idempotence_key?: InputMaybe<String_Comparison_Exp>;
+  result?: InputMaybe<Jsonb_Comparison_Exp>;
+  retry_backoff?: InputMaybe<Boolean_Comparison_Exp>;
+  retry_count?: InputMaybe<Int_Comparison_Exp>;
+  retry_delay?: InputMaybe<Int_Comparison_Exp>;
+  retry_limit?: InputMaybe<Int_Comparison_Exp>;
+  scheduled_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  started_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  state?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "app.jobs" */
+export enum App_Jobs_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  JobsPkey = 'jobs_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type App_Jobs_Delete_At_Path_Input = {
+  data?: InputMaybe<Array<Scalars['String']>>;
+  result?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type App_Jobs_Delete_Elem_Input = {
+  data?: InputMaybe<Scalars['Int']>;
+  result?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type App_Jobs_Delete_Key_Input = {
+  data?: InputMaybe<Scalars['String']>;
+  result?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "app.jobs" */
+export type App_Jobs_Inc_Input = {
+  retry_count?: InputMaybe<Scalars['Int']>;
+  retry_delay?: InputMaybe<Scalars['Int']>;
+  retry_limit?: InputMaybe<Scalars['Int']>;
+  state?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "app.jobs" */
+export type App_Jobs_Insert_Input = {
+  app_id?: InputMaybe<Scalars['uuid']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  expire_in?: InputMaybe<Scalars['interval']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  idempotence_key?: InputMaybe<Scalars['String']>;
+  result?: InputMaybe<Scalars['jsonb']>;
+  retry_backoff?: InputMaybe<Scalars['Boolean']>;
+  retry_count?: InputMaybe<Scalars['Int']>;
+  retry_delay?: InputMaybe<Scalars['Int']>;
+  retry_limit?: InputMaybe<Scalars['Int']>;
+  scheduled_at?: InputMaybe<Scalars['timestamptz']>;
+  started_at?: InputMaybe<Scalars['timestamptz']>;
+  state?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type App_Jobs_Max_Fields = {
+  app_id: Maybe<Scalars['uuid']>;
+  id: Maybe<Scalars['uuid']>;
+  idempotence_key: Maybe<Scalars['String']>;
+  retry_count: Maybe<Scalars['Int']>;
+  retry_delay: Maybe<Scalars['Int']>;
+  retry_limit: Maybe<Scalars['Int']>;
+  scheduled_at: Maybe<Scalars['timestamptz']>;
+  started_at: Maybe<Scalars['timestamptz']>;
+  state: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type App_Jobs_Min_Fields = {
+  app_id: Maybe<Scalars['uuid']>;
+  id: Maybe<Scalars['uuid']>;
+  idempotence_key: Maybe<Scalars['String']>;
+  retry_count: Maybe<Scalars['Int']>;
+  retry_delay: Maybe<Scalars['Int']>;
+  retry_limit: Maybe<Scalars['Int']>;
+  scheduled_at: Maybe<Scalars['timestamptz']>;
+  started_at: Maybe<Scalars['timestamptz']>;
+  state: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "app.jobs" */
+export type App_Jobs_Mutation_Response = {
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<App_Jobs>;
+};
+
+/** on_conflict condition type for table "app.jobs" */
+export type App_Jobs_On_Conflict = {
+  constraint: App_Jobs_Constraint;
+  update_columns?: Array<App_Jobs_Update_Column>;
+  where?: InputMaybe<App_Jobs_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "app.jobs". */
+export type App_Jobs_Order_By = {
+  app_id?: InputMaybe<Order_By>;
+  data?: InputMaybe<Order_By>;
+  expire_in?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  idempotence_key?: InputMaybe<Order_By>;
+  result?: InputMaybe<Order_By>;
+  retry_backoff?: InputMaybe<Order_By>;
+  retry_count?: InputMaybe<Order_By>;
+  retry_delay?: InputMaybe<Order_By>;
+  retry_limit?: InputMaybe<Order_By>;
+  scheduled_at?: InputMaybe<Order_By>;
+  started_at?: InputMaybe<Order_By>;
+  state?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: app.jobs */
+export type App_Jobs_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type App_Jobs_Prepend_Input = {
+  data?: InputMaybe<Scalars['jsonb']>;
+  result?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "app.jobs" */
+export enum App_Jobs_Select_Column {
+  /** column name */
+  AppId = 'app_id',
+  /** column name */
+  Data = 'data',
+  /** column name */
+  ExpireIn = 'expire_in',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IdempotenceKey = 'idempotence_key',
+  /** column name */
+  Result = 'result',
+  /** column name */
+  RetryBackoff = 'retry_backoff',
+  /** column name */
+  RetryCount = 'retry_count',
+  /** column name */
+  RetryDelay = 'retry_delay',
+  /** column name */
+  RetryLimit = 'retry_limit',
+  /** column name */
+  ScheduledAt = 'scheduled_at',
+  /** column name */
+  StartedAt = 'started_at',
+  /** column name */
+  State = 'state'
+}
+
+/** input type for updating data in table "app.jobs" */
+export type App_Jobs_Set_Input = {
+  app_id?: InputMaybe<Scalars['uuid']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  expire_in?: InputMaybe<Scalars['interval']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  idempotence_key?: InputMaybe<Scalars['String']>;
+  result?: InputMaybe<Scalars['jsonb']>;
+  retry_backoff?: InputMaybe<Scalars['Boolean']>;
+  retry_count?: InputMaybe<Scalars['Int']>;
+  retry_delay?: InputMaybe<Scalars['Int']>;
+  retry_limit?: InputMaybe<Scalars['Int']>;
+  scheduled_at?: InputMaybe<Scalars['timestamptz']>;
+  started_at?: InputMaybe<Scalars['timestamptz']>;
+  state?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type App_Jobs_Stddev_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type App_Jobs_Stddev_Pop_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type App_Jobs_Stddev_Samp_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "app_jobs" */
+export type App_Jobs_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: App_Jobs_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type App_Jobs_Stream_Cursor_Value_Input = {
+  app_id?: InputMaybe<Scalars['uuid']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  expire_in?: InputMaybe<Scalars['interval']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  idempotence_key?: InputMaybe<Scalars['String']>;
+  result?: InputMaybe<Scalars['jsonb']>;
+  retry_backoff?: InputMaybe<Scalars['Boolean']>;
+  retry_count?: InputMaybe<Scalars['Int']>;
+  retry_delay?: InputMaybe<Scalars['Int']>;
+  retry_limit?: InputMaybe<Scalars['Int']>;
+  scheduled_at?: InputMaybe<Scalars['timestamptz']>;
+  started_at?: InputMaybe<Scalars['timestamptz']>;
+  state?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate sum on columns */
+export type App_Jobs_Sum_Fields = {
+  retry_count: Maybe<Scalars['Int']>;
+  retry_delay: Maybe<Scalars['Int']>;
+  retry_limit: Maybe<Scalars['Int']>;
+  state: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "app.jobs" */
+export enum App_Jobs_Update_Column {
+  /** column name */
+  AppId = 'app_id',
+  /** column name */
+  Data = 'data',
+  /** column name */
+  ExpireIn = 'expire_in',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IdempotenceKey = 'idempotence_key',
+  /** column name */
+  Result = 'result',
+  /** column name */
+  RetryBackoff = 'retry_backoff',
+  /** column name */
+  RetryCount = 'retry_count',
+  /** column name */
+  RetryDelay = 'retry_delay',
+  /** column name */
+  RetryLimit = 'retry_limit',
+  /** column name */
+  ScheduledAt = 'scheduled_at',
+  /** column name */
+  StartedAt = 'started_at',
+  /** column name */
+  State = 'state'
+}
+
+export type App_Jobs_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<App_Jobs_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<App_Jobs_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<App_Jobs_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<App_Jobs_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<App_Jobs_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<App_Jobs_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<App_Jobs_Set_Input>;
+  where: App_Jobs_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type App_Jobs_Var_Pop_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type App_Jobs_Var_Samp_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type App_Jobs_Variance_Fields = {
+  retry_count: Maybe<Scalars['Float']>;
+  retry_delay: Maybe<Scalars['Float']>;
+  retry_limit: Maybe<Scalars['Float']>;
+  state: Maybe<Scalars['Float']>;
+};
+
 /** ordering argument of a cursor */
 export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -1764,19 +2133,6 @@ export type Interval_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['interval']>;
   _neq?: InputMaybe<Scalars['interval']>;
   _nin?: InputMaybe<Array<Scalars['interval']>>;
-};
-
-/** Boolean expression to compare columns of type "job_state". All fields are combined with logical 'AND'. */
-export type Job_State_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['job_state']>;
-  _gt?: InputMaybe<Scalars['job_state']>;
-  _gte?: InputMaybe<Scalars['job_state']>;
-  _in?: InputMaybe<Array<Scalars['job_state']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['job_state']>;
-  _lte?: InputMaybe<Scalars['job_state']>;
-  _neq?: InputMaybe<Scalars['job_state']>;
-  _nin?: InputMaybe<Array<Scalars['job_state']>>;
 };
 
 export type Jsonb_Cast_Exp = {
@@ -1809,8 +2165,6 @@ export type Jsonb_Comparison_Exp = {
 
 /** mutation root */
 export type Mutation_Root = {
-  /** delete data from the table: "app.action_logs" */
-  delete_app_action_logs: Maybe<App_Action_Logs_Mutation_Response>;
   /** delete data from the table: "app.actions" */
   delete_app_actions: Maybe<App_Actions_Mutation_Response>;
   /** delete single row from the table: "app.actions" */
@@ -1827,22 +2181,18 @@ export type Mutation_Root = {
   delete_app_event_actions: Maybe<App_Event_Actions_Mutation_Response>;
   /** delete single row from the table: "app.event_actions" */
   delete_app_event_actions_by_pk: Maybe<App_Event_Actions>;
-  /** delete data from the table: "app.event_logs" */
-  delete_app_event_logs: Maybe<App_Event_Logs_Mutation_Response>;
+  /** delete data from the table: "app.event_executions" */
+  delete_app_event_executions: Maybe<App_Event_Executions_Mutation_Response>;
   /** delete data from the table: "app.events" */
   delete_app_events: Maybe<App_Events_Mutation_Response>;
   /** delete single row from the table: "app.events" */
   delete_app_events_by_pk: Maybe<App_Events>;
-  /** delete data from the table: "system.archive" */
-  delete_system_archive: Maybe<System_Archive_Mutation_Response>;
-  /** delete data from the table: "system.job" */
-  delete_system_job: Maybe<System_Job_Mutation_Response>;
-  /** delete single row from the table: "system.job" */
-  delete_system_job_by_pk: Maybe<System_Job>;
-  /** insert data into the table: "app.action_logs" */
-  insert_app_action_logs: Maybe<App_Action_Logs_Mutation_Response>;
-  /** insert a single row into the table: "app.action_logs" */
-  insert_app_action_logs_one: Maybe<App_Action_Logs>;
+  /** delete data from the table: "app.job_events" */
+  delete_app_job_events: Maybe<App_Job_Events_Mutation_Response>;
+  /** delete data from the table: "app.jobs" */
+  delete_app_jobs: Maybe<App_Jobs_Mutation_Response>;
+  /** delete single row from the table: "app.jobs" */
+  delete_app_jobs_by_pk: Maybe<App_Jobs>;
   /** insert data into the table: "app.actions" */
   insert_app_actions: Maybe<App_Actions_Mutation_Response>;
   /** insert a single row into the table: "app.actions" */
@@ -1859,26 +2209,22 @@ export type Mutation_Root = {
   insert_app_event_actions: Maybe<App_Event_Actions_Mutation_Response>;
   /** insert a single row into the table: "app.event_actions" */
   insert_app_event_actions_one: Maybe<App_Event_Actions>;
-  /** insert data into the table: "app.event_logs" */
-  insert_app_event_logs: Maybe<App_Event_Logs_Mutation_Response>;
-  /** insert a single row into the table: "app.event_logs" */
-  insert_app_event_logs_one: Maybe<App_Event_Logs>;
+  /** insert data into the table: "app.event_executions" */
+  insert_app_event_executions: Maybe<App_Event_Executions_Mutation_Response>;
+  /** insert a single row into the table: "app.event_executions" */
+  insert_app_event_executions_one: Maybe<App_Event_Executions>;
   /** insert data into the table: "app.events" */
   insert_app_events: Maybe<App_Events_Mutation_Response>;
   /** insert a single row into the table: "app.events" */
   insert_app_events_one: Maybe<App_Events>;
-  /** insert data into the table: "system.archive" */
-  insert_system_archive: Maybe<System_Archive_Mutation_Response>;
-  /** insert a single row into the table: "system.archive" */
-  insert_system_archive_one: Maybe<System_Archive>;
-  /** insert data into the table: "system.job" */
-  insert_system_job: Maybe<System_Job_Mutation_Response>;
-  /** insert a single row into the table: "system.job" */
-  insert_system_job_one: Maybe<System_Job>;
-  /** update data of the table: "app.action_logs" */
-  update_app_action_logs: Maybe<App_Action_Logs_Mutation_Response>;
-  /** update multiples rows of table: "app.action_logs" */
-  update_app_action_logs_many: Maybe<Array<Maybe<App_Action_Logs_Mutation_Response>>>;
+  /** insert data into the table: "app.job_events" */
+  insert_app_job_events: Maybe<App_Job_Events_Mutation_Response>;
+  /** insert a single row into the table: "app.job_events" */
+  insert_app_job_events_one: Maybe<App_Job_Events>;
+  /** insert data into the table: "app.jobs" */
+  insert_app_jobs: Maybe<App_Jobs_Mutation_Response>;
+  /** insert a single row into the table: "app.jobs" */
+  insert_app_jobs_one: Maybe<App_Jobs>;
   /** update data of the table: "app.actions" */
   update_app_actions: Maybe<App_Actions_Mutation_Response>;
   /** update single row of the table: "app.actions" */
@@ -1903,32 +2249,26 @@ export type Mutation_Root = {
   update_app_event_actions_by_pk: Maybe<App_Event_Actions>;
   /** update multiples rows of table: "app.event_actions" */
   update_app_event_actions_many: Maybe<Array<Maybe<App_Event_Actions_Mutation_Response>>>;
-  /** update data of the table: "app.event_logs" */
-  update_app_event_logs: Maybe<App_Event_Logs_Mutation_Response>;
-  /** update multiples rows of table: "app.event_logs" */
-  update_app_event_logs_many: Maybe<Array<Maybe<App_Event_Logs_Mutation_Response>>>;
+  /** update data of the table: "app.event_executions" */
+  update_app_event_executions: Maybe<App_Event_Executions_Mutation_Response>;
+  /** update multiples rows of table: "app.event_executions" */
+  update_app_event_executions_many: Maybe<Array<Maybe<App_Event_Executions_Mutation_Response>>>;
   /** update data of the table: "app.events" */
   update_app_events: Maybe<App_Events_Mutation_Response>;
   /** update single row of the table: "app.events" */
   update_app_events_by_pk: Maybe<App_Events>;
   /** update multiples rows of table: "app.events" */
   update_app_events_many: Maybe<Array<Maybe<App_Events_Mutation_Response>>>;
-  /** update data of the table: "system.archive" */
-  update_system_archive: Maybe<System_Archive_Mutation_Response>;
-  /** update multiples rows of table: "system.archive" */
-  update_system_archive_many: Maybe<Array<Maybe<System_Archive_Mutation_Response>>>;
-  /** update data of the table: "system.job" */
-  update_system_job: Maybe<System_Job_Mutation_Response>;
-  /** update single row of the table: "system.job" */
-  update_system_job_by_pk: Maybe<System_Job>;
-  /** update multiples rows of table: "system.job" */
-  update_system_job_many: Maybe<Array<Maybe<System_Job_Mutation_Response>>>;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_App_Action_LogsArgs = {
-  where: App_Action_Logs_Bool_Exp;
+  /** update data of the table: "app.job_events" */
+  update_app_job_events: Maybe<App_Job_Events_Mutation_Response>;
+  /** update multiples rows of table: "app.job_events" */
+  update_app_job_events_many: Maybe<Array<Maybe<App_Job_Events_Mutation_Response>>>;
+  /** update data of the table: "app.jobs" */
+  update_app_jobs: Maybe<App_Jobs_Mutation_Response>;
+  /** update single row of the table: "app.jobs" */
+  update_app_jobs_by_pk: Maybe<App_Jobs>;
+  /** update multiples rows of table: "app.jobs" */
+  update_app_jobs_many: Maybe<Array<Maybe<App_Jobs_Mutation_Response>>>;
 };
 
 
@@ -1981,8 +2321,8 @@ export type Mutation_RootDelete_App_Event_Actions_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_App_Event_LogsArgs = {
-  where: App_Event_Logs_Bool_Exp;
+export type Mutation_RootDelete_App_Event_ExecutionsArgs = {
+  where: App_Event_Executions_Bool_Exp;
 };
 
 
@@ -1999,32 +2339,20 @@ export type Mutation_RootDelete_App_Events_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_System_ArchiveArgs = {
-  where: System_Archive_Bool_Exp;
+export type Mutation_RootDelete_App_Job_EventsArgs = {
+  where: App_Job_Events_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_System_JobArgs = {
-  where: System_Job_Bool_Exp;
+export type Mutation_RootDelete_App_JobsArgs = {
+  where: App_Jobs_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_System_Job_By_PkArgs = {
+export type Mutation_RootDelete_App_Jobs_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_App_Action_LogsArgs = {
-  objects: Array<App_Action_Logs_Insert_Input>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_App_Action_Logs_OneArgs = {
-  object: App_Action_Logs_Insert_Input;
 };
 
 
@@ -2085,14 +2413,14 @@ export type Mutation_RootInsert_App_Event_Actions_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_App_Event_LogsArgs = {
-  objects: Array<App_Event_Logs_Insert_Input>;
+export type Mutation_RootInsert_App_Event_ExecutionsArgs = {
+  objects: Array<App_Event_Executions_Insert_Input>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_App_Event_Logs_OneArgs = {
-  object: App_Event_Logs_Insert_Input;
+export type Mutation_RootInsert_App_Event_Executions_OneArgs = {
+  object: App_Event_Executions_Insert_Input;
 };
 
 
@@ -2111,46 +2439,28 @@ export type Mutation_RootInsert_App_Events_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_System_ArchiveArgs = {
-  objects: Array<System_Archive_Insert_Input>;
+export type Mutation_RootInsert_App_Job_EventsArgs = {
+  objects: Array<App_Job_Events_Insert_Input>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_System_Archive_OneArgs = {
-  object: System_Archive_Insert_Input;
+export type Mutation_RootInsert_App_Job_Events_OneArgs = {
+  object: App_Job_Events_Insert_Input;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_System_JobArgs = {
-  objects: Array<System_Job_Insert_Input>;
-  on_conflict: InputMaybe<System_Job_On_Conflict>;
+export type Mutation_RootInsert_App_JobsArgs = {
+  objects: Array<App_Jobs_Insert_Input>;
+  on_conflict: InputMaybe<App_Jobs_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_System_Job_OneArgs = {
-  object: System_Job_Insert_Input;
-  on_conflict: InputMaybe<System_Job_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_App_Action_LogsArgs = {
-  _append: InputMaybe<App_Action_Logs_Append_Input>;
-  _delete_at_path: InputMaybe<App_Action_Logs_Delete_At_Path_Input>;
-  _delete_elem: InputMaybe<App_Action_Logs_Delete_Elem_Input>;
-  _delete_key: InputMaybe<App_Action_Logs_Delete_Key_Input>;
-  _prepend: InputMaybe<App_Action_Logs_Prepend_Input>;
-  _set: InputMaybe<App_Action_Logs_Set_Input>;
-  where: App_Action_Logs_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_App_Action_Logs_ManyArgs = {
-  updates: Array<App_Action_Logs_Updates>;
+export type Mutation_RootInsert_App_Jobs_OneArgs = {
+  object: App_Jobs_Insert_Input;
+  on_conflict: InputMaybe<App_Jobs_On_Conflict>;
 };
 
 
@@ -2257,20 +2567,20 @@ export type Mutation_RootUpdate_App_Event_Actions_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_App_Event_LogsArgs = {
-  _append: InputMaybe<App_Event_Logs_Append_Input>;
-  _delete_at_path: InputMaybe<App_Event_Logs_Delete_At_Path_Input>;
-  _delete_elem: InputMaybe<App_Event_Logs_Delete_Elem_Input>;
-  _delete_key: InputMaybe<App_Event_Logs_Delete_Key_Input>;
-  _prepend: InputMaybe<App_Event_Logs_Prepend_Input>;
-  _set: InputMaybe<App_Event_Logs_Set_Input>;
-  where: App_Event_Logs_Bool_Exp;
+export type Mutation_RootUpdate_App_Event_ExecutionsArgs = {
+  _append: InputMaybe<App_Event_Executions_Append_Input>;
+  _delete_at_path: InputMaybe<App_Event_Executions_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<App_Event_Executions_Delete_Elem_Input>;
+  _delete_key: InputMaybe<App_Event_Executions_Delete_Key_Input>;
+  _prepend: InputMaybe<App_Event_Executions_Prepend_Input>;
+  _set: InputMaybe<App_Event_Executions_Set_Input>;
+  where: App_Event_Executions_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_App_Event_Logs_ManyArgs = {
-  updates: Array<App_Event_Logs_Updates>;
+export type Mutation_RootUpdate_App_Event_Executions_ManyArgs = {
+  updates: Array<App_Event_Executions_Updates>;
 };
 
 
@@ -2305,53 +2615,52 @@ export type Mutation_RootUpdate_App_Events_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_System_ArchiveArgs = {
-  _append: InputMaybe<System_Archive_Append_Input>;
-  _delete_at_path: InputMaybe<System_Archive_Delete_At_Path_Input>;
-  _delete_elem: InputMaybe<System_Archive_Delete_Elem_Input>;
-  _delete_key: InputMaybe<System_Archive_Delete_Key_Input>;
-  _inc: InputMaybe<System_Archive_Inc_Input>;
-  _prepend: InputMaybe<System_Archive_Prepend_Input>;
-  _set: InputMaybe<System_Archive_Set_Input>;
-  where: System_Archive_Bool_Exp;
+export type Mutation_RootUpdate_App_Job_EventsArgs = {
+  _append: InputMaybe<App_Job_Events_Append_Input>;
+  _delete_at_path: InputMaybe<App_Job_Events_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<App_Job_Events_Delete_Elem_Input>;
+  _delete_key: InputMaybe<App_Job_Events_Delete_Key_Input>;
+  _prepend: InputMaybe<App_Job_Events_Prepend_Input>;
+  _set: InputMaybe<App_Job_Events_Set_Input>;
+  where: App_Job_Events_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_System_Archive_ManyArgs = {
-  updates: Array<System_Archive_Updates>;
+export type Mutation_RootUpdate_App_Job_Events_ManyArgs = {
+  updates: Array<App_Job_Events_Updates>;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_System_JobArgs = {
-  _append: InputMaybe<System_Job_Append_Input>;
-  _delete_at_path: InputMaybe<System_Job_Delete_At_Path_Input>;
-  _delete_elem: InputMaybe<System_Job_Delete_Elem_Input>;
-  _delete_key: InputMaybe<System_Job_Delete_Key_Input>;
-  _inc: InputMaybe<System_Job_Inc_Input>;
-  _prepend: InputMaybe<System_Job_Prepend_Input>;
-  _set: InputMaybe<System_Job_Set_Input>;
-  where: System_Job_Bool_Exp;
+export type Mutation_RootUpdate_App_JobsArgs = {
+  _append: InputMaybe<App_Jobs_Append_Input>;
+  _delete_at_path: InputMaybe<App_Jobs_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<App_Jobs_Delete_Elem_Input>;
+  _delete_key: InputMaybe<App_Jobs_Delete_Key_Input>;
+  _inc: InputMaybe<App_Jobs_Inc_Input>;
+  _prepend: InputMaybe<App_Jobs_Prepend_Input>;
+  _set: InputMaybe<App_Jobs_Set_Input>;
+  where: App_Jobs_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_System_Job_By_PkArgs = {
-  _append: InputMaybe<System_Job_Append_Input>;
-  _delete_at_path: InputMaybe<System_Job_Delete_At_Path_Input>;
-  _delete_elem: InputMaybe<System_Job_Delete_Elem_Input>;
-  _delete_key: InputMaybe<System_Job_Delete_Key_Input>;
-  _inc: InputMaybe<System_Job_Inc_Input>;
-  _prepend: InputMaybe<System_Job_Prepend_Input>;
-  _set: InputMaybe<System_Job_Set_Input>;
-  pk_columns: System_Job_Pk_Columns_Input;
+export type Mutation_RootUpdate_App_Jobs_By_PkArgs = {
+  _append: InputMaybe<App_Jobs_Append_Input>;
+  _delete_at_path: InputMaybe<App_Jobs_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<App_Jobs_Delete_Elem_Input>;
+  _delete_key: InputMaybe<App_Jobs_Delete_Key_Input>;
+  _inc: InputMaybe<App_Jobs_Inc_Input>;
+  _prepend: InputMaybe<App_Jobs_Prepend_Input>;
+  _set: InputMaybe<App_Jobs_Set_Input>;
+  pk_columns: App_Jobs_Pk_Columns_Input;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_System_Job_ManyArgs = {
-  updates: Array<System_Job_Updates>;
+export type Mutation_RootUpdate_App_Jobs_ManyArgs = {
+  updates: Array<App_Jobs_Updates>;
 };
 
 /** column ordering options */
@@ -2371,10 +2680,6 @@ export enum Order_By {
 }
 
 export type Query_Root = {
-  /** fetch data from the table: "app.action_logs" */
-  app_action_logs: Array<App_Action_Logs>;
-  /** fetch aggregated fields from the table: "app.action_logs" */
-  app_action_logs_aggregate: App_Action_Logs_Aggregate;
   /** fetch data from the table: "app.actions" */
   app_actions: Array<App_Actions>;
   /** fetch aggregated fields from the table: "app.actions" */
@@ -2399,44 +2704,26 @@ export type Query_Root = {
   app_event_actions_aggregate: App_Event_Actions_Aggregate;
   /** fetch data from the table: "app.event_actions" using primary key columns */
   app_event_actions_by_pk: Maybe<App_Event_Actions>;
-  /** fetch data from the table: "app.event_logs" */
-  app_event_logs: Array<App_Event_Logs>;
-  /** fetch aggregated fields from the table: "app.event_logs" */
-  app_event_logs_aggregate: App_Event_Logs_Aggregate;
+  /** fetch data from the table: "app.event_executions" */
+  app_event_executions: Array<App_Event_Executions>;
+  /** fetch aggregated fields from the table: "app.event_executions" */
+  app_event_executions_aggregate: App_Event_Executions_Aggregate;
   /** fetch data from the table: "app.events" */
   app_events: Array<App_Events>;
   /** fetch aggregated fields from the table: "app.events" */
   app_events_aggregate: App_Events_Aggregate;
   /** fetch data from the table: "app.events" using primary key columns */
   app_events_by_pk: Maybe<App_Events>;
-  /** fetch data from the table: "system.archive" */
-  system_archive: Array<System_Archive>;
-  /** fetch aggregated fields from the table: "system.archive" */
-  system_archive_aggregate: System_Archive_Aggregate;
-  /** fetch data from the table: "system.job" */
-  system_job: Array<System_Job>;
-  /** fetch aggregated fields from the table: "system.job" */
-  system_job_aggregate: System_Job_Aggregate;
-  /** fetch data from the table: "system.job" using primary key columns */
-  system_job_by_pk: Maybe<System_Job>;
-};
-
-
-export type Query_RootApp_Action_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Action_Logs_Order_By>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
-};
-
-
-export type Query_RootApp_Action_Logs_AggregateArgs = {
-  distinct_on: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Action_Logs_Order_By>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
+  /** fetch data from the table: "app.job_events" */
+  app_job_events: Array<App_Job_Events>;
+  /** fetch aggregated fields from the table: "app.job_events" */
+  app_job_events_aggregate: App_Job_Events_Aggregate;
+  /** fetch data from the table: "app.jobs" */
+  app_jobs: Array<App_Jobs>;
+  /** fetch aggregated fields from the table: "app.jobs" */
+  app_jobs_aggregate: App_Jobs_Aggregate;
+  /** fetch data from the table: "app.jobs" using primary key columns */
+  app_jobs_by_pk: Maybe<App_Jobs>;
 };
 
 
@@ -2532,21 +2819,21 @@ export type Query_RootApp_Event_Actions_By_PkArgs = {
 };
 
 
-export type Query_RootApp_Event_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+export type Query_RootApp_Event_ExecutionsArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Event_Logs_Order_By>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Event_Executions_Order_By>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
-export type Query_RootApp_Event_Logs_AggregateArgs = {
-  distinct_on: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+export type Query_RootApp_Event_Executions_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Event_Logs_Order_By>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Event_Executions_Order_By>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
@@ -2573,53 +2860,47 @@ export type Query_RootApp_Events_By_PkArgs = {
 };
 
 
-export type Query_RootSystem_ArchiveArgs = {
-  distinct_on: InputMaybe<Array<System_Archive_Select_Column>>;
+export type Query_RootApp_Job_EventsArgs = {
+  distinct_on: InputMaybe<Array<App_Job_Events_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Archive_Order_By>>;
-  where: InputMaybe<System_Archive_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Job_Events_Order_By>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 
-export type Query_RootSystem_Archive_AggregateArgs = {
-  distinct_on: InputMaybe<Array<System_Archive_Select_Column>>;
+export type Query_RootApp_Job_Events_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Job_Events_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Archive_Order_By>>;
-  where: InputMaybe<System_Archive_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Job_Events_Order_By>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 
-export type Query_RootSystem_JobArgs = {
-  distinct_on: InputMaybe<Array<System_Job_Select_Column>>;
+export type Query_RootApp_JobsArgs = {
+  distinct_on: InputMaybe<Array<App_Jobs_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Job_Order_By>>;
-  where: InputMaybe<System_Job_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Jobs_Order_By>>;
+  where: InputMaybe<App_Jobs_Bool_Exp>;
 };
 
 
-export type Query_RootSystem_Job_AggregateArgs = {
-  distinct_on: InputMaybe<Array<System_Job_Select_Column>>;
+export type Query_RootApp_Jobs_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Jobs_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Job_Order_By>>;
-  where: InputMaybe<System_Job_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Jobs_Order_By>>;
+  where: InputMaybe<App_Jobs_Bool_Exp>;
 };
 
 
-export type Query_RootSystem_Job_By_PkArgs = {
+export type Query_RootApp_Jobs_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 export type Subscription_Root = {
-  /** fetch data from the table: "app.action_logs" */
-  app_action_logs: Array<App_Action_Logs>;
-  /** fetch aggregated fields from the table: "app.action_logs" */
-  app_action_logs_aggregate: App_Action_Logs_Aggregate;
-  /** fetch data from the table in a streaming manner: "app.action_logs" */
-  app_action_logs_stream: Array<App_Action_Logs>;
   /** fetch data from the table: "app.actions" */
   app_actions: Array<App_Actions>;
   /** fetch aggregated fields from the table: "app.actions" */
@@ -2652,12 +2933,12 @@ export type Subscription_Root = {
   app_event_actions_by_pk: Maybe<App_Event_Actions>;
   /** fetch data from the table in a streaming manner: "app.event_actions" */
   app_event_actions_stream: Array<App_Event_Actions>;
-  /** fetch data from the table: "app.event_logs" */
-  app_event_logs: Array<App_Event_Logs>;
-  /** fetch aggregated fields from the table: "app.event_logs" */
-  app_event_logs_aggregate: App_Event_Logs_Aggregate;
-  /** fetch data from the table in a streaming manner: "app.event_logs" */
-  app_event_logs_stream: Array<App_Event_Logs>;
+  /** fetch data from the table: "app.event_executions" */
+  app_event_executions: Array<App_Event_Executions>;
+  /** fetch aggregated fields from the table: "app.event_executions" */
+  app_event_executions_aggregate: App_Event_Executions_Aggregate;
+  /** fetch data from the table in a streaming manner: "app.event_executions" */
+  app_event_executions_stream: Array<App_Event_Executions>;
   /** fetch data from the table: "app.events" */
   app_events: Array<App_Events>;
   /** fetch aggregated fields from the table: "app.events" */
@@ -2666,45 +2947,20 @@ export type Subscription_Root = {
   app_events_by_pk: Maybe<App_Events>;
   /** fetch data from the table in a streaming manner: "app.events" */
   app_events_stream: Array<App_Events>;
-  /** fetch data from the table: "system.archive" */
-  system_archive: Array<System_Archive>;
-  /** fetch aggregated fields from the table: "system.archive" */
-  system_archive_aggregate: System_Archive_Aggregate;
-  /** fetch data from the table in a streaming manner: "system.archive" */
-  system_archive_stream: Array<System_Archive>;
-  /** fetch data from the table: "system.job" */
-  system_job: Array<System_Job>;
-  /** fetch aggregated fields from the table: "system.job" */
-  system_job_aggregate: System_Job_Aggregate;
-  /** fetch data from the table: "system.job" using primary key columns */
-  system_job_by_pk: Maybe<System_Job>;
-  /** fetch data from the table in a streaming manner: "system.job" */
-  system_job_stream: Array<System_Job>;
-};
-
-
-export type Subscription_RootApp_Action_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Action_Logs_Order_By>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
-};
-
-
-export type Subscription_RootApp_Action_Logs_AggregateArgs = {
-  distinct_on: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Action_Logs_Order_By>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
-};
-
-
-export type Subscription_RootApp_Action_Logs_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<App_Action_Logs_Stream_Cursor_Input>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
+  /** fetch data from the table: "app.job_events" */
+  app_job_events: Array<App_Job_Events>;
+  /** fetch aggregated fields from the table: "app.job_events" */
+  app_job_events_aggregate: App_Job_Events_Aggregate;
+  /** fetch data from the table in a streaming manner: "app.job_events" */
+  app_job_events_stream: Array<App_Job_Events>;
+  /** fetch data from the table: "app.jobs" */
+  app_jobs: Array<App_Jobs>;
+  /** fetch aggregated fields from the table: "app.jobs" */
+  app_jobs_aggregate: App_Jobs_Aggregate;
+  /** fetch data from the table: "app.jobs" using primary key columns */
+  app_jobs_by_pk: Maybe<App_Jobs>;
+  /** fetch data from the table in a streaming manner: "app.jobs" */
+  app_jobs_stream: Array<App_Jobs>;
 };
 
 
@@ -2828,28 +3084,28 @@ export type Subscription_RootApp_Event_Actions_StreamArgs = {
 };
 
 
-export type Subscription_RootApp_Event_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+export type Subscription_RootApp_Event_ExecutionsArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Event_Logs_Order_By>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Event_Executions_Order_By>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
-export type Subscription_RootApp_Event_Logs_AggregateArgs = {
-  distinct_on: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+export type Subscription_RootApp_Event_Executions_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Event_Logs_Order_By>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Event_Executions_Order_By>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
-export type Subscription_RootApp_Event_Logs_StreamArgs = {
+export type Subscription_RootApp_Event_Executions_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<App_Event_Logs_Stream_Cursor_Input>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  cursor: Array<InputMaybe<App_Event_Executions_Stream_Cursor_Input>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
@@ -2883,956 +3139,58 @@ export type Subscription_RootApp_Events_StreamArgs = {
 };
 
 
-export type Subscription_RootSystem_ArchiveArgs = {
-  distinct_on: InputMaybe<Array<System_Archive_Select_Column>>;
+export type Subscription_RootApp_Job_EventsArgs = {
+  distinct_on: InputMaybe<Array<App_Job_Events_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Archive_Order_By>>;
-  where: InputMaybe<System_Archive_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Job_Events_Order_By>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 
-export type Subscription_RootSystem_Archive_AggregateArgs = {
-  distinct_on: InputMaybe<Array<System_Archive_Select_Column>>;
+export type Subscription_RootApp_Job_Events_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Job_Events_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Archive_Order_By>>;
-  where: InputMaybe<System_Archive_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Job_Events_Order_By>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 
-export type Subscription_RootSystem_Archive_StreamArgs = {
+export type Subscription_RootApp_Job_Events_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<System_Archive_Stream_Cursor_Input>>;
-  where: InputMaybe<System_Archive_Bool_Exp>;
+  cursor: Array<InputMaybe<App_Job_Events_Stream_Cursor_Input>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 
-export type Subscription_RootSystem_JobArgs = {
-  distinct_on: InputMaybe<Array<System_Job_Select_Column>>;
+export type Subscription_RootApp_JobsArgs = {
+  distinct_on: InputMaybe<Array<App_Jobs_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Job_Order_By>>;
-  where: InputMaybe<System_Job_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Jobs_Order_By>>;
+  where: InputMaybe<App_Jobs_Bool_Exp>;
 };
 
 
-export type Subscription_RootSystem_Job_AggregateArgs = {
-  distinct_on: InputMaybe<Array<System_Job_Select_Column>>;
+export type Subscription_RootApp_Jobs_AggregateArgs = {
+  distinct_on: InputMaybe<Array<App_Jobs_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<System_Job_Order_By>>;
-  where: InputMaybe<System_Job_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Jobs_Order_By>>;
+  where: InputMaybe<App_Jobs_Bool_Exp>;
 };
 
 
-export type Subscription_RootSystem_Job_By_PkArgs = {
+export type Subscription_RootApp_Jobs_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-export type Subscription_RootSystem_Job_StreamArgs = {
+export type Subscription_RootApp_Jobs_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<System_Job_Stream_Cursor_Input>>;
-  where: InputMaybe<System_Job_Bool_Exp>;
-};
-
-/** columns and relationships of "system.archive" */
-export type System_Archive = {
-  /** An object relationship */
-  action_log: Maybe<App_Action_Logs>;
-  archivedon: Scalars['timestamptz'];
-  completedon: Maybe<Scalars['timestamptz']>;
-  createdon: Scalars['timestamptz'];
-  data: Maybe<Scalars['jsonb']>;
-  expirein: Scalars['interval'];
-  id: Scalars['uuid'];
-  keepuntil: Scalars['timestamptz'];
-  name: Scalars['String'];
-  on_complete: Scalars['Boolean'];
-  output: Maybe<Scalars['jsonb']>;
-  priority: Scalars['Int'];
-  retrybackoff: Scalars['Boolean'];
-  retrycount: Scalars['Int'];
-  retrydelay: Scalars['Int'];
-  retrylimit: Scalars['Int'];
-  singletonkey: Maybe<Scalars['String']>;
-  singletonon: Maybe<Scalars['timestamp']>;
-  startafter: Scalars['timestamptz'];
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Scalars['job_state'];
-};
-
-
-/** columns and relationships of "system.archive" */
-export type System_ArchiveDataArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "system.archive" */
-export type System_ArchiveOutputArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** aggregated selection of "system.archive" */
-export type System_Archive_Aggregate = {
-  aggregate: Maybe<System_Archive_Aggregate_Fields>;
-  nodes: Array<System_Archive>;
-};
-
-/** aggregate fields of "system.archive" */
-export type System_Archive_Aggregate_Fields = {
-  avg: Maybe<System_Archive_Avg_Fields>;
-  count: Scalars['Int'];
-  max: Maybe<System_Archive_Max_Fields>;
-  min: Maybe<System_Archive_Min_Fields>;
-  stddev: Maybe<System_Archive_Stddev_Fields>;
-  stddev_pop: Maybe<System_Archive_Stddev_Pop_Fields>;
-  stddev_samp: Maybe<System_Archive_Stddev_Samp_Fields>;
-  sum: Maybe<System_Archive_Sum_Fields>;
-  var_pop: Maybe<System_Archive_Var_Pop_Fields>;
-  var_samp: Maybe<System_Archive_Var_Samp_Fields>;
-  variance: Maybe<System_Archive_Variance_Fields>;
-};
-
-
-/** aggregate fields of "system.archive" */
-export type System_Archive_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<System_Archive_Select_Column>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type System_Archive_Append_Input = {
-  data?: InputMaybe<Scalars['jsonb']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** aggregate avg on columns */
-export type System_Archive_Avg_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "system.archive". All fields are combined with a logical 'AND'. */
-export type System_Archive_Bool_Exp = {
-  _and?: InputMaybe<Array<System_Archive_Bool_Exp>>;
-  _not?: InputMaybe<System_Archive_Bool_Exp>;
-  _or?: InputMaybe<Array<System_Archive_Bool_Exp>>;
-  action_log?: InputMaybe<App_Action_Logs_Bool_Exp>;
-  archivedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  completedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  createdon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  data?: InputMaybe<Jsonb_Comparison_Exp>;
-  expirein?: InputMaybe<Interval_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  keepuntil?: InputMaybe<Timestamptz_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  on_complete?: InputMaybe<Boolean_Comparison_Exp>;
-  output?: InputMaybe<Jsonb_Comparison_Exp>;
-  priority?: InputMaybe<Int_Comparison_Exp>;
-  retrybackoff?: InputMaybe<Boolean_Comparison_Exp>;
-  retrycount?: InputMaybe<Int_Comparison_Exp>;
-  retrydelay?: InputMaybe<Int_Comparison_Exp>;
-  retrylimit?: InputMaybe<Int_Comparison_Exp>;
-  singletonkey?: InputMaybe<String_Comparison_Exp>;
-  singletonon?: InputMaybe<Timestamp_Comparison_Exp>;
-  startafter?: InputMaybe<Timestamptz_Comparison_Exp>;
-  startedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  state?: InputMaybe<Job_State_Comparison_Exp>;
-};
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type System_Archive_Delete_At_Path_Input = {
-  data?: InputMaybe<Array<Scalars['String']>>;
-  output?: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type System_Archive_Delete_Elem_Input = {
-  data?: InputMaybe<Scalars['Int']>;
-  output?: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type System_Archive_Delete_Key_Input = {
-  data?: InputMaybe<Scalars['String']>;
-  output?: InputMaybe<Scalars['String']>;
-};
-
-/** input type for incrementing numeric columns in table "system.archive" */
-export type System_Archive_Inc_Input = {
-  priority?: InputMaybe<Scalars['Int']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "system.archive" */
-export type System_Archive_Insert_Input = {
-  action_log?: InputMaybe<App_Action_Logs_Obj_Rel_Insert_Input>;
-  archivedon?: InputMaybe<Scalars['timestamptz']>;
-  completedon?: InputMaybe<Scalars['timestamptz']>;
-  createdon?: InputMaybe<Scalars['timestamptz']>;
-  data?: InputMaybe<Scalars['jsonb']>;
-  expirein?: InputMaybe<Scalars['interval']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  keepuntil?: InputMaybe<Scalars['timestamptz']>;
-  name?: InputMaybe<Scalars['String']>;
-  on_complete?: InputMaybe<Scalars['Boolean']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-  priority?: InputMaybe<Scalars['Int']>;
-  retrybackoff?: InputMaybe<Scalars['Boolean']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-  singletonkey?: InputMaybe<Scalars['String']>;
-  singletonon?: InputMaybe<Scalars['timestamp']>;
-  startafter?: InputMaybe<Scalars['timestamptz']>;
-  startedon?: InputMaybe<Scalars['timestamptz']>;
-  state?: InputMaybe<Scalars['job_state']>;
-};
-
-/** aggregate max on columns */
-export type System_Archive_Max_Fields = {
-  archivedon: Maybe<Scalars['timestamptz']>;
-  completedon: Maybe<Scalars['timestamptz']>;
-  createdon: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  keepuntil: Maybe<Scalars['timestamptz']>;
-  name: Maybe<Scalars['String']>;
-  priority: Maybe<Scalars['Int']>;
-  retrycount: Maybe<Scalars['Int']>;
-  retrydelay: Maybe<Scalars['Int']>;
-  retrylimit: Maybe<Scalars['Int']>;
-  singletonkey: Maybe<Scalars['String']>;
-  singletonon: Maybe<Scalars['timestamp']>;
-  startafter: Maybe<Scalars['timestamptz']>;
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Maybe<Scalars['job_state']>;
-};
-
-/** aggregate min on columns */
-export type System_Archive_Min_Fields = {
-  archivedon: Maybe<Scalars['timestamptz']>;
-  completedon: Maybe<Scalars['timestamptz']>;
-  createdon: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  keepuntil: Maybe<Scalars['timestamptz']>;
-  name: Maybe<Scalars['String']>;
-  priority: Maybe<Scalars['Int']>;
-  retrycount: Maybe<Scalars['Int']>;
-  retrydelay: Maybe<Scalars['Int']>;
-  retrylimit: Maybe<Scalars['Int']>;
-  singletonkey: Maybe<Scalars['String']>;
-  singletonon: Maybe<Scalars['timestamp']>;
-  startafter: Maybe<Scalars['timestamptz']>;
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Maybe<Scalars['job_state']>;
-};
-
-/** response of any mutation on the table "system.archive" */
-export type System_Archive_Mutation_Response = {
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<System_Archive>;
-};
-
-/** Ordering options when selecting data from "system.archive". */
-export type System_Archive_Order_By = {
-  action_log?: InputMaybe<App_Action_Logs_Order_By>;
-  archivedon?: InputMaybe<Order_By>;
-  completedon?: InputMaybe<Order_By>;
-  createdon?: InputMaybe<Order_By>;
-  data?: InputMaybe<Order_By>;
-  expirein?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  keepuntil?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  on_complete?: InputMaybe<Order_By>;
-  output?: InputMaybe<Order_By>;
-  priority?: InputMaybe<Order_By>;
-  retrybackoff?: InputMaybe<Order_By>;
-  retrycount?: InputMaybe<Order_By>;
-  retrydelay?: InputMaybe<Order_By>;
-  retrylimit?: InputMaybe<Order_By>;
-  singletonkey?: InputMaybe<Order_By>;
-  singletonon?: InputMaybe<Order_By>;
-  startafter?: InputMaybe<Order_By>;
-  startedon?: InputMaybe<Order_By>;
-  state?: InputMaybe<Order_By>;
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type System_Archive_Prepend_Input = {
-  data?: InputMaybe<Scalars['jsonb']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** select columns of table "system.archive" */
-export enum System_Archive_Select_Column {
-  /** column name */
-  Archivedon = 'archivedon',
-  /** column name */
-  Completedon = 'completedon',
-  /** column name */
-  Createdon = 'createdon',
-  /** column name */
-  Data = 'data',
-  /** column name */
-  Expirein = 'expirein',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Keepuntil = 'keepuntil',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  OnComplete = 'on_complete',
-  /** column name */
-  Output = 'output',
-  /** column name */
-  Priority = 'priority',
-  /** column name */
-  Retrybackoff = 'retrybackoff',
-  /** column name */
-  Retrycount = 'retrycount',
-  /** column name */
-  Retrydelay = 'retrydelay',
-  /** column name */
-  Retrylimit = 'retrylimit',
-  /** column name */
-  Singletonkey = 'singletonkey',
-  /** column name */
-  Singletonon = 'singletonon',
-  /** column name */
-  Startafter = 'startafter',
-  /** column name */
-  Startedon = 'startedon',
-  /** column name */
-  State = 'state'
-}
-
-/** input type for updating data in table "system.archive" */
-export type System_Archive_Set_Input = {
-  archivedon?: InputMaybe<Scalars['timestamptz']>;
-  completedon?: InputMaybe<Scalars['timestamptz']>;
-  createdon?: InputMaybe<Scalars['timestamptz']>;
-  data?: InputMaybe<Scalars['jsonb']>;
-  expirein?: InputMaybe<Scalars['interval']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  keepuntil?: InputMaybe<Scalars['timestamptz']>;
-  name?: InputMaybe<Scalars['String']>;
-  on_complete?: InputMaybe<Scalars['Boolean']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-  priority?: InputMaybe<Scalars['Int']>;
-  retrybackoff?: InputMaybe<Scalars['Boolean']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-  singletonkey?: InputMaybe<Scalars['String']>;
-  singletonon?: InputMaybe<Scalars['timestamp']>;
-  startafter?: InputMaybe<Scalars['timestamptz']>;
-  startedon?: InputMaybe<Scalars['timestamptz']>;
-  state?: InputMaybe<Scalars['job_state']>;
-};
-
-/** aggregate stddev on columns */
-export type System_Archive_Stddev_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type System_Archive_Stddev_Pop_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type System_Archive_Stddev_Samp_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** Streaming cursor of the table "system_archive" */
-export type System_Archive_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: System_Archive_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type System_Archive_Stream_Cursor_Value_Input = {
-  archivedon?: InputMaybe<Scalars['timestamptz']>;
-  completedon?: InputMaybe<Scalars['timestamptz']>;
-  createdon?: InputMaybe<Scalars['timestamptz']>;
-  data?: InputMaybe<Scalars['jsonb']>;
-  expirein?: InputMaybe<Scalars['interval']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  keepuntil?: InputMaybe<Scalars['timestamptz']>;
-  name?: InputMaybe<Scalars['String']>;
-  on_complete?: InputMaybe<Scalars['Boolean']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-  priority?: InputMaybe<Scalars['Int']>;
-  retrybackoff?: InputMaybe<Scalars['Boolean']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-  singletonkey?: InputMaybe<Scalars['String']>;
-  singletonon?: InputMaybe<Scalars['timestamp']>;
-  startafter?: InputMaybe<Scalars['timestamptz']>;
-  startedon?: InputMaybe<Scalars['timestamptz']>;
-  state?: InputMaybe<Scalars['job_state']>;
-};
-
-/** aggregate sum on columns */
-export type System_Archive_Sum_Fields = {
-  priority: Maybe<Scalars['Int']>;
-  retrycount: Maybe<Scalars['Int']>;
-  retrydelay: Maybe<Scalars['Int']>;
-  retrylimit: Maybe<Scalars['Int']>;
-};
-
-export type System_Archive_Updates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append?: InputMaybe<System_Archive_Append_Input>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _delete_at_path?: InputMaybe<System_Archive_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _delete_elem?: InputMaybe<System_Archive_Delete_Elem_Input>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _delete_key?: InputMaybe<System_Archive_Delete_Key_Input>;
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<System_Archive_Inc_Input>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend?: InputMaybe<System_Archive_Prepend_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<System_Archive_Set_Input>;
-  where: System_Archive_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type System_Archive_Var_Pop_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type System_Archive_Var_Samp_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type System_Archive_Variance_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** columns and relationships of "system.job" */
-export type System_Job = {
-  /** An object relationship */
-  action_log: Maybe<App_Action_Logs>;
-  completedon: Maybe<Scalars['timestamptz']>;
-  createdon: Scalars['timestamptz'];
-  data: Maybe<Scalars['jsonb']>;
-  expirein: Scalars['interval'];
-  id: Scalars['uuid'];
-  keepuntil: Scalars['timestamptz'];
-  name: Scalars['String'];
-  on_complete: Scalars['Boolean'];
-  output: Maybe<Scalars['jsonb']>;
-  priority: Scalars['Int'];
-  retrybackoff: Scalars['Boolean'];
-  retrycount: Scalars['Int'];
-  retrydelay: Scalars['Int'];
-  retrylimit: Scalars['Int'];
-  singletonkey: Maybe<Scalars['String']>;
-  singletonon: Maybe<Scalars['timestamp']>;
-  startafter: Scalars['timestamptz'];
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Scalars['job_state'];
-};
-
-
-/** columns and relationships of "system.job" */
-export type System_JobDataArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "system.job" */
-export type System_JobOutputArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** aggregated selection of "system.job" */
-export type System_Job_Aggregate = {
-  aggregate: Maybe<System_Job_Aggregate_Fields>;
-  nodes: Array<System_Job>;
-};
-
-/** aggregate fields of "system.job" */
-export type System_Job_Aggregate_Fields = {
-  avg: Maybe<System_Job_Avg_Fields>;
-  count: Scalars['Int'];
-  max: Maybe<System_Job_Max_Fields>;
-  min: Maybe<System_Job_Min_Fields>;
-  stddev: Maybe<System_Job_Stddev_Fields>;
-  stddev_pop: Maybe<System_Job_Stddev_Pop_Fields>;
-  stddev_samp: Maybe<System_Job_Stddev_Samp_Fields>;
-  sum: Maybe<System_Job_Sum_Fields>;
-  var_pop: Maybe<System_Job_Var_Pop_Fields>;
-  var_samp: Maybe<System_Job_Var_Samp_Fields>;
-  variance: Maybe<System_Job_Variance_Fields>;
-};
-
-
-/** aggregate fields of "system.job" */
-export type System_Job_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<System_Job_Select_Column>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type System_Job_Append_Input = {
-  data?: InputMaybe<Scalars['jsonb']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** aggregate avg on columns */
-export type System_Job_Avg_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "system.job". All fields are combined with a logical 'AND'. */
-export type System_Job_Bool_Exp = {
-  _and?: InputMaybe<Array<System_Job_Bool_Exp>>;
-  _not?: InputMaybe<System_Job_Bool_Exp>;
-  _or?: InputMaybe<Array<System_Job_Bool_Exp>>;
-  action_log?: InputMaybe<App_Action_Logs_Bool_Exp>;
-  completedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  createdon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  data?: InputMaybe<Jsonb_Comparison_Exp>;
-  expirein?: InputMaybe<Interval_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  keepuntil?: InputMaybe<Timestamptz_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  on_complete?: InputMaybe<Boolean_Comparison_Exp>;
-  output?: InputMaybe<Jsonb_Comparison_Exp>;
-  priority?: InputMaybe<Int_Comparison_Exp>;
-  retrybackoff?: InputMaybe<Boolean_Comparison_Exp>;
-  retrycount?: InputMaybe<Int_Comparison_Exp>;
-  retrydelay?: InputMaybe<Int_Comparison_Exp>;
-  retrylimit?: InputMaybe<Int_Comparison_Exp>;
-  singletonkey?: InputMaybe<String_Comparison_Exp>;
-  singletonon?: InputMaybe<Timestamp_Comparison_Exp>;
-  startafter?: InputMaybe<Timestamptz_Comparison_Exp>;
-  startedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  state?: InputMaybe<Job_State_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "system.job" */
-export enum System_Job_Constraint {
-  /** unique or primary key constraint on columns "id" */
-  JobPkey = 'job_pkey',
-  /** unique or primary key constraint on columns "name", "singletonkey" */
-  JobSingletonQueue = 'job_singleton_queue',
-  /** unique or primary key constraint on columns "name", "singletonkey" */
-  JobSingletonkey = 'job_singletonkey',
-  /** unique or primary key constraint on columns "name", "singletonkey", "singletonon" */
-  JobSingletonkeyon = 'job_singletonkeyon',
-  /** unique or primary key constraint on columns "name", "singletonon" */
-  JobSingletonon = 'job_singletonon'
-}
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type System_Job_Delete_At_Path_Input = {
-  data?: InputMaybe<Array<Scalars['String']>>;
-  output?: InputMaybe<Array<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type System_Job_Delete_Elem_Input = {
-  data?: InputMaybe<Scalars['Int']>;
-  output?: InputMaybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type System_Job_Delete_Key_Input = {
-  data?: InputMaybe<Scalars['String']>;
-  output?: InputMaybe<Scalars['String']>;
-};
-
-/** input type for incrementing numeric columns in table "system.job" */
-export type System_Job_Inc_Input = {
-  priority?: InputMaybe<Scalars['Int']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "system.job" */
-export type System_Job_Insert_Input = {
-  action_log?: InputMaybe<App_Action_Logs_Obj_Rel_Insert_Input>;
-  completedon?: InputMaybe<Scalars['timestamptz']>;
-  createdon?: InputMaybe<Scalars['timestamptz']>;
-  data?: InputMaybe<Scalars['jsonb']>;
-  expirein?: InputMaybe<Scalars['interval']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  keepuntil?: InputMaybe<Scalars['timestamptz']>;
-  name?: InputMaybe<Scalars['String']>;
-  on_complete?: InputMaybe<Scalars['Boolean']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-  priority?: InputMaybe<Scalars['Int']>;
-  retrybackoff?: InputMaybe<Scalars['Boolean']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-  singletonkey?: InputMaybe<Scalars['String']>;
-  singletonon?: InputMaybe<Scalars['timestamp']>;
-  startafter?: InputMaybe<Scalars['timestamptz']>;
-  startedon?: InputMaybe<Scalars['timestamptz']>;
-  state?: InputMaybe<Scalars['job_state']>;
-};
-
-/** aggregate max on columns */
-export type System_Job_Max_Fields = {
-  completedon: Maybe<Scalars['timestamptz']>;
-  createdon: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  keepuntil: Maybe<Scalars['timestamptz']>;
-  name: Maybe<Scalars['String']>;
-  priority: Maybe<Scalars['Int']>;
-  retrycount: Maybe<Scalars['Int']>;
-  retrydelay: Maybe<Scalars['Int']>;
-  retrylimit: Maybe<Scalars['Int']>;
-  singletonkey: Maybe<Scalars['String']>;
-  singletonon: Maybe<Scalars['timestamp']>;
-  startafter: Maybe<Scalars['timestamptz']>;
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Maybe<Scalars['job_state']>;
-};
-
-/** aggregate min on columns */
-export type System_Job_Min_Fields = {
-  completedon: Maybe<Scalars['timestamptz']>;
-  createdon: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  keepuntil: Maybe<Scalars['timestamptz']>;
-  name: Maybe<Scalars['String']>;
-  priority: Maybe<Scalars['Int']>;
-  retrycount: Maybe<Scalars['Int']>;
-  retrydelay: Maybe<Scalars['Int']>;
-  retrylimit: Maybe<Scalars['Int']>;
-  singletonkey: Maybe<Scalars['String']>;
-  singletonon: Maybe<Scalars['timestamp']>;
-  startafter: Maybe<Scalars['timestamptz']>;
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Maybe<Scalars['job_state']>;
-};
-
-/** response of any mutation on the table "system.job" */
-export type System_Job_Mutation_Response = {
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<System_Job>;
-};
-
-/** input type for inserting object relation for remote table "system.job" */
-export type System_Job_Obj_Rel_Insert_Input = {
-  data: System_Job_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<System_Job_On_Conflict>;
-};
-
-/** on_conflict condition type for table "system.job" */
-export type System_Job_On_Conflict = {
-  constraint: System_Job_Constraint;
-  update_columns?: Array<System_Job_Update_Column>;
-  where?: InputMaybe<System_Job_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "system.job". */
-export type System_Job_Order_By = {
-  action_log?: InputMaybe<App_Action_Logs_Order_By>;
-  completedon?: InputMaybe<Order_By>;
-  createdon?: InputMaybe<Order_By>;
-  data?: InputMaybe<Order_By>;
-  expirein?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  keepuntil?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  on_complete?: InputMaybe<Order_By>;
-  output?: InputMaybe<Order_By>;
-  priority?: InputMaybe<Order_By>;
-  retrybackoff?: InputMaybe<Order_By>;
-  retrycount?: InputMaybe<Order_By>;
-  retrydelay?: InputMaybe<Order_By>;
-  retrylimit?: InputMaybe<Order_By>;
-  singletonkey?: InputMaybe<Order_By>;
-  singletonon?: InputMaybe<Order_By>;
-  startafter?: InputMaybe<Order_By>;
-  startedon?: InputMaybe<Order_By>;
-  state?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: system.job */
-export type System_Job_Pk_Columns_Input = {
-  id: Scalars['uuid'];
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type System_Job_Prepend_Input = {
-  data?: InputMaybe<Scalars['jsonb']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** select columns of table "system.job" */
-export enum System_Job_Select_Column {
-  /** column name */
-  Completedon = 'completedon',
-  /** column name */
-  Createdon = 'createdon',
-  /** column name */
-  Data = 'data',
-  /** column name */
-  Expirein = 'expirein',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Keepuntil = 'keepuntil',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  OnComplete = 'on_complete',
-  /** column name */
-  Output = 'output',
-  /** column name */
-  Priority = 'priority',
-  /** column name */
-  Retrybackoff = 'retrybackoff',
-  /** column name */
-  Retrycount = 'retrycount',
-  /** column name */
-  Retrydelay = 'retrydelay',
-  /** column name */
-  Retrylimit = 'retrylimit',
-  /** column name */
-  Singletonkey = 'singletonkey',
-  /** column name */
-  Singletonon = 'singletonon',
-  /** column name */
-  Startafter = 'startafter',
-  /** column name */
-  Startedon = 'startedon',
-  /** column name */
-  State = 'state'
-}
-
-/** input type for updating data in table "system.job" */
-export type System_Job_Set_Input = {
-  completedon?: InputMaybe<Scalars['timestamptz']>;
-  createdon?: InputMaybe<Scalars['timestamptz']>;
-  data?: InputMaybe<Scalars['jsonb']>;
-  expirein?: InputMaybe<Scalars['interval']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  keepuntil?: InputMaybe<Scalars['timestamptz']>;
-  name?: InputMaybe<Scalars['String']>;
-  on_complete?: InputMaybe<Scalars['Boolean']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-  priority?: InputMaybe<Scalars['Int']>;
-  retrybackoff?: InputMaybe<Scalars['Boolean']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-  singletonkey?: InputMaybe<Scalars['String']>;
-  singletonon?: InputMaybe<Scalars['timestamp']>;
-  startafter?: InputMaybe<Scalars['timestamptz']>;
-  startedon?: InputMaybe<Scalars['timestamptz']>;
-  state?: InputMaybe<Scalars['job_state']>;
-};
-
-/** aggregate stddev on columns */
-export type System_Job_Stddev_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type System_Job_Stddev_Pop_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type System_Job_Stddev_Samp_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** Streaming cursor of the table "system_job" */
-export type System_Job_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: System_Job_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type System_Job_Stream_Cursor_Value_Input = {
-  completedon?: InputMaybe<Scalars['timestamptz']>;
-  createdon?: InputMaybe<Scalars['timestamptz']>;
-  data?: InputMaybe<Scalars['jsonb']>;
-  expirein?: InputMaybe<Scalars['interval']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  keepuntil?: InputMaybe<Scalars['timestamptz']>;
-  name?: InputMaybe<Scalars['String']>;
-  on_complete?: InputMaybe<Scalars['Boolean']>;
-  output?: InputMaybe<Scalars['jsonb']>;
-  priority?: InputMaybe<Scalars['Int']>;
-  retrybackoff?: InputMaybe<Scalars['Boolean']>;
-  retrycount?: InputMaybe<Scalars['Int']>;
-  retrydelay?: InputMaybe<Scalars['Int']>;
-  retrylimit?: InputMaybe<Scalars['Int']>;
-  singletonkey?: InputMaybe<Scalars['String']>;
-  singletonon?: InputMaybe<Scalars['timestamp']>;
-  startafter?: InputMaybe<Scalars['timestamptz']>;
-  startedon?: InputMaybe<Scalars['timestamptz']>;
-  state?: InputMaybe<Scalars['job_state']>;
-};
-
-/** aggregate sum on columns */
-export type System_Job_Sum_Fields = {
-  priority: Maybe<Scalars['Int']>;
-  retrycount: Maybe<Scalars['Int']>;
-  retrydelay: Maybe<Scalars['Int']>;
-  retrylimit: Maybe<Scalars['Int']>;
-};
-
-/** update columns of table "system.job" */
-export enum System_Job_Update_Column {
-  /** column name */
-  Completedon = 'completedon',
-  /** column name */
-  Createdon = 'createdon',
-  /** column name */
-  Data = 'data',
-  /** column name */
-  Expirein = 'expirein',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Keepuntil = 'keepuntil',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  OnComplete = 'on_complete',
-  /** column name */
-  Output = 'output',
-  /** column name */
-  Priority = 'priority',
-  /** column name */
-  Retrybackoff = 'retrybackoff',
-  /** column name */
-  Retrycount = 'retrycount',
-  /** column name */
-  Retrydelay = 'retrydelay',
-  /** column name */
-  Retrylimit = 'retrylimit',
-  /** column name */
-  Singletonkey = 'singletonkey',
-  /** column name */
-  Singletonon = 'singletonon',
-  /** column name */
-  Startafter = 'startafter',
-  /** column name */
-  Startedon = 'startedon',
-  /** column name */
-  State = 'state'
-}
-
-export type System_Job_Updates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append?: InputMaybe<System_Job_Append_Input>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _delete_at_path?: InputMaybe<System_Job_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _delete_elem?: InputMaybe<System_Job_Delete_Elem_Input>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _delete_key?: InputMaybe<System_Job_Delete_Key_Input>;
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<System_Job_Inc_Input>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend?: InputMaybe<System_Job_Prepend_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<System_Job_Set_Input>;
-  where: System_Job_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type System_Job_Var_Pop_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type System_Job_Var_Samp_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type System_Job_Variance_Fields = {
-  priority: Maybe<Scalars['Float']>;
-  retrycount: Maybe<Scalars['Float']>;
-  retrydelay: Maybe<Scalars['Float']>;
-  retrylimit: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
-export type Timestamp_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamp']>;
-  _gt?: InputMaybe<Scalars['timestamp']>;
-  _gte?: InputMaybe<Scalars['timestamp']>;
-  _in?: InputMaybe<Array<Scalars['timestamp']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamp']>;
-  _lte?: InputMaybe<Scalars['timestamp']>;
-  _neq?: InputMaybe<Scalars['timestamp']>;
-  _nin?: InputMaybe<Array<Scalars['timestamp']>>;
+  cursor: Array<InputMaybe<App_Jobs_Stream_Cursor_Input>>;
+  where: InputMaybe<App_Jobs_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */

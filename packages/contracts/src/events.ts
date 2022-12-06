@@ -4,8 +4,8 @@ import { Result, Success } from './common';
 import { Uuid } from './schema';
 
 export const EventData = Type.Object({
-  name: Type.String({ minLength: 2 }),
-  slug: Type.String({ minLength: 3 }),
+  name: Type.String({ minLength: 2, maxLength: 256 }),
+  slug: Type.String({ minLength: 3, maxLength: 128 }),
 });
 
 export const eventsContract = createContract({

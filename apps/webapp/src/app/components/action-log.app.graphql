@@ -1,21 +1,9 @@
-fragment ActionLogItem on app_action_logs {
-  id
+fragment ActionLogItem on app_job_events {
+  job_id
+  action_id
   created_at
-  trace
-  # when not archived yet
-  job {
-    id
-    state
-    startedon
-    retrycount
-  }
-  # when job is archived
-  a_job {
-    id
-    state
-    startedon
-    retrycount
-  }
+  event_name
+  data
   event {
     name
     slug

@@ -20,14 +20,16 @@ export const ActionConfigs = Type.Union([
 ]);
 
 export const ActionInfo = Type.Object({
-  slug: Type.String({ minLength: 3 }),
-  name: Type.String({ minLength: 2 }),
+  slug: Type.String({ minLength: 3, maxLength: 128 }),
+  name: Type.String({ minLength: 2, maxLength: 256 }),
   config: ActionConfigs,
-  retry_limit: Type.Number({ maximum: 6 }),
-  retry_delay: Type.Number({ maximum: 60 * 60 }),
+  retry_limit: Type.Number({ minimum: 0, maximum: 6 }),
+  retry_delay: Type.Number({ minimum: 1, maximum: 60 * 60 }),
   retry_backoff: Type.Boolean(),
   // in seconds
-  run_after: Type.Number({ maximum: 10 }),
+  run_after: Type.Number({ minimum: 0, maximum: 10 }),
+  // how long for this job to expire
+  expire_in_seconds: Type.Number({ minimum: 5, maximum: 60 }),
 });
 
 export const actionContract = createContract({

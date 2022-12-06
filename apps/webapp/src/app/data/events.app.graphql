@@ -1,12 +1,12 @@
 query GetEventLogs($after: timestamptz!, $limit: Int) {
-  app_event_logs(order_by: { created_at: desc_nulls_last }, where: { created_at: { _lte: $after } }, limit: $limit) {
+  app_event_executions(order_by: { created_at: desc }, where: { created_at: { _lte: $after } }, limit: $limit) {
     ...EventLogItem
   }
 }
 
 query GetLogsForEvent($event_id: uuid!, $after: timestamptz!, $limit: Int!) {
-  app_event_logs(
-    order_by: { created_at: desc_nulls_last }
+  app_event_executions(
+    order_by: { created_at: desc }
     where: { _and: [{ event_id: { _eq: $event_id } }, { created_at: { _lte: $after } }] }
     limit: $limit
   ) {
@@ -15,7 +15,7 @@ query GetLogsForEvent($event_id: uuid!, $after: timestamptz!, $limit: Int!) {
 }
 
 query GetEvents {
-  app_events(order_by: { name: asc_nulls_last }, limit: 30) {
+  app_events(order_by: { name: asc }, limit: 30) {
     id
     name
     slug

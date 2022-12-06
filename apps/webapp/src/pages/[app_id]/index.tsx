@@ -32,8 +32,8 @@ const LatestEventsTable: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data.app_event_logs.map((item) => (
-                <tr key={item.id}>
+              {data.app_event_executions.map((item) => (
+                <tr key={item.exec_id}>
                   <td>
                     <Stack spacing={0}>
                       <Text weight={500}>{item.event?.name}</Text>
@@ -92,8 +92,8 @@ const LatestActionLogs: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data.app_action_logs.map((item) => (
-                <tr key={item.id}>
+              {data.events.map((item) => (
+                <tr key={`${item.job_id}_${item.created_at}`}>
                   <td>
                     <Stack spacing={0}>
                       <Text weight={500}>{item.action?.name ?? 'Action is deleted'}</Text>
@@ -118,7 +118,7 @@ const LatestActionLogs: React.FC = () => {
                       </Text>
                     </Stack>
                   </td>
-                  <td>{item.job?.state ?? item.a_job?.state}</td>
+                  <td>{item.event_name}</td>
                   <td>
                     <Group spacing="xs" position="center">
                       <ActionIcon title="retry" variant="outline">
@@ -157,7 +157,7 @@ const page = createAppPage({
           <Grid.Col span={6}>
             <Card>
               <Title order={3} mb="md">
-                Scheduled Actions
+                Pending Actions
               </Title>
               {/* <Card.Section>
                 <ActiveActions />
@@ -177,7 +177,7 @@ const page = createAppPage({
           <Grid.Col span={6}>
             <Card>
               <Title order={3} mb="md">
-                Latest Actions
+                Latest Completed Actions
               </Title>
               <Card.Section>
                 <LatestActionLogs />

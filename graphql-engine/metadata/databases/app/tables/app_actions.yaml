@@ -13,19 +13,20 @@ select_permissions:
   - role: app
     permission:
       columns:
+        - app_id
+        - created_at
+        - expire_in
+        - extra_data
+        - id
+        - name
         - retry_backoff
         - retry_delay
         - retry_limit
         - run_after
-        - extra_data
-        - type_configuration
-        - name
         - slug
         - type
-        - created_at
+        - type_configuration
         - updated_at
-        - app_id
-        - id
       filter:
         app_id:
           _eq: X-Hasura-App-Id

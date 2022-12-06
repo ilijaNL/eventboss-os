@@ -1,12 +1,12 @@
 query GetActionLogs($after: timestamptz!, $limit: Int!) {
-  app_action_logs(order_by: { created_at: desc_nulls_last }, where: { created_at: { _lte: $after } }, limit: $limit) {
+  events: app_job_events(order_by: { created_at: desc }, where: { created_at: { _lte: $after } }, limit: $limit) {
     ...ActionLogItem
   }
 }
 
 query GetLogsForAction($action_id: uuid!, $after: timestamptz!, $limit: Int!) {
-  app_action_logs(
-    order_by: { created_at: desc_nulls_last }
+  events: app_job_events(
+    order_by: { created_at: desc }
     where: { _and: [{ action_id: { _eq: $action_id } }, { created_at: { _lte: $after } }] }
     limit: $limit
   ) {
@@ -96,6 +96,7 @@ query GetActionById($action_id: uuid!) {
     retry_backoff
     retry_delay
     retry_limit
+    expire_in
     run_after
     event_actions {
       id

@@ -1,6 +1,4 @@
-import PgBoss, { JobWithDoneCallback } from 'pg-boss';
 import delay from 'delay';
-import { v4 } from 'uuid';
 
 const resolveWithinSeconds = async (promise: Promise<any>, seconds: number) => {
   const timeout = Math.max(1, seconds) * 1000;
@@ -19,16 +17,22 @@ const resolveWithinSeconds = async (promise: Promise<any>, seconds: number) => {
   return result;
 };
 
-export function createWorker(props: {
-  pgBoss: PgBoss;
+interface WorkerItem<R> {
+  id: string;
+  expire_in_seconds: number;
+  done: (err?: Error | null, data?: R) => void;
+}
+
+export function createWorker<T extends WorkerItem<any>>(props: {
   fetchSize: number;
   maxConcurrency: number;
-  handler: (event: PgBoss.Job<unknown> & { expire_in_seconds: number }) => Promise<any>;
+  fetch: (props: { amount: number }) => Promise<Array<T>>;
+  handler: (event: T) => Promise<any>;
   poolInternvalInMs: number;
 }) {
-  const { handler, maxConcurrency, poolInternvalInMs, pgBoss, fetchSize } = props;
+  const { handler, maxConcurrency, poolInternvalInMs, fetch, fetchSize } = props;
   let running = false;
-  const activeJobs = new Map<string, Promise<any>>();
+  const activeJobs = new Map<string | number, Promise<any>>();
   let loopPromise: Promise<any>;
   let loopDelayPromise: delay.ClearablePromise<void> | null = null;
 
@@ -37,29 +41,25 @@ export function createWorker(props: {
       return;
     }
 
-    const newJobs = await pgBoss.fetch('eb.*', Math.min(maxConcurrency - activeJobs.size, fetchSize));
+    const newJobs = await fetch({ amount: Math.min(maxConcurrency - activeJobs.size, fetchSize) });
 
     if (!newJobs) {
       return;
     }
 
     // run jobs
-    newJobs.forEach((_job) => {
-      const job = _job as JobWithDoneCallback<unknown, any> & { expire_in_seconds: number };
-
-      //  todo do a job raise
-      const pId = v4();
-      const jobPromise = resolveWithinSeconds(handler(job), job.expire_in_seconds + 5)
+    newJobs.forEach((job) => {
+      const jobPromise = resolveWithinSeconds(handler(job), job.expire_in_seconds + 1)
         .then((result) => {
-          activeJobs.delete(pId);
+          activeJobs.delete(job.id);
           job.done(null, result);
         })
         .catch((err) => {
-          activeJobs.delete(pId);
+          activeJobs.delete(job.id);
           job.done(err);
         });
 
-      activeJobs.set(pId, jobPromise);
+      activeJobs.set(job.id, jobPromise);
     });
   }
 

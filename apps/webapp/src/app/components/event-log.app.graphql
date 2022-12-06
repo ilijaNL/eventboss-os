@@ -1,5 +1,5 @@
-fragment EventLogItem on app_event_logs {
-  id
+fragment EventLogItem on app_event_executions {
+  exec_id
   event {
     name
     id
@@ -7,5 +7,4 @@ fragment EventLogItem on app_event_logs {
   }
   payload
   created_at
-  trace
 }

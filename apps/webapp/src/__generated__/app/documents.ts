@@ -12,7 +12,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  job_state: any;
   jsonb: Record<string, any> | Array<any>;
   timestamptz: string;
   uuid: string;
@@ -77,119 +76,13 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
-/** log of all actions */
-export type App_Action_Logs = {
-  /** An object relationship */
-  a_job: Maybe<System_Job>;
-  /** An object relationship */
-  action: Maybe<App_Actions>;
-  action_id: Scalars['uuid'];
-  app_id: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
-  /** An object relationship */
-  event: Maybe<App_Events>;
-  event_id: Scalars['uuid'];
-  event_log_id: Scalars['uuid'];
-  id: Scalars['uuid'];
-  /** An object relationship */
-  job: Maybe<System_Job>;
-  job_id: Scalars['uuid'];
-  payload: Scalars['jsonb'];
-  trace: Maybe<Scalars['String']>;
-};
-
-
-/** log of all actions */
-export type App_Action_LogsPayloadArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "app.action_logs". All fields are combined with a logical 'AND'. */
-export type App_Action_Logs_Bool_Exp = {
-  _and?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
-  _not?: InputMaybe<App_Action_Logs_Bool_Exp>;
-  _or?: InputMaybe<Array<App_Action_Logs_Bool_Exp>>;
-  a_job?: InputMaybe<System_Job_Bool_Exp>;
-  action?: InputMaybe<App_Actions_Bool_Exp>;
-  action_id?: InputMaybe<Uuid_Comparison_Exp>;
-  app_id?: InputMaybe<Uuid_Comparison_Exp>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  event?: InputMaybe<App_Events_Bool_Exp>;
-  event_id?: InputMaybe<Uuid_Comparison_Exp>;
-  event_log_id?: InputMaybe<Uuid_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  job?: InputMaybe<System_Job_Bool_Exp>;
-  job_id?: InputMaybe<Uuid_Comparison_Exp>;
-  payload?: InputMaybe<Jsonb_Comparison_Exp>;
-  trace?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** Ordering options when selecting data from "app.action_logs". */
-export type App_Action_Logs_Order_By = {
-  a_job?: InputMaybe<System_Job_Order_By>;
-  action?: InputMaybe<App_Actions_Order_By>;
-  action_id?: InputMaybe<Order_By>;
-  app_id?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  event?: InputMaybe<App_Events_Order_By>;
-  event_id?: InputMaybe<Order_By>;
-  event_log_id?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  job?: InputMaybe<System_Job_Order_By>;
-  job_id?: InputMaybe<Order_By>;
-  payload?: InputMaybe<Order_By>;
-  trace?: InputMaybe<Order_By>;
-};
-
-/** select columns of table "app.action_logs" */
-export enum App_Action_Logs_Select_Column {
-  /** column name */
-  ActionId = 'action_id',
-  /** column name */
-  AppId = 'app_id',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  EventId = 'event_id',
-  /** column name */
-  EventLogId = 'event_log_id',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  JobId = 'job_id',
-  /** column name */
-  Payload = 'payload',
-  /** column name */
-  Trace = 'trace'
-}
-
-/** Streaming cursor of the table "app_action_logs" */
-export type App_Action_Logs_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: App_Action_Logs_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type App_Action_Logs_Stream_Cursor_Value_Input = {
-  action_id?: InputMaybe<Scalars['uuid']>;
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  event_id?: InputMaybe<Scalars['uuid']>;
-  event_log_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  job_id?: InputMaybe<Scalars['uuid']>;
-  payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
-};
-
 /** action definitions */
 export type App_Actions = {
   app_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
   /** An array relationship */
   event_actions: Array<App_Event_Actions>;
+  expire_in: Scalars['Int'];
   extra_data: Scalars['jsonb'];
   id: Scalars['uuid'];
   name: Scalars['String'];
@@ -233,6 +126,7 @@ export type App_Actions_Bool_Exp = {
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   event_actions?: InputMaybe<App_Event_Actions_Bool_Exp>;
+  expire_in?: InputMaybe<Int_Comparison_Exp>;
   extra_data?: InputMaybe<Jsonb_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
@@ -259,6 +153,7 @@ export type App_Actions_Order_By = {
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   event_actions_aggregate?: InputMaybe<App_Event_Actions_Aggregate_Order_By>;
+  expire_in?: InputMaybe<Order_By>;
   extra_data?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -278,6 +173,8 @@ export enum App_Actions_Select_Column {
   AppId = 'app_id',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  ExpireIn = 'expire_in',
   /** column name */
   ExtraData = 'extra_data',
   /** column name */
@@ -314,6 +211,7 @@ export type App_Actions_Stream_Cursor_Input = {
 export type App_Actions_Stream_Cursor_Value_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  expire_in?: InputMaybe<Scalars['Int']>;
   extra_data?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   name?: InputMaybe<Scalars['String']>;
@@ -551,51 +449,48 @@ export type App_Event_Actions_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']>;
 };
 
-/** columns and relationships of "app.event_logs" */
-export type App_Event_Logs = {
+/** columns and relationships of "app.event_executions" */
+export type App_Event_Executions = {
   app_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
   event: Maybe<App_Events>;
   event_id: Scalars['uuid'];
-  id: Scalars['uuid'];
+  exec_id: Scalars['uuid'];
   payload: Scalars['jsonb'];
-  trace: Maybe<Scalars['String']>;
 };
 
 
-/** columns and relationships of "app.event_logs" */
-export type App_Event_LogsPayloadArgs = {
+/** columns and relationships of "app.event_executions" */
+export type App_Event_ExecutionsPayloadArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
-/** Boolean expression to filter rows from the table "app.event_logs". All fields are combined with a logical 'AND'. */
-export type App_Event_Logs_Bool_Exp = {
-  _and?: InputMaybe<Array<App_Event_Logs_Bool_Exp>>;
-  _not?: InputMaybe<App_Event_Logs_Bool_Exp>;
-  _or?: InputMaybe<Array<App_Event_Logs_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "app.event_executions". All fields are combined with a logical 'AND'. */
+export type App_Event_Executions_Bool_Exp = {
+  _and?: InputMaybe<Array<App_Event_Executions_Bool_Exp>>;
+  _not?: InputMaybe<App_Event_Executions_Bool_Exp>;
+  _or?: InputMaybe<Array<App_Event_Executions_Bool_Exp>>;
   app_id?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   event?: InputMaybe<App_Events_Bool_Exp>;
   event_id?: InputMaybe<Uuid_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
+  exec_id?: InputMaybe<Uuid_Comparison_Exp>;
   payload?: InputMaybe<Jsonb_Comparison_Exp>;
-  trace?: InputMaybe<String_Comparison_Exp>;
 };
 
-/** Ordering options when selecting data from "app.event_logs". */
-export type App_Event_Logs_Order_By = {
+/** Ordering options when selecting data from "app.event_executions". */
+export type App_Event_Executions_Order_By = {
   app_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   event?: InputMaybe<App_Events_Order_By>;
   event_id?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
+  exec_id?: InputMaybe<Order_By>;
   payload?: InputMaybe<Order_By>;
-  trace?: InputMaybe<Order_By>;
 };
 
-/** select columns of table "app.event_logs" */
-export enum App_Event_Logs_Select_Column {
+/** select columns of table "app.event_executions" */
+export enum App_Event_Executions_Select_Column {
   /** column name */
   AppId = 'app_id',
   /** column name */
@@ -603,29 +498,26 @@ export enum App_Event_Logs_Select_Column {
   /** column name */
   EventId = 'event_id',
   /** column name */
-  Id = 'id',
+  ExecId = 'exec_id',
   /** column name */
-  Payload = 'payload',
-  /** column name */
-  Trace = 'trace'
+  Payload = 'payload'
 }
 
-/** Streaming cursor of the table "app_event_logs" */
-export type App_Event_Logs_Stream_Cursor_Input = {
+/** Streaming cursor of the table "app_event_executions" */
+export type App_Event_Executions_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: App_Event_Logs_Stream_Cursor_Value_Input;
+  initial_value: App_Event_Executions_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type App_Event_Logs_Stream_Cursor_Value_Input = {
+export type App_Event_Executions_Stream_Cursor_Value_Input = {
   app_id?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   event_id?: InputMaybe<Scalars['uuid']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
   payload?: InputMaybe<Scalars['jsonb']>;
-  trace?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "app.events" */
@@ -729,6 +621,99 @@ export type App_Events_Stream_Cursor_Value_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** columns and relationships of "app.job_events" */
+export type App_Job_Events = {
+  /** An object relationship */
+  action: Maybe<App_Actions>;
+  action_id: Scalars['uuid'];
+  app_id: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  data: Scalars['jsonb'];
+  /** An object relationship */
+  event: Maybe<App_Events>;
+  event_id: Scalars['uuid'];
+  event_name: Scalars['String'];
+  exec_id: Scalars['uuid'];
+  job_id: Scalars['uuid'];
+};
+
+
+/** columns and relationships of "app.job_events" */
+export type App_Job_EventsDataArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "app.job_events". All fields are combined with a logical 'AND'. */
+export type App_Job_Events_Bool_Exp = {
+  _and?: InputMaybe<Array<App_Job_Events_Bool_Exp>>;
+  _not?: InputMaybe<App_Job_Events_Bool_Exp>;
+  _or?: InputMaybe<Array<App_Job_Events_Bool_Exp>>;
+  action?: InputMaybe<App_Actions_Bool_Exp>;
+  action_id?: InputMaybe<Uuid_Comparison_Exp>;
+  app_id?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  data?: InputMaybe<Jsonb_Comparison_Exp>;
+  event?: InputMaybe<App_Events_Bool_Exp>;
+  event_id?: InputMaybe<Uuid_Comparison_Exp>;
+  event_name?: InputMaybe<String_Comparison_Exp>;
+  exec_id?: InputMaybe<Uuid_Comparison_Exp>;
+  job_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "app.job_events". */
+export type App_Job_Events_Order_By = {
+  action?: InputMaybe<App_Actions_Order_By>;
+  action_id?: InputMaybe<Order_By>;
+  app_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  data?: InputMaybe<Order_By>;
+  event?: InputMaybe<App_Events_Order_By>;
+  event_id?: InputMaybe<Order_By>;
+  event_name?: InputMaybe<Order_By>;
+  exec_id?: InputMaybe<Order_By>;
+  job_id?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "app.job_events" */
+export enum App_Job_Events_Select_Column {
+  /** column name */
+  ActionId = 'action_id',
+  /** column name */
+  AppId = 'app_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Data = 'data',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  EventName = 'event_name',
+  /** column name */
+  ExecId = 'exec_id',
+  /** column name */
+  JobId = 'job_id'
+}
+
+/** Streaming cursor of the table "app_job_events" */
+export type App_Job_Events_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: App_Job_Events_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type App_Job_Events_Stream_Cursor_Value_Input = {
+  action_id?: InputMaybe<Scalars['uuid']>;
+  app_id?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  data?: InputMaybe<Scalars['jsonb']>;
+  event_id?: InputMaybe<Scalars['uuid']>;
+  event_name?: InputMaybe<Scalars['String']>;
+  exec_id?: InputMaybe<Scalars['uuid']>;
+  job_id?: InputMaybe<Scalars['uuid']>;
+};
+
 /** ordering argument of a cursor */
 export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -736,19 +721,6 @@ export enum Cursor_Ordering {
   /** descending ordering of the cursor */
   Desc = 'DESC'
 }
-
-/** Boolean expression to compare columns of type "job_state". All fields are combined with logical 'AND'. */
-export type Job_State_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['job_state']>;
-  _gt?: InputMaybe<Scalars['job_state']>;
-  _gte?: InputMaybe<Scalars['job_state']>;
-  _in?: InputMaybe<Array<Scalars['job_state']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['job_state']>;
-  _lte?: InputMaybe<Scalars['job_state']>;
-  _neq?: InputMaybe<Scalars['job_state']>;
-  _nin?: InputMaybe<Array<Scalars['job_state']>>;
-};
 
 export type Jsonb_Cast_Exp = {
   String?: InputMaybe<String_Comparison_Exp>;
@@ -863,8 +835,6 @@ export enum Order_By {
 }
 
 export type Query_Root = {
-  /** fetch data from the table: "app.action_logs" */
-  app_action_logs: Array<App_Action_Logs>;
   /** fetch data from the table: "app.actions" */
   app_actions: Array<App_Actions>;
   /** fetch data from the table: "app.actions" using primary key columns */
@@ -881,21 +851,14 @@ export type Query_Root = {
   app_event_actions: Array<App_Event_Actions>;
   /** fetch data from the table: "app.event_actions" using primary key columns */
   app_event_actions_by_pk: Maybe<App_Event_Actions>;
-  /** fetch data from the table: "app.event_logs" */
-  app_event_logs: Array<App_Event_Logs>;
+  /** fetch data from the table: "app.event_executions" */
+  app_event_executions: Array<App_Event_Executions>;
   /** fetch data from the table: "app.events" */
   app_events: Array<App_Events>;
   /** fetch data from the table: "app.events" using primary key columns */
   app_events_by_pk: Maybe<App_Events>;
-};
-
-
-export type Query_RootApp_Action_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Action_Logs_Order_By>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
+  /** fetch data from the table: "app.job_events" */
+  app_job_events: Array<App_Job_Events>;
 };
 
 
@@ -955,12 +918,12 @@ export type Query_RootApp_Event_Actions_By_PkArgs = {
 };
 
 
-export type Query_RootApp_Event_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+export type Query_RootApp_Event_ExecutionsArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Event_Logs_Order_By>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Event_Executions_Order_By>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
@@ -977,11 +940,16 @@ export type Query_RootApp_Events_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
+
+export type Query_RootApp_Job_EventsArgs = {
+  distinct_on: InputMaybe<Array<App_Job_Events_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<App_Job_Events_Order_By>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
+};
+
 export type Subscription_Root = {
-  /** fetch data from the table: "app.action_logs" */
-  app_action_logs: Array<App_Action_Logs>;
-  /** fetch data from the table in a streaming manner: "app.action_logs" */
-  app_action_logs_stream: Array<App_Action_Logs>;
   /** fetch data from the table: "app.actions" */
   app_actions: Array<App_Actions>;
   /** fetch data from the table: "app.actions" using primary key columns */
@@ -1006,32 +974,20 @@ export type Subscription_Root = {
   app_event_actions_by_pk: Maybe<App_Event_Actions>;
   /** fetch data from the table in a streaming manner: "app.event_actions" */
   app_event_actions_stream: Array<App_Event_Actions>;
-  /** fetch data from the table: "app.event_logs" */
-  app_event_logs: Array<App_Event_Logs>;
-  /** fetch data from the table in a streaming manner: "app.event_logs" */
-  app_event_logs_stream: Array<App_Event_Logs>;
+  /** fetch data from the table: "app.event_executions" */
+  app_event_executions: Array<App_Event_Executions>;
+  /** fetch data from the table in a streaming manner: "app.event_executions" */
+  app_event_executions_stream: Array<App_Event_Executions>;
   /** fetch data from the table: "app.events" */
   app_events: Array<App_Events>;
   /** fetch data from the table: "app.events" using primary key columns */
   app_events_by_pk: Maybe<App_Events>;
   /** fetch data from the table in a streaming manner: "app.events" */
   app_events_stream: Array<App_Events>;
-};
-
-
-export type Subscription_RootApp_Action_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Action_Logs_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Action_Logs_Order_By>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
-};
-
-
-export type Subscription_RootApp_Action_Logs_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<App_Action_Logs_Stream_Cursor_Input>>;
-  where: InputMaybe<App_Action_Logs_Bool_Exp>;
+  /** fetch data from the table: "app.job_events" */
+  app_job_events: Array<App_Job_Events>;
+  /** fetch data from the table in a streaming manner: "app.job_events" */
+  app_job_events_stream: Array<App_Job_Events>;
 };
 
 
@@ -1119,19 +1075,19 @@ export type Subscription_RootApp_Event_Actions_StreamArgs = {
 };
 
 
-export type Subscription_RootApp_Event_LogsArgs = {
-  distinct_on: InputMaybe<Array<App_Event_Logs_Select_Column>>;
+export type Subscription_RootApp_Event_ExecutionsArgs = {
+  distinct_on: InputMaybe<Array<App_Event_Executions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<App_Event_Logs_Order_By>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  order_by: InputMaybe<Array<App_Event_Executions_Order_By>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
-export type Subscription_RootApp_Event_Logs_StreamArgs = {
+export type Subscription_RootApp_Event_Executions_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<App_Event_Logs_Stream_Cursor_Input>>;
-  where: InputMaybe<App_Event_Logs_Bool_Exp>;
+  cursor: Array<InputMaybe<App_Event_Executions_Stream_Cursor_Input>>;
+  where: InputMaybe<App_Event_Executions_Bool_Exp>;
 };
 
 
@@ -1155,47 +1111,20 @@ export type Subscription_RootApp_Events_StreamArgs = {
   where: InputMaybe<App_Events_Bool_Exp>;
 };
 
-/** columns and relationships of "system.job" */
-export type System_Job = {
-  /** An object relationship */
-  action_log: Maybe<App_Action_Logs>;
-  completedon: Maybe<Scalars['timestamptz']>;
-  id: Scalars['uuid'];
-  output: Maybe<Scalars['jsonb']>;
-  retrycount: Scalars['Int'];
-  startedon: Maybe<Scalars['timestamptz']>;
-  state: Scalars['job_state'];
+
+export type Subscription_RootApp_Job_EventsArgs = {
+  distinct_on: InputMaybe<Array<App_Job_Events_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<App_Job_Events_Order_By>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 
-/** columns and relationships of "system.job" */
-export type System_JobOutputArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "system.job". All fields are combined with a logical 'AND'. */
-export type System_Job_Bool_Exp = {
-  _and?: InputMaybe<Array<System_Job_Bool_Exp>>;
-  _not?: InputMaybe<System_Job_Bool_Exp>;
-  _or?: InputMaybe<Array<System_Job_Bool_Exp>>;
-  action_log?: InputMaybe<App_Action_Logs_Bool_Exp>;
-  completedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  output?: InputMaybe<Jsonb_Comparison_Exp>;
-  retrycount?: InputMaybe<Int_Comparison_Exp>;
-  startedon?: InputMaybe<Timestamptz_Comparison_Exp>;
-  state?: InputMaybe<Job_State_Comparison_Exp>;
-};
-
-/** Ordering options when selecting data from "system.job". */
-export type System_Job_Order_By = {
-  action_log?: InputMaybe<App_Action_Logs_Order_By>;
-  completedon?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  output?: InputMaybe<Order_By>;
-  retrycount?: InputMaybe<Order_By>;
-  startedon?: InputMaybe<Order_By>;
-  state?: InputMaybe<Order_By>;
+export type Subscription_RootApp_Job_Events_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<App_Job_Events_Stream_Cursor_Input>>;
+  where: InputMaybe<App_Job_Events_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -1224,9 +1153,9 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
-export type ActionLogItemFragment = { id: string, created_at: string, trace: string | null, job: { id: string, state: any, startedon: string | null, retrycount: number } | null, a_job: { id: string, state: any, startedon: string | null, retrycount: number } | null, event: { name: string, slug: string } | null, action: { slug: string, type: string, name: string } | null };
+export type ActionLogItemFragment = { job_id: string, action_id: string, created_at: string, event_name: string, data: Record<string, any> | Array<any>, event: { name: string, slug: string } | null, action: { slug: string, type: string, name: string } | null };
 
-export type EventLogItemFragment = { id: string, payload: Record<string, any> | Array<any>, created_at: string, trace: string | null, event: { name: string, id: string, slug: string } | null };
+export type EventLogItemFragment = { exec_id: string, payload: Record<string, any> | Array<any>, created_at: string, event: { name: string, id: string, slug: string } | null };
 
 export type GetActionLogsQueryVariables = Exact<{
   after: Scalars['timestamptz'];
@@ -1234,7 +1163,7 @@ export type GetActionLogsQueryVariables = Exact<{
 }>;
 
 
-export type GetActionLogsQuery = { app_action_logs: Array<{ id: string, created_at: string, trace: string | null, job: { id: string, state: any, startedon: string | null, retrycount: number } | null, a_job: { id: string, state: any, startedon: string | null, retrycount: number } | null, event: { name: string, slug: string } | null, action: { slug: string, type: string, name: string } | null }> };
+export type GetActionLogsQuery = { events: Array<{ job_id: string, action_id: string, created_at: string, event_name: string, data: Record<string, any> | Array<any>, event: { name: string, slug: string } | null, action: { slug: string, type: string, name: string } | null }> };
 
 export type GetLogsForActionQueryVariables = Exact<{
   action_id: Scalars['uuid'];
@@ -1243,7 +1172,7 @@ export type GetLogsForActionQueryVariables = Exact<{
 }>;
 
 
-export type GetLogsForActionQuery = { app_action_logs: Array<{ id: string, created_at: string, trace: string | null, job: { id: string, state: any, startedon: string | null, retrycount: number } | null, a_job: { id: string, state: any, startedon: string | null, retrycount: number } | null, event: { name: string, slug: string } | null, action: { slug: string, type: string, name: string } | null }> };
+export type GetLogsForActionQuery = { events: Array<{ job_id: string, action_id: string, created_at: string, event_name: string, data: Record<string, any> | Array<any>, event: { name: string, slug: string } | null, action: { slug: string, type: string, name: string } | null }> };
 
 export type GetActionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1255,7 +1184,7 @@ export type GetActionByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetActionByIdQuery = { app_actions_by_pk: { id: string, slug: string, type: string, type_configuration: Record<string, any> | Array<any>, name: string, retry_backoff: boolean, retry_delay: number, retry_limit: number, run_after: number, event_actions: Array<{ id: string, created_at: string, event: { name: string, id: string, slug: string } }> } | null };
+export type GetActionByIdQuery = { app_actions_by_pk: { id: string, slug: string, type: string, type_configuration: Record<string, any> | Array<any>, name: string, retry_backoff: boolean, retry_delay: number, retry_limit: number, expire_in: number, run_after: number, event_actions: Array<{ id: string, created_at: string, event: { name: string, id: string, slug: string } }> } | null };
 
 export type DeleteActionMutationVariables = Exact<{
   action_id: Scalars['uuid'];
@@ -1270,7 +1199,7 @@ export type GetEventLogsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventLogsQuery = { app_event_logs: Array<{ id: string, payload: Record<string, any> | Array<any>, created_at: string, trace: string | null, event: { name: string, id: string, slug: string } | null }> };
+export type GetEventLogsQuery = { app_event_executions: Array<{ exec_id: string, payload: Record<string, any> | Array<any>, created_at: string, event: { name: string, id: string, slug: string } | null }> };
 
 export type GetLogsForEventQueryVariables = Exact<{
   event_id: Scalars['uuid'];
@@ -1279,7 +1208,7 @@ export type GetLogsForEventQueryVariables = Exact<{
 }>;
 
 
-export type GetLogsForEventQuery = { app_event_logs: Array<{ id: string, payload: Record<string, any> | Array<any>, created_at: string, trace: string | null, event: { name: string, id: string, slug: string } | null }> };
+export type GetLogsForEventQuery = { app_event_executions: Array<{ exec_id: string, payload: Record<string, any> | Array<any>, created_at: string, event: { name: string, id: string, slug: string } | null }> };
 
 export type GetEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1319,23 +1248,18 @@ export type DeleteEnvMutationVariables = Exact<{
 
 export type DeleteEnvMutation = { delete_app_environments_by_pk: { id: string } | null };
 
+export type GetAllSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllSettingsQuery = { actions: Array<{ run_after: number, slug: string, type: string, type_configuration: Record<string, any> | Array<any>, extra_data: Record<string, any> | Array<any>, name: string, retry_backoff: boolean, retry_delay: number, retry_limit: number }>, events: Array<{ name: string, slug: string, extra_data: Record<string, any> | Array<any>, actions: Array<{ action: { slug: string } }> }> };
+
 export const ActionLogItemFragmentDoc = gql`
-    fragment ActionLogItem on app_action_logs {
-  id
+    fragment ActionLogItem on app_job_events {
+  job_id
+  action_id
   created_at
-  trace
-  job {
-    id
-    state
-    startedon
-    retrycount
-  }
-  a_job {
-    id
-    state
-    startedon
-    retrycount
-  }
+  event_name
+  data
   event {
     name
     slug
@@ -1348,8 +1272,8 @@ export const ActionLogItemFragmentDoc = gql`
 }
     ` as unknown as DocumentNode<ActionLogItemFragment, unknown>;
 export const EventLogItemFragmentDoc = gql`
-    fragment EventLogItem on app_event_logs {
-  id
+    fragment EventLogItem on app_event_executions {
+  exec_id
   event {
     name
     id
@@ -1357,13 +1281,12 @@ export const EventLogItemFragmentDoc = gql`
   }
   payload
   created_at
-  trace
 }
     ` as unknown as DocumentNode<EventLogItemFragment, unknown>;
 export const GetActionLogsDocument = gql`
     query GetActionLogs($after: timestamptz!, $limit: Int!) {
-  app_action_logs(
-    order_by: {created_at: desc_nulls_last}
+  events: app_job_events(
+    order_by: {created_at: desc}
     where: {created_at: {_lte: $after}}
     limit: $limit
   ) {
@@ -1373,8 +1296,8 @@ export const GetActionLogsDocument = gql`
     ${ActionLogItemFragmentDoc}` as unknown as DocumentNode<GetActionLogsQuery, GetActionLogsQueryVariables>;
 export const GetLogsForActionDocument = gql`
     query GetLogsForAction($action_id: uuid!, $after: timestamptz!, $limit: Int!) {
-  app_action_logs(
-    order_by: {created_at: desc_nulls_last}
+  events: app_job_events(
+    order_by: {created_at: desc}
     where: {_and: [{action_id: {_eq: $action_id}}, {created_at: {_lte: $after}}]}
     limit: $limit
   ) {
@@ -1404,6 +1327,7 @@ export const GetActionByIdDocument = gql`
     retry_backoff
     retry_delay
     retry_limit
+    expire_in
     run_after
     event_actions {
       id
@@ -1426,8 +1350,8 @@ export const DeleteActionDocument = gql`
     ` as unknown as DocumentNode<DeleteActionMutation, DeleteActionMutationVariables>;
 export const GetEventLogsDocument = gql`
     query GetEventLogs($after: timestamptz!, $limit: Int) {
-  app_event_logs(
-    order_by: {created_at: desc_nulls_last}
+  app_event_executions(
+    order_by: {created_at: desc}
     where: {created_at: {_lte: $after}}
     limit: $limit
   ) {
@@ -1437,8 +1361,8 @@ export const GetEventLogsDocument = gql`
     ${EventLogItemFragmentDoc}` as unknown as DocumentNode<GetEventLogsQuery, GetEventLogsQueryVariables>;
 export const GetLogsForEventDocument = gql`
     query GetLogsForEvent($event_id: uuid!, $after: timestamptz!, $limit: Int!) {
-  app_event_logs(
-    order_by: {created_at: desc_nulls_last}
+  app_event_executions(
+    order_by: {created_at: desc}
     where: {_and: [{event_id: {_eq: $event_id}}, {created_at: {_lte: $after}}]}
     limit: $limit
   ) {
@@ -1448,7 +1372,7 @@ export const GetLogsForEventDocument = gql`
     ${EventLogItemFragmentDoc}` as unknown as DocumentNode<GetLogsForEventQuery, GetLogsForEventQueryVariables>;
 export const GetEventsDocument = gql`
     query GetEvents {
-  app_events(order_by: {name: asc_nulls_last}, limit: 30) {
+  app_events(order_by: {name: asc}, limit: 30) {
     id
     name
     slug
@@ -1507,3 +1431,28 @@ export const DeleteEnvDocument = gql`
   }
 }
     ` as unknown as DocumentNode<DeleteEnvMutation, DeleteEnvMutationVariables>;
+export const GetAllSettingsDocument = gql`
+    query GetAllSettings {
+  actions: app_actions {
+    run_after
+    slug
+    type
+    type_configuration
+    extra_data
+    name
+    retry_backoff
+    retry_delay
+    retry_limit
+  }
+  events: app_events {
+    name
+    slug
+    extra_data
+    actions: event_actions {
+      action {
+        slug
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<GetAllSettingsQuery, GetAllSettingsQueryVariables>;

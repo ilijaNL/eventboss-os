@@ -16,7 +16,7 @@
     "build:clean": "rimraf dist && npm run gen && npm run build",
     "build": "tsc --project ./tsconfig.build.json",
     "start": "fastify start -l error -r ./bootstrap.js dist/app.js",
-    "gen": "graphql-codegen && yarn kysely-codegen --url postgres://postgres:postgres@localhost:5432/app --out-file ./src/__generated__/db.d.ts",
+    "gen": "graphql-codegen && yarn kysely-codegen --exclude-pattern _*.* --url postgres://postgres:postgres@localhost:5432/app --out-file ./src/__generated__/db.d.ts",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test": "jest"

@@ -17,9 +17,7 @@ const db = new Kysely<DB>({
 const pgpInstance = pgp({});
 
 export async function execute(queries: (CompiledQuery | CompiledQuery[])[]) {
-  console.time('concat query');
   const sql = pgpInstance.helpers.concat(queries.flat().map((q) => ({ query: q.sql, values: q.parameters })));
-  console.timeEnd('concat query');
   await pool.query(sql);
 }
 

@@ -12,3 +12,28 @@ mutation DeleteEnv($env_id: uuid!) {
     id
   }
 }
+
+query GetAllSettings {
+  actions: app_actions {
+    run_after
+    slug
+    type
+    type_configuration
+    extra_data
+    name
+    retry_backoff
+    retry_delay
+    retry_limit
+  }
+
+  events: app_events {
+    name
+    slug
+    extra_data
+    actions: event_actions {
+      action {
+        slug
+      }
+    }
+  }
+}

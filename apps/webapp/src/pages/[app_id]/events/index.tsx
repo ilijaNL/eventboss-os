@@ -169,7 +169,7 @@ const LogsTab: React.FC<{ event_id: string }> = ({ event_id }) => {
     queryKey: ['actions', 'logs', event_id],
     queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
       authFetch(GetLogsForEventDocument, { after: pageParam, limit: PAGE_SIZE, event_id }, auth.app),
-    getNextPageParam: (lastPage) => lastPage?.app_event_logs[PAGE_SIZE - 1]?.created_at ?? undefined,
+    getNextPageParam: (lastPage) => lastPage?.app_event_executions[PAGE_SIZE - 1]?.created_at ?? undefined,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -179,7 +179,7 @@ const LogsTab: React.FC<{ event_id: string }> = ({ event_id }) => {
       <EventLogs
         fetchMore={fetchNextPage}
         has_more={!!hasNextPage}
-        items={data?.pages.flatMap((m) => m.app_event_logs) ?? []}
+        items={data?.pages.flatMap((m) => m.app_event_executions) ?? []}
       />
     </Box>
   );
@@ -499,7 +499,7 @@ const page = createAppPage({
               />
             </Card>
           </Grid.Col>
-          <Grid.Col sm={7} md={7} lg={8}>
+          <Grid.Col sm={7} md={8} lg={8}>
             <Card withBorder>
               <Card.Section>
                 {selectedEvent ? (

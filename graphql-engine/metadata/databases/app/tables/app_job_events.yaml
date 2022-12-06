@@ -1,5 +1,5 @@
 table:
-  name: action_logs
+  name: job_events
   schema: app
 object_relationships:
   - name: action
@@ -24,16 +24,15 @@ select_permissions:
   - role: app
     permission:
       columns:
-        - id
-        - app_id
-        - trace
-        - event_log_id
-        - payload
-        - action_id
-        - job_id
+        - data
+        - event_name
         - created_at
+        - action_id
+        - app_id
         - event_id
+        - exec_id
+        - job_id
       filter:
         app_id:
           _eq: X-Hasura-App-Id
-      limit: 100
+      limit: 200

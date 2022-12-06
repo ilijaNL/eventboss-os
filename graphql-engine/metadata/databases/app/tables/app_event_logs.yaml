@@ -11,16 +11,3 @@ object_relationships:
         remote_table:
           name: events
           schema: app
-select_permissions:
-  - role: app
-    permission:
-      columns:
-        - payload
-        - trace
-        - created_at
-        - app_id
-        - event_id
-        - id
-      filter:
-        app_id:
-          _eq: X-Hasura-App-Id

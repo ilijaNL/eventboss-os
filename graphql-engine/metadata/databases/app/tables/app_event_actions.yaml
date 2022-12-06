@@ -12,15 +12,14 @@ select_permissions:
   - role: app
     permission:
       columns:
-        - created_at
+        - id
         - action_id
         - event_id
-        - id
+        - created_at
       filter:
         event:
           app_id:
             _eq: X-Hasura-App-Id
-      limit: 500
 delete_permissions:
   - role: app
     permission:
