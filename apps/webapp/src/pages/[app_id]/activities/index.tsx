@@ -27,11 +27,11 @@ import {
   AutocompleteProps,
 } from '@mantine/core';
 import {
-  GetActionsDocument,
+  GetActivitiesDocument,
   RemoveActionFromEventDocument,
-  GetActionByIdDocument,
-  GetLogsForActionDocument,
-  DeleteActionDocument,
+  GetActivityByIdDocument,
+  GetLogsForActivityDocument,
+  DeleteActivityDocument,
   GetEnvironmentsDocument,
 } from '@/__generated__/app/documents';
 import QueryRenderer from '@/common/components/query-comp';
@@ -44,7 +44,7 @@ import { useAuthMutation } from '@/common/hooks/useMutation';
 import { showNotification } from '@mantine/notifications';
 import { Controller, useForm } from 'react-hook-form';
 import { Static } from '@sinclair/typebox';
-import { ActionInfo } from 'api-contracts';
+import { ActivityInfo } from 'api-contracts';
 import { createFormResolver } from '@/utils/typebox-resolver';
 import { match } from 'ts-pattern';
 import { actionHooks } from '@/app/data/actionsRPC';
@@ -52,7 +52,7 @@ import { useInfiniteQuery } from 'react-query';
 import { authFetch } from '@/utils/graphqlClient';
 import ActionLogs from '@/app/components/action-log';
 
-type FormType = Static<typeof ActionInfo>;
+type FormType = Static<typeof ActivityInfo>;
 
 const InputWithEnvs: React.FC<Omit<AutocompleteProps, 'data'> & React.RefAttributes<HTMLInputElement>> = (props) => {
   const { req: auth } = useAppContext();
@@ -150,7 +150,7 @@ const HeadersField: React.FC<{
   );
 };
 
-const ActionForm: React.FC<{
+const ActivityForm: React.FC<{
   defaultValues: FormType;
   onSubmit: (data: FormType) => void;
   submitSection: React.ReactElement;
@@ -163,7 +163,7 @@ const ActionForm: React.FC<{
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
-    resolver: createFormResolver(ActionInfo),
+    resolver: createFormResolver(ActivityInfo),
   });
 
   const actionType = watch('config.type');
@@ -205,8 +205,8 @@ const ActionForm: React.FC<{
               onChange={(v) => field.onChange(v)}
               ref={field.ref}
               data={[
+                { value: 'system', label: 'System' },
                 { value: 'webhook', label: 'Webhook' },
-                { value: 'test', label: 'Dummy' },
               ]}
             />
           )}
@@ -240,7 +240,7 @@ const ActionForm: React.FC<{
               />
             </>
           ))
-          .with('test', () => <input hidden {...register('config.config', { shouldUnregister: true })}></input>)
+          .with('system', () => <input hidden {...register('config.config', { shouldUnregister: true })}></input>)
           .exhaustive()}
         <Grid grow align="center">
           <Grid.Col span={3}>
@@ -334,31 +334,27 @@ const useStyles = createStyles((theme) => ({
 
 const PAGE_SIZE = 50;
 
-const LogsTab: React.FC<{ action_id: string }> = ({ action_id }) => {
+const LogsTab: React.FC<{ activity_id: string }> = ({ activity_id }) => {
   const { req: auth } = useAppContext();
   const { fetchNextPage, hasNextPage, data } = useInfiniteQuery({
-    queryKey: ['actions', 'logs', action_id],
+    queryKey: ['actions', 'logs', activity_id],
     queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
-      authFetch(GetLogsForActionDocument, { after: pageParam, limit: PAGE_SIZE, action_id }, auth.app),
-    getNextPageParam: (lastPage) => lastPage?.events[PAGE_SIZE - 1]?.created_at ?? undefined,
+      authFetch(GetLogsForActivityDocument, { after: pageParam, limit: PAGE_SIZE, activity_id }, auth.app),
+    getNextPageParam: (lastPage) => lastPage?.logs[PAGE_SIZE - 1]?.created_at ?? undefined,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
 
   return (
     <Box sx={{ height: '50vh' }}>
-      <ActionLogs
-        fetchMore={fetchNextPage}
-        has_more={!!hasNextPage}
-        items={data?.pages.flatMap((m) => m.events) ?? []}
-      />
+      <ActionLogs fetchMore={fetchNextPage} has_more={!!hasNextPage} items={data?.pages.flatMap((m) => m.logs) ?? []} />
     </Box>
   );
 };
 
-const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ action_id, onChange }) => {
+const ActionView: React.FC<{ activity_id: string; onChange: () => void }> = ({ activity_id, onChange }) => {
   const { req: auth } = useAppContext();
-  const queryResult = useAuthQuery(auth.app, GetActionByIdDocument, { action_id });
+  const queryResult = useAuthQuery(auth.app, GetActivityByIdDocument, { activity_id });
   const { locale, t } = useTranslation();
   const { mutate: removeAction } = useAuthMutation(auth.app, RemoveActionFromEventDocument, {
     onSuccess: () => {
@@ -383,7 +379,7 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
     },
   });
 
-  const { mutate: deleteAction, isLoading: isDeleting } = useAuthMutation(auth.app, DeleteActionDocument, {
+  const { mutate: deleteAction, isLoading: isDeleting } = useAuthMutation(auth.app, DeleteActivityDocument, {
     onSuccess: () => {
       onChange();
     },
@@ -394,8 +390,8 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
       title: 'Please confirm your action',
       children: (
         <Text size="sm">
-          Are you sure you want to remove <b>{queryResult.data?.app_actions_by_pk?.name}</b> from{' '}
-          <b>{props.event_name}</b> event?
+          Are you sure you want to remove <b>{queryResult.data?.activity?.name}</b> from <b>{props.event_name}</b>{' '}
+          event?
         </Text>
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
@@ -409,13 +405,13 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
       title: 'Please confirm your action',
       children: (
         <Text size="sm">
-          Are you sure you want to delete <b>{queryResult.data?.app_actions_by_pk?.name}</b>. This will remove the
-          action from all events. This cannot not be reverted.
+          Are you sure you want to delete <b>{queryResult.data?.activity?.name}</b>. This will remove the action from
+          all events. This cannot not be reverted.
         </Text>
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
-      onConfirm: () => deleteAction({ action_id }),
+      onConfirm: () => deleteAction({ activity_id }),
     });
   };
 
@@ -439,7 +435,7 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
           errorRender={() => <></>}
           loadingRender={() => <Loader />}
           successRender={(result) => {
-            const events = result.data.app_actions_by_pk?.event_actions ?? [];
+            const events = result.data.activity?.event_activities ?? [];
 
             if (events.length === 0) {
               return (
@@ -491,27 +487,27 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
           queryResult={queryResult}
           errorRender={() => <></>}
           loadingRender={() => <Loader />}
-          successRender={({ data: { app_actions_by_pk: action } }) => (
+          successRender={({ data: { activity } }) => (
             <>
-              {!action ? null : (
+              {!activity ? null : (
                 <Stack px="md" spacing="sm">
-                  <ActionForm
+                  <ActivityForm
                     // remount from on action change
-                    key={action.id}
+                    key={activity.id}
                     defaultValues={{
-                      name: action.name,
-                      slug: action.slug,
-                      expire_in_seconds: action.expire_in,
+                      name: activity.name,
+                      slug: activity.slug,
+                      expire_in_seconds: activity.expire_in,
                       config: {
-                        type: action.type as any,
-                        config: action.type_configuration,
+                        type: activity.type as any,
+                        config: activity.type_configuration,
                       },
-                      retry_backoff: action.retry_backoff,
-                      retry_delay: action.retry_delay,
-                      retry_limit: action.retry_limit,
-                      run_after: action.run_after,
+                      retry_backoff: activity.retry_backoff,
+                      retry_delay: activity.retry_delay,
+                      retry_limit: activity.retry_limit,
+                      run_after: activity.delay_seconds,
                     }}
-                    onSubmit={(d) => editAction({ action_id: action.id, info: d })}
+                    onSubmit={(d) => editAction({ activity_id: activity.id, info: d })}
                     submitSection={
                       <Button loading={isEditing || isDeleting} type="submit" fullWidth>
                         {t('Save')}
@@ -528,7 +524,7 @@ const ActionView: React.FC<{ action_id: string; onChange: () => void }> = ({ act
         />
       </Tabs.Panel>
       <Tabs.Panel value="logs" p="md">
-        <LogsTab action_id={action_id} />
+        <LogsTab activity_id={activity_id} />
       </Tabs.Panel>
     </Tabs>
   );
@@ -538,7 +534,7 @@ const page = createAppPage({
   pageComponent: function Page() {
     const { classes, cx } = useStyles();
     const { req: auth } = useAppContext();
-    const queryResult = useAuthQuery(auth.app, GetActionsDocument, {});
+    const queryResult = useAuthQuery(auth.app, GetActivitiesDocument, {});
     const [_selectedAction, setSelectedAction] = useState<string>();
     const [newActionModal, setNewActionModal] = useState(false);
     const { t } = useTranslation();
@@ -556,7 +552,7 @@ const page = createAppPage({
     });
 
     // only show when the action exists
-    const selectedAction = queryResult.data?.actions.find((i) => i.id === _selectedAction)?.id;
+    const selectedAction = queryResult.data?.activities.find((i) => i.id === _selectedAction)?.id;
 
     return (
       <Container fluid my="sm">
@@ -571,12 +567,12 @@ const page = createAppPage({
           opened={newActionModal}
           onClose={() => setNewActionModal(false)}
         >
-          <ActionForm
+          <ActivityForm
             onSubmit={mutate}
             defaultValues={{
               name: '',
               slug: '',
-              config: { type: 'webhook', config: { endpoint: '', headers: {} } },
+              config: { type: 'system', config: {} },
               retry_backoff: false,
               retry_delay: 10,
               retry_limit: 3,
@@ -611,24 +607,24 @@ const page = createAppPage({
                 loadingRender={() => <Loader />}
                 successRender={({ data }) => (
                   <Card.Section>
-                    {data.actions.map((action) => (
+                    {data.activities.map((activity) => (
                       <UnstyledButton
-                        key={action.id}
+                        key={activity.id}
                         component={'div'}
-                        onClick={() => setSelectedAction(action.id)}
-                        className={cx(classes.event_item, { [classes.eventActive]: action.id === selectedAction })}
+                        onClick={() => setSelectedAction(activity.id)}
+                        className={cx(classes.event_item, { [classes.eventActive]: activity.id === selectedAction })}
                       >
                         <Group py="sm" position="apart">
                           <Stack spacing={0}>
                             <Text size="lg" weight={600}>
-                              {action.name}
+                              {activity.name}
                             </Text>
                             <Text size="sm" color="dimmed">
-                              {action.slug}
+                              {activity.slug}
                             </Text>
                           </Stack>
                           <Box sx={{ flex: 1 }} />
-                          <Text>{action.type}</Text>
+                          <Text>{activity.type}</Text>
                         </Group>
                       </UnstyledButton>
                     ))}
@@ -641,7 +637,7 @@ const page = createAppPage({
             <Card withBorder>
               <Card.Section>
                 {selectedAction ? (
-                  <ActionView action_id={selectedAction} onChange={() => queryResult.refetch()} />
+                  <ActionView activity_id={selectedAction} onChange={() => queryResult.refetch()} />
                 ) : (
                   <Box py={30}>
                     <Text align="center" weight={600} size="xl">

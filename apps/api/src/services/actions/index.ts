@@ -2,23 +2,23 @@ import { toServer } from '@typed-doc/core';
 import { createPlugin } from '@/plugins/fastify-typed-doc';
 import { createAppContext, AppContext } from '@/utils/context';
 import { FastifyPluginAsync } from 'fastify';
-import { actionContract } from 'api-contracts';
+import { activityContract } from 'api-contracts';
 import { v4 } from 'uuid';
 import { execute } from '@/utils/graphql/graphql-client';
-import { GetActionDocument } from '@/__generated__/app-documents';
+import { GetActivityDocument } from '@/__generated__/app-documents';
 import createHttpError from 'http-errors';
 import { execute as dbExec } from '@/db';
-import { create_action, update_action } from './domain';
+import { create_activity, update_activity } from './domain';
 import { createPublisher } from '../listeners';
 
-const actionService = toServer(actionContract)<AppContext>({
+const actionService = toServer(activityContract)<AppContext>({
   create: {
     resolve: async ({ context, input }) => {
       const action_id = v4();
       const publisher = createPublisher(context);
 
       publisher.emit({
-        events: create_action(null, input).events,
+        events: create_activity(null, input).events,
         entity: { id: action_id, version: 0 },
       });
 
@@ -31,9 +31,9 @@ const actionService = toServer(actionContract)<AppContext>({
     },
   },
   edit: {
-    resolve: async ({ context, input: { action_id, info } }) => {
-      const result = await execute(context.graphqlContext, GetActionDocument, { action_id }).then(
-        (d) => d.app_actions_by_pk
+    resolve: async ({ context, input: { activity_id, info } }) => {
+      const result = await execute(context.graphqlContext, GetActivityDocument, { activity_id }).then(
+        (d) => d.eventboss_activities_by_pk
       );
 
       if (!result) {
@@ -43,8 +43,8 @@ const actionService = toServer(actionContract)<AppContext>({
       const publisher = createPublisher(context);
 
       publisher.emit({
-        entity: { id: action_id, version: 0 },
-        events: update_action(null, info).events,
+        entity: { id: activity_id, version: 0 },
+        events: update_activity(null, info).events,
       });
 
       await dbExec(publisher.getCommands());

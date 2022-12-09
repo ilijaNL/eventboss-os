@@ -3,7 +3,7 @@ import { ActionIcon, createStyles, Group, Stack, Table, Text } from '@mantine/co
 import { TableVirtuoso } from 'react-virtuoso';
 import { IconEye, IconRepeat } from '@tabler/icons';
 import { toDate } from '@/utils/time';
-import { ActionLogItemFragment } from '@/__generated__/app/documents';
+import { ActivityLogItemFragment } from '@/__generated__/app/documents';
 
 const useStyles = createStyles((theme) => ({
   headerRow: {
@@ -11,7 +11,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const ActionLogs: React.FC<{ items: Array<ActionLogItemFragment>; has_more: boolean; fetchMore: () => void }> = ({
+const ActionLogs: React.FC<{ items: Array<ActivityLogItemFragment>; has_more: boolean; fetchMore: () => void }> = ({
   items,
   fetchMore,
   has_more,
@@ -45,14 +45,14 @@ const ActionLogs: React.FC<{ items: Array<ActionLogItemFragment>; has_more: bool
           <>
             <td>
               <Stack spacing={0}>
-                <Text weight={500}>{item.action?.name}</Text>
+                <Text weight={500}>{item.activity?.name}</Text>
                 <Text color="dimmed" weight={500}>
-                  {item.action?.slug}
+                  {item.activity?.slug}
                 </Text>
               </Stack>
             </td>
             <td>
-              <Text size="sm">{item.action?.type}</Text>
+              <Text size="sm">{item.activity?.type}</Text>
             </td>
             <td>
               <Text size="sm" align="center">

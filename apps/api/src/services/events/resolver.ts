@@ -3,12 +3,12 @@ import { toServer } from '@typed-doc/core';
 import { execute } from '@/utils/graphql/graphql-client';
 import { execute as execDb } from '@/db';
 import { AppContext } from '@/utils/context';
-import { GetEventDocument, GetActionDocument } from '@/__generated__/app-documents';
+import { GetEventDocument, GetActivityDocument } from '@/__generated__/app-documents';
 import createHttpError from 'http-errors';
 import { v4 } from 'uuid';
 import { assign_action, create_event, edit_event } from './domain';
-import { dispatchEvent } from './emit';
 import { createPublisher } from '../listeners';
+import { emitEvent } from '@/utils/eventboss/event';
 
 export const eventsServer = toServer(eventsContract)<AppContext>({
   create: {
@@ -28,13 +28,13 @@ export const eventsServer = toServer(eventsContract)<AppContext>({
       };
     },
   },
-  assign_action: {
+  assign_activity: {
     resolve: async ({ context, input }) => {
       const [action, event] = await Promise.all([
-        execute(context.graphqlContext, GetActionDocument, { action_id: input.action_id }).then(
-          (d) => d.app_actions_by_pk
+        execute(context.graphqlContext, GetActivityDocument, { activity_id: input.activity_id }).then(
+          (d) => d.eventboss_activities_by_pk
         ),
-        execute(context.graphqlContext, GetEventDocument, { event_id: input.event_id }).then((d) => d.app_events_by_pk),
+        execute(context.graphqlContext, GetEventDocument, { event_id: input.event_id }).then((d) => d.event),
       ]);
 
       if (!action || !event) {
@@ -58,7 +58,7 @@ export const eventsServer = toServer(eventsContract)<AppContext>({
   edit: {
     resolve: async ({ context, input }) => {
       const event = await execute(context.graphqlContext, GetEventDocument, { event_id: input.event_id }).then(
-        (d) => d.app_events_by_pk
+        (d) => d
       );
 
       if (!event) {
@@ -81,7 +81,7 @@ export const eventsServer = toServer(eventsContract)<AppContext>({
   },
   send: {
     resolve: async ({ context, input }) => {
-      await dispatchEvent(context, input);
+      await emitEvent({ app_id: context.app_id, event_slug: input.event_slug, payload: input.payload });
       return {
         success: true,
       };

@@ -1,0 +1,14 @@
+table:
+  name: apps
+  schema: eventboss
+select_permissions:
+  - role: app
+    permission:
+      columns:
+        - extra_data
+        - name
+        - created_at
+        - id
+      filter:
+        id:
+          _eq: X-Hasura-App-Id

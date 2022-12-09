@@ -1,10 +1,10 @@
-import { ActionInfo } from 'api-contracts';
+import { ActivityInfo } from 'api-contracts';
 import { createActionFromEvent, createEventsFactory } from '@/utils/ddd';
 
-export const actionEvents = createEventsFactory({
-  action_created: ActionInfo,
-  action_updated: ActionInfo,
+export const activityEvents = createEventsFactory({
+  activity_created: ActivityInfo,
+  activity_updated: ActivityInfo,
 });
 
-export const create_action = createActionFromEvent(actionEvents, 'action_created');
-export const update_action = createActionFromEvent(actionEvents, 'action_updated');
+export const create_activity = createActionFromEvent(activityEvents, 'activity_created');
+export const update_activity = createActionFromEvent(activityEvents, 'activity_updated');

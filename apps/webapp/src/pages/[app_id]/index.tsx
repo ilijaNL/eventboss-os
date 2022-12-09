@@ -3,7 +3,7 @@ import QueryRenderer from '@/common/components/query-comp';
 import { useAuthQuery } from '@/common/hooks/useQuery';
 import { useTranslation } from '@/common/hooks/useTranslation';
 import { toDate } from '@/utils/time';
-import { GetActionLogsDocument, GetEventLogsDocument } from '@/__generated__/app/documents';
+import { GetActivityLogsDocument, GetEventLogsDocument } from '@/__generated__/app/documents';
 import { Card, Container, Grid, Loader, ScrollArea, Table, Text, Stack, Title, Group, ActionIcon } from '@mantine/core';
 import { IconCircleCheck, IconEye, IconRepeat, IconSend } from '@tabler/icons';
 
@@ -32,7 +32,7 @@ const LatestEventsTable: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data.app_event_executions.map((item) => (
+              {data.executions.map((item) => (
                 <tr key={item.exec_id}>
                   <td>
                     <Stack spacing={0}>
@@ -71,7 +71,7 @@ const LatestEventsTable: React.FC = () => {
 const LatestActionLogs: React.FC = () => {
   const { req: auth } = useAppContext();
   const { locale } = useTranslation();
-  const queryResult = useAuthQuery(auth.app, GetActionLogsDocument, { after: farInFuture.toISOString(), limit: 8 });
+  const queryResult = useAuthQuery(auth.app, GetActivityLogsDocument, { after: farInFuture.toISOString(), limit: 8 });
 
   return (
     <QueryRenderer
@@ -92,18 +92,18 @@ const LatestActionLogs: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data.events.map((item) => (
-                <tr key={`${item.job_id}_${item.created_at}`}>
+              {data.logs.map((item) => (
+                <tr key={`${item.activity}_${item.created_at}`}>
                   <td>
                     <Stack spacing={0}>
-                      <Text weight={500}>{item.action?.name ?? 'Action is deleted'}</Text>
+                      <Text weight={500}>{item.activity?.name ?? 'Action is deleted'}</Text>
                       <Text color="dimmed" weight={500}>
-                        {item.action?.slug ?? 'deleted'}
+                        {item.activity?.slug ?? 'deleted'}
                       </Text>
                     </Stack>
                   </td>
                   <td>
-                    <Text size="sm">{item.action?.type ?? '-'}</Text>
+                    <Text size="sm">{item.activity?.type ?? '-'}</Text>
                   </td>
                   <td>
                     <Text size="sm">{toDate(item.created_at, 'dd/MM/yyyy HH:mm:ss', locale)}</Text>

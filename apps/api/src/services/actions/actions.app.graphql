@@ -1,5 +1,5 @@
-query GetAction($action_id: uuid!) {
-  app_actions_by_pk(id: $action_id) {
+query GetActivity($activity_id: uuid!) {
+  eventboss_activities_by_pk(id: $activity_id) {
     id
     type
     type_configuration

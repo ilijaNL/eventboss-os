@@ -7,7 +7,7 @@ import db from '@/db';
 
 export default createEventListener(eventEvents.event_created)<AppContext, CompiledQuery>(({ ctx, event: e }) => {
   return db
-    .insertInto('app.events')
+    .insertInto('eventboss.events')
     .values({
       name: e.data.name,
       app_id: ctx.app_id,

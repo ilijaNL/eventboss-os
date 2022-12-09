@@ -22,11 +22,11 @@ export const eventsContract = createContract({
     }),
     output: Success,
   },
-  assign_action: {
+  assign_activity: {
     type: 'mutation',
     input: Type.Object({
       event_id: Uuid,
-      action_id: Uuid,
+      activity_id: Uuid,
     }),
     output: Success,
   },

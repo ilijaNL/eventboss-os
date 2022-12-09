@@ -6,7 +6,7 @@ import db from '@/db';
 
 export default createEventListener(eventEvents.event_updated)<AppContext, CompiledQuery>(({ ctx, event: e }) => {
   return db
-    .updateTable('app.events')
+    .updateTable('eventboss.events')
     .set({
       name: e.data.name,
       slug: e.data.slug,

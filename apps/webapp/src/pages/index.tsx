@@ -79,7 +79,7 @@ const page = createAuthPage({
                   </Button>
                 </Stack>
               </Card>
-              {data.app_apps.map((app) => (
+              {data.apps.map((app) => (
                 <Card withBorder radius="md" key={app.id}>
                   <Stack sx={{ minHeight: 220 }}>
                     <Title size={38} order={2}>

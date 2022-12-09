@@ -1,6 +1,6 @@
 import { createAppPage, useAppContext } from '@/app/page';
 import { authFetch } from '@/utils/graphqlClient';
-import { GetActionLogsDocument } from '@/__generated__/app/documents';
+import { GetActivityLogsDocument } from '@/__generated__/app/documents';
 import { Container, Paper } from '@mantine/core';
 import { useInfiniteQuery } from 'react-query';
 import ActionLogs from '@/app/components/action-log';
@@ -14,8 +14,8 @@ const page = createAppPage({
     const { fetchNextPage, hasNextPage, data } = useInfiniteQuery({
       queryKey: ['actions', 'logs'],
       queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
-        authFetch(GetActionLogsDocument, { after: pageParam, limit: PAGE_SIZE }, auth.app),
-      getNextPageParam: (lastPage) => lastPage?.events[PAGE_SIZE - 1]?.created_at ?? undefined,
+        authFetch(GetActivityLogsDocument, { after: pageParam, limit: PAGE_SIZE }, auth.app),
+      getNextPageParam: (lastPage) => lastPage?.logs[PAGE_SIZE - 1]?.created_at ?? undefined,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
     });
@@ -26,7 +26,7 @@ const page = createAppPage({
           <ActionLogs
             fetchMore={fetchNextPage}
             has_more={!!hasNextPage}
-            items={data?.pages.flatMap((p) => p.events) ?? []}
+            items={data?.pages.flatMap((p) => p.logs) ?? []}
           />
         </Paper>
       </Container>

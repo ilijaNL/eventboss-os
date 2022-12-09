@@ -1,5 +1,5 @@
 query GetEnvironments {
-  envs: app_environments(order_by: { key: asc }) {
+  envs: eventboss_environments(order_by: { key: asc }) {
     id
     key
     preview
@@ -8,14 +8,14 @@ query GetEnvironments {
 }
 
 mutation DeleteEnv($env_id: uuid!) {
-  delete_app_environments_by_pk(id: $env_id) {
+  delete_eventboss_environments_by_pk(id: $env_id) {
     id
   }
 }
 
 query GetAllSettings {
-  actions: app_actions {
-    run_after
+  actions: eventboss_activities {
+    delay_seconds
     slug
     type
     type_configuration
@@ -26,12 +26,12 @@ query GetAllSettings {
     retry_limit
   }
 
-  events: app_events {
+  events: eventboss_events {
     name
     slug
     extra_data
-    actions: event_actions {
-      action {
+    actions: event_activities {
+      activity {
         slug
       }
     }

@@ -1,5 +1,5 @@
 query Apps {
-  app_apps {
+  eventboss_apps {
     id
   }
 }

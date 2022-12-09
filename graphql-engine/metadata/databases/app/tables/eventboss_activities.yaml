@@ -1,0 +1,40 @@
+table:
+  name: activities
+  schema: eventboss
+array_relationships:
+  - name: event_activities
+    using:
+      foreign_key_constraint_on:
+        column: activity_id
+        table:
+          name: event_activities
+          schema: eventboss
+select_permissions:
+  - role: app
+    permission:
+      columns:
+        - retry_backoff
+        - concurrency
+        - delay_seconds
+        - expire_in
+        - retry_delay
+        - retry_limit
+        - extra_data
+        - type_configuration
+        - name
+        - slug
+        - type
+        - created_at
+        - updated_at
+        - app_id
+        - id
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id
+      limit: 100
+delete_permissions:
+  - role: app
+    permission:
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id

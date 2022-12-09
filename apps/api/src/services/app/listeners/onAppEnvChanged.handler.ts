@@ -6,7 +6,7 @@ import { appEvents } from '../domain';
 
 export default createEventListener(appEvents.app_env_changed)<AppContext, CompiledQuery>(({ ctx, event }) => {
   return db
-    .insertInto('app.environments')
+    .insertInto('eventboss.environments')
     .values({ key: event.data.key, preview: event.data.preview, app_id: ctx.app_id, value: event.data.encryptedValue })
     .onConflict((oc) =>
       oc

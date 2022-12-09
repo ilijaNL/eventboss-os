@@ -15,7 +15,7 @@ const page = createAppPage({
       queryKey: ['event', 'logs'],
       queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
         authFetch(GetEventLogsDocument, { after: pageParam, limit: PAGE_SIZE }, auth.app),
-      getNextPageParam: (lastPage) => lastPage?.app_event_executions[PAGE_SIZE - 1]?.created_at ?? undefined,
+      getNextPageParam: (lastPage) => lastPage?.executions[PAGE_SIZE - 1]?.created_at ?? undefined,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
     });
@@ -24,7 +24,7 @@ const page = createAppPage({
       <Container size="xl" sx={{ height: '100%' }} py="md">
         <Paper withBorder sx={{ height: '100%' }}>
           <EventLogs
-            items={data?.pages.flatMap((p) => p.app_event_executions) ?? []}
+            items={data?.pages.flatMap((p) => p.executions) ?? []}
             fetchMore={fetchNextPage}
             has_more={!!hasNextPage}
           />

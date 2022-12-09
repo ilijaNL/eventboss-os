@@ -1,16 +1,16 @@
-query GetActionLogs($after: timestamptz!, $limit: Int!) {
-  events: app_job_events(order_by: { created_at: desc }, where: { created_at: { _lte: $after } }, limit: $limit) {
-    ...ActionLogItem
+query GetActivityLogs($after: timestamptz!, $limit: Int!) {
+  logs: eventboss_task_logs(order_by: { created_at: desc }, where: { created_at: { _lte: $after } }, limit: $limit) {
+    ...ActivityLogItem
   }
 }
 
-query GetLogsForAction($action_id: uuid!, $after: timestamptz!, $limit: Int!) {
-  events: app_job_events(
+query GetLogsForActivity($activity_id: uuid!, $after: timestamptz!, $limit: Int!) {
+  logs: eventboss_task_logs(
     order_by: { created_at: desc }
-    where: { _and: [{ action_id: { _eq: $action_id } }, { created_at: { _lte: $after } }] }
+    where: { _and: [{ activity_id: { _eq: $activity_id } }, { created_at: { _lte: $after } }] }
     limit: $limit
   ) {
-    ...ActionLogItem
+    ...ActivityLogItem
   }
 }
 
@@ -76,8 +76,8 @@ query GetLogsForAction($action_id: uuid!, $after: timestamptz!, $limit: Int!) {
 #   }
 # }
 
-query GetActions {
-  actions: app_actions(order_by: { slug: asc }) {
+query GetActivities {
+  activities: eventboss_activities(order_by: { slug: asc }) {
     id
     slug
     name
@@ -86,8 +86,8 @@ query GetActions {
   }
 }
 
-query GetActionById($action_id: uuid!) {
-  app_actions_by_pk(id: $action_id) {
+query GetActivityById($activity_id: uuid!) {
+  activity: eventboss_activities_by_pk(id: $activity_id) {
     id
     slug
     type
@@ -97,8 +97,8 @@ query GetActionById($action_id: uuid!) {
     retry_delay
     retry_limit
     expire_in
-    run_after
-    event_actions {
+    delay_seconds
+    event_activities {
       id
       created_at
       event {
@@ -110,8 +110,8 @@ query GetActionById($action_id: uuid!) {
   }
 }
 
-mutation DeleteAction($action_id: uuid!) {
-  delete_app_actions_by_pk(id: $action_id) {
+mutation DeleteActivity($activity_id: uuid!) {
+  delete_eventboss_activities_by_pk(id: $activity_id) {
     id
   }
 }

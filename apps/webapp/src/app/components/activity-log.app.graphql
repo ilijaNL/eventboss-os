@@ -1,6 +1,6 @@
-fragment ActionLogItem on app_job_events {
-  job_id
-  action_id
+fragment ActivityLogItem on eventboss_task_logs {
+  task_id
+  activity_id
   created_at
   event_name
   data
@@ -8,7 +8,7 @@ fragment ActionLogItem on app_job_events {
     name
     slug
   }
-  action {
+  activity {
     slug
     type
     name

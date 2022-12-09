@@ -1,4 +1,4 @@
-fragment EventLogItem on app_event_executions {
+fragment EventLogItem on eventboss_event_executions {
   exec_id
   event {
     name

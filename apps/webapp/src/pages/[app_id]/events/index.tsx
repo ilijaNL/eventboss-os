@@ -26,7 +26,7 @@ import {
 import {
   GetEventsDocument,
   GetEventByIdDocument,
-  GetActionsDocument,
+  GetActivitiesDocument,
   RemoveActionFromEventDocument,
   DeleteEventDocument,
   GetLogsForEventDocument,
@@ -73,13 +73,13 @@ const ActionsList: React.FC<{ reqContext: RequestContext; event_id: string; onCh
   event_id,
   onChange,
 }) => {
-  const queryResult = useAuthQuery(reqContext, GetActionsDocument, {});
+  const queryResult = useAuthQuery(reqContext, GetActivitiesDocument, {});
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
   const { mutate, isLoading } = useMutation(
-    async (actions: Array<string>) => {
+    async (activities: Array<string>) => {
       return Promise.all(
-        actions.map((action_id) =>
-          eventClient(reqContext, 'assign_action', { type: 'mutation', input: { event_id: event_id, action_id } })
+        activities.map((activity_id) =>
+          eventClient(reqContext, 'assign_activity', { type: 'mutation', input: { event_id: event_id, activity_id } })
         )
       );
     },
@@ -113,30 +113,30 @@ const ActionsList: React.FC<{ reqContext: RequestContext; event_id: string; onCh
       successRender={({ data }) => (
         <>
           <ScrollArea sx={{ height: '60vh' }}>
-            {data.actions.map((action) => {
-              const checked = selectedActions.some((i) => i === action.id);
+            {data.activities.map((activity) => {
+              const checked = selectedActions.some((i) => i === activity.id);
               return (
                 <UnstyledButton
                   sx={{ width: '100%' }}
                   onClick={() => {
                     console.log('buttn clicked');
-                    setSelectedActions((p) => (!checked ? [...p, action.id] : p.filter((w) => w !== action.id)));
+                    setSelectedActions((p) => (!checked ? [...p, activity.id] : p.filter((w) => w !== activity.id)));
                   }}
-                  key={action.id}
+                  key={activity.id}
                 >
                   <Paper withBorder sx={{ display: 'flex', alignItems: 'center' }} px="md" py="sm">
                     <Stack spacing={0}>
                       <Text size="lg" weight={600}>
-                        {action.name}
+                        {activity.name}
                       </Text>
                       <Text size="sm" color="dimmed">
-                        {action.slug}
+                        {activity.slug}
                       </Text>
                     </Stack>
                     <Box sx={{ flex: 1 }} />
                     <Stack spacing={0} mr="xl" align="flex-end">
                       <Text>Created On</Text>
-                      <Text color="dimmed">{toDate(action.created_at, 'dd/MM/yyyy HH:mm:ss')}</Text>
+                      <Text color="dimmed">{toDate(activity.created_at, 'dd/MM/yyyy HH:mm:ss')}</Text>
                     </Stack>
                     <div>
                       <Checkbox checked={checked} onChange={() => {}} />
@@ -169,7 +169,7 @@ const LogsTab: React.FC<{ event_id: string }> = ({ event_id }) => {
     queryKey: ['actions', 'logs', event_id],
     queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
       authFetch(GetLogsForEventDocument, { after: pageParam, limit: PAGE_SIZE, event_id }, auth.app),
-    getNextPageParam: (lastPage) => lastPage?.app_event_executions[PAGE_SIZE - 1]?.created_at ?? undefined,
+    getNextPageParam: (lastPage) => lastPage?.executions[PAGE_SIZE - 1]?.created_at ?? undefined,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -179,7 +179,7 @@ const LogsTab: React.FC<{ event_id: string }> = ({ event_id }) => {
       <EventLogs
         fetchMore={fetchNextPage}
         has_more={!!hasNextPage}
-        items={data?.pages.flatMap((m) => m.app_event_executions) ?? []}
+        items={data?.pages.flatMap((m) => m.executions) ?? []}
       />
     </Box>
   );
@@ -245,8 +245,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
       title: 'Please confirm your action',
       children: (
         <Text size="sm">
-          Are you sure you want to delete <b>{queryResult.data?.app_events_by_pk?.name}</b>. This action cannot be
-          reverted
+          Are you sure you want to delete <b>{queryResult.data?.event?.name}</b>. This action cannot be reverted
         </Text>
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
@@ -275,7 +274,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
           errorRender={() => <></>}
           loadingRender={() => <Loader />}
           successRender={(result) => {
-            const actions = result.data.app_events_by_pk?.event_actions ?? [];
+            const actions = result.data.event?.event_activities ?? [];
 
             if (actions.length === 0) {
               return (
@@ -291,15 +290,15 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
                   <Button onClick={onAttachActionClick}>Attach Action</Button>
                 </Group>
                 <ScrollArea.Autosize mx="-xs" px="xs" maxHeight="60vh">
-                  {actions.map(({ action, id, created_at }) => (
+                  {actions.map(({ activity, id, created_at }) => (
                     <Paper px="md" withBorder key={id} mb={4}>
                       <Box sx={{ display: 'flex', alignItems: 'center' }} py="sm">
                         <Stack spacing={0}>
                           <Text size="lg" weight={600}>
-                            {action.name}
+                            {activity.name}
                           </Text>
                           <Text size="sm" color="dimmed">
-                            {action.slug}
+                            {activity.slug}
                           </Text>
                         </Stack>
                         <Box sx={{ flex: 1 }} />
@@ -309,7 +308,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
                         </Stack>
                         <div>
                           <ActionIcon
-                            onClick={() => onDeleteActionClick({ id: id, name: action.name })}
+                            onClick={() => onDeleteActionClick({ id: id, name: activity.name })}
                             color="red"
                             variant="filled"
                           >
@@ -337,8 +336,8 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
                 key={event_id}
                 isLoading={isEdittingEvent}
                 defaultValues={{
-                  name: data.app_events_by_pk?.name ?? '',
-                  slug: data.app_events_by_pk?.slug ?? '',
+                  name: data.event?.name ?? '',
+                  slug: data.event?.slug ?? '',
                 }}
                 onCancel={() => {}}
                 onSubmit={(data) => {
@@ -424,7 +423,7 @@ const page = createAppPage({
 
     const { t } = useTranslation();
 
-    const selectedEvent = queryResult.data?.app_events.find((e) => e.id === _selectedEvent)?.id;
+    const selectedEvent = queryResult.data?.events.find((e) => e.id === _selectedEvent)?.id;
 
     return (
       <Container fluid my="sm">
@@ -472,7 +471,7 @@ const page = createAppPage({
                 loadingRender={() => <Loader />}
                 successRender={({ data }) => (
                   <Card.Section>
-                    {data.app_events.map((event) => (
+                    {data.events.map((event) => (
                       <UnstyledButton
                         key={event.id}
                         component={'div'}
@@ -489,7 +488,7 @@ const page = createAppPage({
                             </Text>
                           </Stack>
                           <Avatar size="md" radius="xl">
-                            {event.event_actions.length || '0'}
+                            {event.event_activities.length || '0'}
                           </Avatar>
                         </Group>
                       </UnstyledButton>

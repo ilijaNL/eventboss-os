@@ -21,9 +21,11 @@ export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
 export type Timestamp = ColumnType<Date | RawBuilder, Date | string | RawBuilder, Date | string | RawBuilder>;
 
-export interface AppActions {
+export interface EventbossActivities {
   app_id: string;
+  concurrency: Generated<number>;
   created_at: Generated<Timestamp>;
+  delay_seconds: number;
   expire_in: number;
   extra_data: Json;
   id: Generated<string>;
@@ -31,21 +33,20 @@ export interface AppActions {
   retry_backoff: boolean;
   retry_delay: number;
   retry_limit: number;
-  run_after: number;
   slug: string;
   type: string;
   type_configuration: Json;
   updated_at: Generated<Timestamp>;
 }
 
-export interface AppApps {
+export interface EventbossApps {
   created_at: Generated<Timestamp>;
   extra_data: Json;
   id: Generated<string>;
   name: string;
 }
 
-export interface AppEnvironments {
+export interface EventbossEnvironments {
   app_id: string;
   created_at: Generated<Timestamp>;
   id: Generated<string>;
@@ -54,14 +55,14 @@ export interface AppEnvironments {
   value: string;
 }
 
-export interface AppEventActions {
-  action_id: string;
+export interface EventbossEventActivities {
+  activity_id: string;
   created_at: Generated<Timestamp>;
   event_id: string;
   id: Generated<string>;
 }
 
-export interface AppEventExecutions {
+export interface EventbossEventExecutions {
   app_id: string;
   created_at: Timestamp;
   event_id: string;
@@ -69,7 +70,7 @@ export interface AppEventExecutions {
   payload: Json;
 }
 
-export interface AppEvents {
+export interface EventbossEvents {
   app_id: string;
   created_at: Generated<Timestamp>;
   extra_data: Json;
@@ -79,24 +80,26 @@ export interface AppEvents {
   updated_at: Generated<Timestamp>;
 }
 
-export interface AppJobEvents {
-  action_id: string;
+export interface EventbossTaskLogs {
+  activity_id: string;
   app_id: string;
   created_at: Timestamp;
   data: Json;
   event_id: string;
   event_name: string;
   exec_id: string;
-  job_id: string;
+  task_id: string;
 }
 
-export interface AppJobs {
+export interface EventbossTaskQueue {
+  activity_id: string;
   app_id: string;
   data: Json;
+  event_id: string;
+  exec_id: string;
   expire_in: Interval;
   id: string;
   idempotence_key: string | null;
-  result: Json | null;
   retry_backoff: boolean;
   retry_count: number;
   retry_delay: number;
@@ -104,6 +107,7 @@ export interface AppJobs {
   scheduled_at: Timestamp;
   started_at: Timestamp | null;
   state: number;
+  type: string;
 }
 
 export interface HdbCatalogHdbActionLog {
@@ -183,83 +187,15 @@ export interface HdbCatalogHdbVersion {
   version: string;
 }
 
-export interface SystemArchive {
-  archivedon: Generated<Timestamp>;
-  completedon: Timestamp | null;
-  createdon: Timestamp;
-  data: Json | null;
-  expirein: Interval;
-  id: string;
-  keepuntil: Timestamp;
-  name: string;
-  on_complete: boolean;
-  output: Json | null;
-  priority: number;
-  retrybackoff: boolean;
-  retrycount: number;
-  retrydelay: number;
-  retrylimit: number;
-  singletonkey: string | null;
-  singletonon: Timestamp | null;
-  startafter: Timestamp;
-  startedon: Timestamp | null;
-  state: string;
-}
-
-export interface SystemJob {
-  completedon: Timestamp | null;
-  createdon: Generated<Timestamp>;
-  data: Json | null;
-  expirein: Generated<Interval>;
-  id: Generated<string>;
-  keepuntil: Generated<Timestamp>;
-  name: string;
-  on_complete: Generated<boolean>;
-  output: Json | null;
-  priority: Generated<number>;
-  retrybackoff: Generated<boolean>;
-  retrycount: Generated<number>;
-  retrydelay: Generated<number>;
-  retrylimit: Generated<number>;
-  singletonkey: string | null;
-  singletonon: Timestamp | null;
-  startafter: Generated<Timestamp>;
-  startedon: Timestamp | null;
-  state: Generated<string>;
-}
-
-export interface SystemSchedule {
-  created_on: Generated<Timestamp>;
-  cron: string;
-  data: Json | null;
-  name: string;
-  options: Json | null;
-  timezone: string | null;
-  updated_on: Generated<Timestamp>;
-}
-
-export interface SystemSubscription {
-  created_on: Generated<Timestamp>;
-  event: string;
-  name: string;
-  updated_on: Generated<Timestamp>;
-}
-
-export interface SystemVersion {
-  cron_on: Timestamp | null;
-  maintained_on: Timestamp | null;
-  version: number;
-}
-
 export interface DB {
-  "app.actions": AppActions;
-  "app.apps": AppApps;
-  "app.environments": AppEnvironments;
-  "app.event_actions": AppEventActions;
-  "app.event_executions": AppEventExecutions;
-  "app.events": AppEvents;
-  "app.job_events": AppJobEvents;
-  "app.jobs": AppJobs;
+  "eventboss.activities": EventbossActivities;
+  "eventboss.apps": EventbossApps;
+  "eventboss.environments": EventbossEnvironments;
+  "eventboss.event_activities": EventbossEventActivities;
+  "eventboss.event_executions": EventbossEventExecutions;
+  "eventboss.events": EventbossEvents;
+  "eventboss.task_logs": EventbossTaskLogs;
+  "eventboss.task_queue": EventbossTaskQueue;
   "hdb_catalog.hdb_action_log": HdbCatalogHdbActionLog;
   "hdb_catalog.hdb_cron_event_invocation_logs": HdbCatalogHdbCronEventInvocationLogs;
   "hdb_catalog.hdb_cron_events": HdbCatalogHdbCronEvents;
@@ -268,9 +204,4 @@ export interface DB {
   "hdb_catalog.hdb_scheduled_events": HdbCatalogHdbScheduledEvents;
   "hdb_catalog.hdb_schema_notifications": HdbCatalogHdbSchemaNotifications;
   "hdb_catalog.hdb_version": HdbCatalogHdbVersion;
-  "system.archive": SystemArchive;
-  "system.job": SystemJob;
-  "system.schedule": SystemSchedule;
-  "system.subscription": SystemSubscription;
-  "system.version": SystemVersion;
 }

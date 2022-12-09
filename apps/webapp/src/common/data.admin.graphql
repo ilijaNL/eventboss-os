@@ -1,5 +1,5 @@
 query GetApps {
-  app_apps {
+  apps: eventboss_apps {
     id
     name
     created_at
@@ -7,7 +7,7 @@ query GetApps {
 }
 
 query GetApp($app_id: uuid!) {
-  app_apps_by_pk(id: $app_id) {
+  app: eventboss_apps_by_pk(id: $app_id) {
     id
     name
   }

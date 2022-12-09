@@ -1,0 +1,37 @@
+table:
+  name: task_logs
+  schema: eventboss
+object_relationships:
+  - name: activity
+    using:
+      manual_configuration:
+        column_mapping:
+          activity_id: id
+        insertion_order: null
+        remote_table:
+          name: activities
+          schema: eventboss
+  - name: event
+    using:
+      manual_configuration:
+        column_mapping:
+          event_id: id
+        insertion_order: null
+        remote_table:
+          name: events
+          schema: eventboss
+select_permissions:
+  - role: app
+    permission:
+      columns:
+        - data
+        - event_name
+        - created_at
+        - activity_id
+        - app_id
+        - event_id
+        - exec_id
+        - task_id
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id

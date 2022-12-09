@@ -2,8 +2,8 @@ export const appRoutes = {
   dashboard: '',
   events: '/events',
   event_logs: '/events/logs',
-  actions: '/actions',
-  action_logs: '/actions/logs',
+  actions: '/activities',
+  action_logs: '/activities/logs',
   settings: '/settings',
 } as const;
 

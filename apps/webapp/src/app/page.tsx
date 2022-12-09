@@ -30,7 +30,7 @@ export const useAppContext = () => {
   return context;
 };
 
-const InternalAppPage: React.FC<PropsWithChildren<{ data: NonNullable<GetAppQuery['app_apps_by_pk']> }>> = ({
+const InternalAppPage: React.FC<PropsWithChildren<{ data: NonNullable<GetAppQuery['app']> }>> = ({
   data,
   children,
 }) => {
@@ -68,7 +68,7 @@ const AppPage: React.FC<PropsWithChildren> = (props) => {
     { app_id },
     {
       enabled: !!app_id,
-      select: (data) => data.app_apps_by_pk,
+      select: (data) => data.app,
       onError: () => {
         Router.replace(routes.home);
       },

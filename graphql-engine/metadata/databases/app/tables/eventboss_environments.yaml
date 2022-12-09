@@ -1,0 +1,22 @@
+table:
+  name: environments
+  schema: eventboss
+select_permissions:
+  - role: app
+    permission:
+      columns:
+        - key
+        - preview
+        - value
+        - created_at
+        - app_id
+        - id
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id
+delete_permissions:
+  - role: app
+    permission:
+      filter:
+        app_id:
+          _eq: X-Hasura-App-Id
