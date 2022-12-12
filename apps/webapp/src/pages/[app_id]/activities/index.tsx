@@ -346,13 +346,13 @@ const LogsTab: React.FC<{ activity_id: string }> = ({ activity_id }) => {
   });
 
   return (
-    <Box sx={{ height: '50vh' }}>
+    <Card.Section sx={{ height: '50vh' }}>
       <ActivityLogs
         fetchMore={fetchNextPage}
         has_more={!!hasNextPage}
         items={data?.pages.flatMap((m) => m.logs) ?? []}
       />
-    </Box>
+    </Card.Section>
   );
 };
 
@@ -527,7 +527,7 @@ const ActivityView: React.FC<{ activity_id: string; onChange: () => void }> = ({
           )}
         />
       </Tabs.Panel>
-      <Tabs.Panel value="logs" p="md">
+      <Tabs.Panel value="logs" p="md" pb={0}>
         <LogsTab activity_id={activity_id} />
       </Tabs.Panel>
     </Tabs>

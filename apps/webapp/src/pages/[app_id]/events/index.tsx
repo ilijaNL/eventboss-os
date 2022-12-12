@@ -175,13 +175,13 @@ const LogsTab: React.FC<{ event_id: string }> = ({ event_id }) => {
   });
 
   return (
-    <Box sx={{ height: '50vh' }}>
+    <Card.Section sx={{ height: '50vh' }}>
       <EventLogs
         fetchMore={fetchNextPage}
         has_more={!!hasNextPage}
         items={data?.pages.flatMap((m) => m.executions) ?? []}
       />
-    </Box>
+    </Card.Section>
   );
 };
 
@@ -356,7 +356,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
           )}
         />
       </Tabs.Panel>
-      <Tabs.Panel value="logs" p="md">
+      <Tabs.Panel value="logs" p="md" pb={0}>
         <LogsTab event_id={event_id} />
       </Tabs.Panel>
     </Tabs>
