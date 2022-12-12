@@ -309,8 +309,8 @@ const appNavBarItems: ReadonlyArray<{ link: AppRoutes; label: string; icon: Tabl
   { link: appRoutes.dashboard, label: 'Dashboard', icon: IconDashboard },
   { link: appRoutes.events, label: 'Events', icon: IconBolt },
   { link: appRoutes.event_logs, label: 'Event Logs', icon: IconBoxMultiple },
-  { link: appRoutes.actions, label: 'Actions', icon: IconSend },
-  { link: appRoutes.action_logs, label: 'Action Logs', icon: IconBoxMultiple },
+  { link: appRoutes.activities, label: 'Activities', icon: IconSend },
+  { link: appRoutes.activity_logs, label: 'Activity Logs', icon: IconBoxMultiple },
   { link: appRoutes.settings, label: 'Settings', icon: IconSettings },
 ] as const;
 

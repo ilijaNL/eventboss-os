@@ -38,7 +38,7 @@ query GetEventById($event_id: uuid!) {
       id
       created_at
       activity {
-        action_id: id
+        id
         slug
         name
       }
@@ -46,7 +46,7 @@ query GetEventById($event_id: uuid!) {
   }
 }
 
-mutation RemoveActionFromEvent($id: uuid!) {
+mutation RemoveActivityFromEvent($id: uuid!) {
   delete_eventboss_event_activities_by_pk(id: $id) {
     id
   }

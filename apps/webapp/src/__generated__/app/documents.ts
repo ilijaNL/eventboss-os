@@ -1232,14 +1232,14 @@ export type GetEventByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventByIdQuery = { event: { name: string, slug: string, created_at: string, event_activities: Array<{ id: string, created_at: string, activity: { slug: string, name: string, action_id: string } }> } | null };
+export type GetEventByIdQuery = { event: { name: string, slug: string, created_at: string, event_activities: Array<{ id: string, created_at: string, activity: { id: string, slug: string, name: string } }> } | null };
 
-export type RemoveActionFromEventMutationVariables = Exact<{
+export type RemoveActivityFromEventMutationVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type RemoveActionFromEventMutation = { delete_eventboss_event_activities_by_pk: { id: string } | null };
+export type RemoveActivityFromEventMutation = { delete_eventboss_event_activities_by_pk: { id: string } | null };
 
 export type DeleteEventMutationVariables = Exact<{
   event_id: Scalars['uuid'];
@@ -1263,7 +1263,7 @@ export type DeleteEnvMutation = { delete_eventboss_environments_by_pk: { id: str
 export type GetAllSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllSettingsQuery = { actions: Array<{ delay_seconds: number, slug: string, type: string, type_configuration: Record<string, any> | Array<any>, extra_data: Record<string, any> | Array<any>, name: string, retry_backoff: boolean, retry_delay: number, retry_limit: number }>, events: Array<{ name: string, slug: string, extra_data: Record<string, any> | Array<any>, actions: Array<{ activity: { slug: string } }> }> };
+export type GetAllSettingsQuery = { activities: Array<{ delay_seconds: number, slug: string, type: string, type_configuration: Record<string, any> | Array<any>, extra_data: Record<string, any> | Array<any>, name: string, retry_backoff: boolean, retry_delay: number, retry_limit: number }>, events: Array<{ name: string, slug: string, extra_data: Record<string, any> | Array<any>, activities: Array<{ activity: { slug: string } }> }> };
 
 export const ActivityLogItemFragmentDoc = gql`
     fragment ActivityLogItem on eventboss_task_logs {
@@ -1404,7 +1404,7 @@ export const GetEventByIdDocument = gql`
       id
       created_at
       activity {
-        action_id: id
+        id
         slug
         name
       }
@@ -1412,13 +1412,13 @@ export const GetEventByIdDocument = gql`
   }
 }
     ` as unknown as DocumentNode<GetEventByIdQuery, GetEventByIdQueryVariables>;
-export const RemoveActionFromEventDocument = gql`
-    mutation RemoveActionFromEvent($id: uuid!) {
+export const RemoveActivityFromEventDocument = gql`
+    mutation RemoveActivityFromEvent($id: uuid!) {
   delete_eventboss_event_activities_by_pk(id: $id) {
     id
   }
 }
-    ` as unknown as DocumentNode<RemoveActionFromEventMutation, RemoveActionFromEventMutationVariables>;
+    ` as unknown as DocumentNode<RemoveActivityFromEventMutation, RemoveActivityFromEventMutationVariables>;
 export const DeleteEventDocument = gql`
     mutation DeleteEvent($event_id: uuid!) {
   delete_eventboss_events_by_pk(id: $event_id) {
@@ -1445,7 +1445,7 @@ export const DeleteEnvDocument = gql`
     ` as unknown as DocumentNode<DeleteEnvMutation, DeleteEnvMutationVariables>;
 export const GetAllSettingsDocument = gql`
     query GetAllSettings {
-  actions: eventboss_activities {
+  activities: eventboss_activities {
     delay_seconds
     slug
     type
@@ -1460,7 +1460,7 @@ export const GetAllSettingsDocument = gql`
     name
     slug
     extra_data
-    actions: event_activities {
+    activities: event_activities {
       activity {
         slug
       }

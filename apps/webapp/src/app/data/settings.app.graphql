@@ -14,7 +14,7 @@ mutation DeleteEnv($env_id: uuid!) {
 }
 
 query GetAllSettings {
-  actions: eventboss_activities {
+  activities: eventboss_activities {
     delay_seconds
     slug
     type
@@ -30,7 +30,7 @@ query GetAllSettings {
     name
     slug
     extra_data
-    actions: event_activities {
+    activities: event_activities {
       activity {
         slug
       }

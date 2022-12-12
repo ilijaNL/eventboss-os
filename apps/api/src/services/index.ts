@@ -6,7 +6,7 @@ import { systemPlugin } from './system';
 
 const platformService: FastifyPluginAsync<{}> = async (fastify) => {
   fastify.register(eventService, { prefix: '/events' });
-  fastify.register(actionsPlugin, { prefix: '/actions' });
+  fastify.register(actionsPlugin, { prefix: '/activities' });
   fastify.register(appPlugin, { prefix: '/app' });
   fastify.register(systemPlugin, { prefix: '/s' });
 

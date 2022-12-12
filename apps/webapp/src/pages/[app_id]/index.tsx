@@ -68,7 +68,7 @@ const LatestEventsTable: React.FC = () => {
   );
 };
 
-const LatestActionLogs: React.FC = () => {
+const LatestActivityLogs: React.FC = () => {
   const { req: auth } = useAppContext();
   const { locale } = useTranslation();
   const queryResult = useAuthQuery(auth.app, GetActivityLogsDocument, { after: farInFuture.toISOString(), limit: 8 });
@@ -83,7 +83,7 @@ const LatestActionLogs: React.FC = () => {
           <Table verticalSpacing="xs" striped>
             <thead>
               <tr>
-                <th>Action</th>
+                <th>Activity</th>
                 <th>Type</th>
                 <th>Created on</th>
                 <th>Triggered by Event</th>
@@ -96,7 +96,7 @@ const LatestActionLogs: React.FC = () => {
                 <tr key={`${item.activity}_${item.created_at}`}>
                   <td>
                     <Stack spacing={0}>
-                      <Text weight={500}>{item.activity?.name ?? 'Action is deleted'}</Text>
+                      <Text weight={500}>{item.activity?.name ?? 'Activity is deleted'}</Text>
                       <Text color="dimmed" weight={500}>
                         {item.activity?.slug ?? 'deleted'}
                       </Text>
@@ -147,21 +147,15 @@ const page = createAppPage({
           <Grid.Col span={6}>
             <Card>
               <Title order={3} mb="md">
-                Failed Actions
+                Failed Activities
               </Title>
-              {/* <Card.Section>
-                <FailedActions />
-              </Card.Section> */}
             </Card>
           </Grid.Col>
           <Grid.Col span={6}>
             <Card>
               <Title order={3} mb="md">
-                Pending Actions
+                Pending Activities
               </Title>
-              {/* <Card.Section>
-                <ActiveActions />
-              </Card.Section> */}
             </Card>
           </Grid.Col>
           <Grid.Col span={6}>
@@ -177,10 +171,10 @@ const page = createAppPage({
           <Grid.Col span={6}>
             <Card>
               <Title order={3} mb="md">
-                Latest Completed Actions
+                Latest Completed Activities
               </Title>
               <Card.Section>
-                <LatestActionLogs />
+                <LatestActivityLogs />
               </Card.Section>
             </Card>
           </Grid.Col>

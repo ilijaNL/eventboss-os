@@ -21,7 +21,7 @@ const App: FC<EnhancedAppProps> = (appProps: any) => {
       <DefaultSeo
         titleTemplate={`${BRAND_NAME} | %s`}
         defaultTitle={BRAND_NAME}
-        description={`Build more reliable and scalable software with ${BRAND_NAME}. ${BRAND_NAME} makes it easy to build, monitor and manage your business processes with help of events and actions.`}
+        description={`Build more reliable and scalable software with ${BRAND_NAME}. ${BRAND_NAME} makes it easy to build, monitor and manage your business processes with help of events and activities.`}
       />
       {getWrapper(<Component {...pageProps} />)}
     </>

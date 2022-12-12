@@ -11,7 +11,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const ActionLogs: React.FC<{ items: Array<ActivityLogItemFragment>; has_more: boolean; fetchMore: () => void }> = ({
+const ActivityLogs: React.FC<{ items: Array<ActivityLogItemFragment>; has_more: boolean; fetchMore: () => void }> = ({
   items,
   fetchMore,
   has_more,
@@ -27,7 +27,7 @@ const ActionLogs: React.FC<{ items: Array<ActivityLogItemFragment>; has_more: bo
       }}
       fixedHeaderContent={() => (
         <tr className={classes.headerRow}>
-          <th>Action</th>
+          <th>Activity</th>
           <th>Type</th>
           <th style={{ textAlign: 'center' }}>Created on</th>
           <th>Triggered by Event</th>
@@ -87,4 +87,4 @@ const ActionLogs: React.FC<{ items: Array<ActivityLogItemFragment>; has_more: bo
   );
 };
 
-export default ActionLogs;
+export default ActivityLogs;

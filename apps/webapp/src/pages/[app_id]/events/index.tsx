@@ -27,7 +27,7 @@ import {
   GetEventsDocument,
   GetEventByIdDocument,
   GetActivitiesDocument,
-  RemoveActionFromEventDocument,
+  RemoveActivityFromEventDocument,
   DeleteEventDocument,
   GetLogsForEventDocument,
 } from '@/__generated__/app/documents';
@@ -68,13 +68,13 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const ActionsList: React.FC<{ reqContext: RequestContext; event_id: string; onChange: () => void }> = ({
+const AcitivityList: React.FC<{ reqContext: RequestContext; event_id: string; onChange: () => void }> = ({
   reqContext,
   event_id,
   onChange,
 }) => {
   const queryResult = useAuthQuery(reqContext, GetActivitiesDocument, {});
-  const [selectedActions, setSelectedActions] = useState<string[]>([]);
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
   const { mutate, isLoading } = useMutation(
     async (activities: Array<string>) => {
       return Promise.all(
@@ -97,8 +97,8 @@ const ActionsList: React.FC<{ reqContext: RequestContext; event_id: string; onCh
   );
 
   const onCTAClick = () => {
-    if (selectedActions.length > 0) {
-      mutate(selectedActions);
+    if (selectedActivities.length > 0) {
+      mutate(selectedActivities);
       return;
     }
 
@@ -114,13 +114,13 @@ const ActionsList: React.FC<{ reqContext: RequestContext; event_id: string; onCh
         <>
           <ScrollArea sx={{ height: '60vh' }}>
             {data.activities.map((activity) => {
-              const checked = selectedActions.some((i) => i === activity.id);
+              const checked = selectedActivities.some((i) => i === activity.id);
               return (
                 <UnstyledButton
                   sx={{ width: '100%' }}
                   onClick={() => {
                     console.log('buttn clicked');
-                    setSelectedActions((p) => (!checked ? [...p, activity.id] : p.filter((w) => w !== activity.id)));
+                    setSelectedActivities((p) => (!checked ? [...p, activity.id] : p.filter((w) => w !== activity.id)));
                   }}
                   key={activity.id}
                 >
@@ -148,12 +148,12 @@ const ActionsList: React.FC<{ reqContext: RequestContext; event_id: string; onCh
           </ScrollArea>
           <Button
             loading={isLoading}
-            variant={selectedActions.length === 0 ? 'outline' : 'filled'}
+            variant={selectedActivities.length === 0 ? 'outline' : 'filled'}
             fullWidth
             onClick={onCTAClick}
             mt="md"
           >
-            {selectedActions.length === 0 ? 'Close' : 'Attach'}
+            {selectedActivities.length === 0 ? 'Close' : 'Attach'}
           </Button>
         </>
       )}
@@ -166,7 +166,7 @@ const PAGE_SIZE = 50;
 const LogsTab: React.FC<{ event_id: string }> = ({ event_id }) => {
   const { req: auth } = useAppContext();
   const { fetchNextPage, hasNextPage, data } = useInfiniteQuery({
-    queryKey: ['actions', 'logs', event_id],
+    queryKey: ['activities', 'logs', event_id],
     queryFn: ({ pageParam = new Date('2050-10-10').toISOString() }) =>
       authFetch(GetLogsForEventDocument, { after: pageParam, limit: PAGE_SIZE, event_id }, auth.app),
     getNextPageParam: (lastPage) => lastPage?.executions[PAGE_SIZE - 1]?.created_at ?? undefined,
@@ -189,7 +189,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
   const { req: auth } = useAppContext();
   const queryResult = useAuthQuery(auth.app, GetEventByIdDocument, { event_id: event_id });
   const { locale, t } = useTranslation();
-  const { mutate: removeAction } = useAuthMutation(auth.app, RemoveActionFromEventDocument, {
+  const { mutate: removeActivity } = useAuthMutation(auth.app, RemoveActivityFromEventDocument, {
     onSuccess: () => {
       queryResult.refetch();
       showNotification({
@@ -212,15 +212,15 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
     },
   });
 
-  const onAttachActionClick = () => {
+  const onAttachActivityClick = () => {
     openModal({
       centered: true,
-      title: 'Attach Action',
-      children: <ActionsList reqContext={auth.app} event_id={event_id} onChange={() => queryResult.refetch()} />,
+      title: 'Attach Activity',
+      children: <AcitivityList reqContext={auth.app} event_id={event_id} onChange={() => queryResult.refetch()} />,
     });
   };
 
-  const onDeleteActionClick = (props: { id: string; name: string }) => {
+  const onDeleteActivityClick = (props: { id: string; name: string }) => {
     openConfirmModal({
       title: 'Please confirm your action',
       children: (
@@ -230,7 +230,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
-      onConfirm: () => removeAction({ id: props.id }),
+      onConfirm: () => removeActivity({ id: props.id }),
     });
   };
 
@@ -255,10 +255,10 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
   };
 
   return (
-    <Tabs defaultValue="actions">
+    <Tabs defaultValue="activities">
       <Tabs.List grow>
-        <Tabs.Tab p="md" value="actions" icon={<IconSend size={22} />}>
-          Actions
+        <Tabs.Tab p="md" value="activities" icon={<IconSend size={22} />}>
+          Activities
         </Tabs.Tab>
         <Tabs.Tab p="md" value="settings" icon={<IconSettings size={22} />}>
           Settings
@@ -268,18 +268,18 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
         </Tabs.Tab>
       </Tabs.List>
 
-      <Tabs.Panel value="actions" p="md">
+      <Tabs.Panel value="activities" p="md">
         <QueryRenderer
           queryResult={queryResult}
           errorRender={() => <></>}
           loadingRender={() => <Loader />}
           successRender={(result) => {
-            const actions = result.data.event?.event_activities ?? [];
+            const activities = result.data.event?.event_activities ?? [];
 
-            if (actions.length === 0) {
+            if (activities.length === 0) {
               return (
                 <Box my="lg" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <Button onClick={onAttachActionClick}>Attach first action</Button>
+                  <Button onClick={onAttachActivityClick}>Attach first Activity</Button>
                 </Box>
               );
             }
@@ -287,10 +287,10 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
             return (
               <div>
                 <Group position="right" mb="lg">
-                  <Button onClick={onAttachActionClick}>Attach Action</Button>
+                  <Button onClick={onAttachActivityClick}>Attach Activity</Button>
                 </Group>
                 <ScrollArea.Autosize mx="-xs" px="xs" maxHeight="60vh">
-                  {actions.map(({ activity, id, created_at }) => (
+                  {activities.map(({ activity, id, created_at }) => (
                     <Paper px="md" withBorder key={id} mb={4}>
                       <Box sx={{ display: 'flex', alignItems: 'center' }} py="sm">
                         <Stack spacing={0}>
@@ -308,7 +308,7 @@ const EventView: React.FC<{ event_id: string; onChanged: () => void }> = ({ even
                         </Stack>
                         <div>
                           <ActionIcon
-                            onClick={() => onDeleteActionClick({ id: id, name: activity.name })}
+                            onClick={() => onDeleteActivityClick({ id: id, name: activity.name })}
                             color="red"
                             variant="filled"
                           >

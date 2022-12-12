@@ -1,0 +1,55 @@
+query GetActivityLogs($after: timestamptz!, $limit: Int!) {
+  logs: eventboss_task_logs(order_by: { created_at: desc }, where: { created_at: { _lte: $after } }, limit: $limit) {
+    ...ActivityLogItem
+  }
+}
+
+query GetLogsForActivity($activity_id: uuid!, $after: timestamptz!, $limit: Int!) {
+  logs: eventboss_task_logs(
+    order_by: { created_at: desc }
+    where: { _and: [{ activity_id: { _eq: $activity_id } }, { created_at: { _lte: $after } }] }
+    limit: $limit
+  ) {
+    ...ActivityLogItem
+  }
+}
+
+query GetActivities {
+  activities: eventboss_activities(order_by: { slug: asc }) {
+    id
+    slug
+    name
+    type
+    created_at
+  }
+}
+
+query GetActivityById($activity_id: uuid!) {
+  activity: eventboss_activities_by_pk(id: $activity_id) {
+    id
+    slug
+    type
+    type_configuration
+    name
+    retry_backoff
+    retry_delay
+    retry_limit
+    expire_in
+    delay_seconds
+    event_activities {
+      id
+      created_at
+      event {
+        name
+        id
+        slug
+      }
+    }
+  }
+}
+
+mutation DeleteActivity($activity_id: uuid!) {
+  delete_eventboss_activities_by_pk(id: $activity_id) {
+    id
+  }
+}

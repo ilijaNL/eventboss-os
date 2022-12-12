@@ -1,6 +1,6 @@
 const defaultLanguage = {
   language: 'Language',
-  Actions: 'Actions',
+  Activities: 'Activities',
   Cancel: 'Cancel',
   Submit: 'Submit',
   View: 'View',
