@@ -5,25 +5,27 @@ require('dotenv-safe').config({
 import { FastifyPluginAsync, FastifyServerOptions, RouteOptions } from 'fastify';
 import fp from 'fastify-plugin';
 import fastifyHelmet from '@fastify/helmet';
-import cors from '@fastify/cors';
 import _ from 'lodash';
 import sensible from '@fastify/sensible';
-import pgBoss from './plugins/pg-boss';
-import { isAllowedDomain } from './domains';
 import db from './db';
-import services from './services';
+import managementService from './services/management';
+import { sdkService } from './services/sdk';
+import { isAllowedDomain } from '@/domains';
+import cors from '@fastify/cors';
+import authService from './services/auth';
 
 let ENVIRONMENT = process.env.NODE_ENV ?? 'development';
 
+const IS_PROD = ENVIRONMENT === 'production';
+
 const app: FastifyPluginAsync = async (fastify) => {
-  if (ENVIRONMENT === 'production') {
+  if (IS_PROD) {
     fastify.register(fastifyHelmet);
   }
 
   fastify.register(cors, {
     credentials: true,
-    // if not set, the all headers are allowed
-    // allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    // if allowedHeaders not set, the all headers are allowed
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     origin: (origin, callback) => {
       if (!origin) {
@@ -40,29 +42,23 @@ const app: FastifyPluginAsync = async (fastify) => {
     },
   });
 
-  fastify.register(
-    fp(function (instance) {
-      instance.addHook('onRoute', (route: RouteOptions) => {
-        instance.log.info(`${route.url}`);
-      });
+  if (!IS_PROD) {
+    fastify.register(
+      fp(function (instance) {
+        instance.addHook('onRoute', (route: RouteOptions) => {
+          instance.log.info(`${route.url}`);
+        });
 
-      return Promise.resolve();
-    })
-  );
+        return Promise.resolve();
+      })
+    );
+  }
 
   fastify.register(sensible);
 
-  fastify.register(pgBoss, {
-    options: {
-      connectionString: process.env.PG_CONNECTION,
-      max: 5,
-      schema: 'system',
-      noScheduling: true,
-      uuid: 'v4',
-    },
-  });
-
-  fastify.register(services, {});
+  fastify.register(sdkService, { prefix: '/sdk' });
+  fastify.register(authService, { prefix: '/auth' });
+  fastify.register(managementService, { prefix: '/management' });
 
   fastify.get('/health', async () => {
     return {

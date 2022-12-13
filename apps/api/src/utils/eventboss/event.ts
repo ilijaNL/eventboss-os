@@ -5,17 +5,19 @@ import { CompiledQuery, InsertObject, sql } from 'kysely';
 import fastJson from 'fast-json-stable-stringify';
 import { createStaleWhileRevalidateCache } from '@/utils/swr';
 import { DB } from '@/__generated__/db';
-import { TASK_STATE } from './tasks';
+import { createTasks, TASK_STATE } from './tasks';
 
 const swr = createStaleWhileRevalidateCache({
   // in milliseconds
   minTimeToStale: 1000 * 2,
-  maxTimeToLive: 1000 * 5,
+  maxTimeToLive: 1000 * 60 * 2,
 });
 
 export async function emitEvent(props: { event_slug: string; payload: any; app_id: string }) {
   // get data about the event and linked activities
   const data = await swr([props.app_id, props.event_slug].join('::'), async () => {
+    // optimize this with hasura
+
     const event = await db
       .selectFrom('eventboss.events')
       .select(['id', 'name', 'slug'])
@@ -89,8 +91,7 @@ export async function emitEvent(props: { event_slug: string; payload: any; app_i
 
   // create tasks
   if (tasks.length) {
-    const query = db.insertInto('eventboss.task_queue').values(tasks).returningAll();
-    queries.push(query.compile());
+    queries.push(createTasks(tasks).compile());
   }
 
   await execQueries(queries);

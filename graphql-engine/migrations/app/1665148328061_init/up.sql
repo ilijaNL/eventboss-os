@@ -1,13 +1,55 @@
-create schema "system";
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+create schema "auth";
+CREATE TABLE "auth"."accounts" (
+  "id" uuid NOT NULL DEFAULT gen_random_uuid(), 
+  "email" text NOT NULL, 
+  "version" integer NOT NULL DEFAULT 1, 
+  "token_version" integer NOT NULL DEFAULT 1, 
+  "updated_at" timestamptz NOT NULL DEFAULT now(), 
+  "created_at" timestamptz NOT NULL DEFAULT now(), 
+  PRIMARY KEY ("id"), 
+  UNIQUE ("email")
+);
+
+CREATE OR REPLACE FUNCTION "auth"."set_current_timestamp_updated_at"()
+RETURNS TRIGGER AS $$
+DECLARE
+  _new record;
+BEGIN
+  _new := NEW;
+  _new."updated_at" = NOW();
+  RETURN _new;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER "set_auth_accounts_updated_at"
+BEFORE UPDATE ON "auth"."accounts" FOR EACH ROW EXECUTE PROCEDURE "auth"."set_current_timestamp_updated_at"();
+
+CREATE OR REPLACE FUNCTION auth.get_me(hasura_session json) 
+ RETURNS SETOF auth.accounts
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT * FROM auth.accounts WHERE id = (hasura_session ->> 'x-hasura-user-id')::uuid
+$function$;
+
 create schema "eventboss";
+
 CREATE TABLE "eventboss"."apps" (
   "id" uuid NOT NULL DEFAULT gen_random_uuid(), 
   "name" text NOT NULL, 
   "extra_data" jsonb NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT now(), 
   PRIMARY KEY ("id")
+);
+
+CREATE TABLE "eventboss"."app_users" (
+  "id" uuid NOT NULL DEFAULT gen_random_uuid(),
+  "account_id" uuid NOT NULL,
+  "app_id" uuid NOT NULL,
+  "created_at" timestamptz NOT NULL DEFAULT now(), 
+  PRIMARY KEY ("id"),
+  FOREIGN KEY ("app_id") REFERENCES "eventboss"."apps"("id") ON UPDATE restrict ON DELETE cascade
 );
 
 CREATE TABLE "eventboss"."events" (

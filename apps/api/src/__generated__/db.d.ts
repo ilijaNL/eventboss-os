@@ -21,6 +21,15 @@ export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
 export type Timestamp = ColumnType<Date | RawBuilder, Date | string | RawBuilder, Date | string | RawBuilder>;
 
+export interface AuthAccounts {
+  created_at: Generated<Timestamp>;
+  email: string;
+  id: Generated<string>;
+  token_version: Generated<number>;
+  updated_at: Generated<Timestamp>;
+  version: Generated<number>;
+}
+
 export interface EventbossActivities {
   app_id: string;
   concurrency: Generated<number>;
@@ -37,6 +46,13 @@ export interface EventbossActivities {
   type: string;
   type_configuration: Json;
   updated_at: Generated<Timestamp>;
+}
+
+export interface EventbossAppUsers {
+  account_id: string;
+  app_id: string;
+  created_at: Generated<Timestamp>;
+  id: Generated<string>;
 }
 
 export interface EventbossApps {
@@ -188,7 +204,9 @@ export interface HdbCatalogHdbVersion {
 }
 
 export interface DB {
+  "auth.accounts": AuthAccounts;
   "eventboss.activities": EventbossActivities;
+  "eventboss.app_users": EventbossAppUsers;
   "eventboss.apps": EventbossApps;
   "eventboss.environments": EventbossEnvironments;
   "eventboss.event_activities": EventbossEventActivities;

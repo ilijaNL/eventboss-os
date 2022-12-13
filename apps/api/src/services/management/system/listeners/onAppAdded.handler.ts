@@ -1,5 +1,5 @@
 import db from '@/db';
-import { appEvents } from '@/services/app/domain';
+import { appEvents } from '@/services/management/app/domain';
 import { RequestContext } from '@/utils/context';
 import { createEventListener } from '@/utils/event-publisher';
 import { CompiledQuery } from 'kysely';

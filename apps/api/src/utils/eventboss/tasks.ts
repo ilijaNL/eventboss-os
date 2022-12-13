@@ -1,5 +1,5 @@
 import db from '@/db';
-import { QueryExecutorProvider, SelectQueryBuilder, sql } from 'kysely';
+import { InsertObject, QueryExecutorProvider, SelectQueryBuilder, sql } from 'kysely';
 import fastJson from 'fast-json-stable-stringify';
 import { DB } from '@/__generated__/db';
 import { ActivityConfigType } from 'api-contracts';
@@ -25,14 +25,12 @@ type TASK_STATE_TYPE = typeof TASK_TRANSITION_STATE[keyof typeof TASK_TRANSITION
 export type Task<TData = unknown> = {
   id: string;
   data: TData;
-  // app_id: string;
+  app_id: string;
   activity_id: string;
   retry_limit: number;
   retry_count: number;
   expire_in_seconds: number;
 };
-
-type _Task = Pick<Task<any>, 'id' | 'retry_limit' | 'retry_count'>;
 
 const scheduleAfterCase = sql`CASE
   WHEN retry_count = retry_limit THEN scheduled_at
@@ -71,9 +69,11 @@ function mapCompletionDataArg(data: any) {
   return json;
 }
 
-async function removeAndLog(task: _Task, payload: any, event_type: TASK_STATE_TYPE) {
+async function removeAndLog(app_id: string, task_id: string, payload: any, event_type: TASK_STATE_TYPE) {
   await db
-    .with('tasks', (db) => db.deleteFrom('eventboss.task_queue').where('id', '=', task.id).returningAll())
+    .with('tasks', (db) =>
+      db.deleteFrom('eventboss.task_queue').where('app_id', '=', app_id).where('id', '=', task_id).returningAll()
+    )
     .insertInto('eventboss.task_logs')
     .columns(['activity_id', 'app_id', 'data', 'event_id', 'event_name', 'exec_id', 'task_id', 'created_at'])
     .expression((eb) =>
@@ -95,51 +95,66 @@ async function removeAndLog(task: _Task, payload: any, event_type: TASK_STATE_TY
     .execute();
 }
 
-// schedule for retry if allowed, other fail it
-async function failTask(task: _Task, error: any) {
-  if (task.retry_count >= task.retry_limit) {
-    // insert job data into log
-    return await removeAndLog(task, error, 'failed');
-  }
+export async function completeTask(app_id: string, task_id: string, result: any) {
+  return removeAndLog(app_id, task_id, result, TASK_TRANSITION_STATE.completed);
+}
 
+/**
+ * Fails a task, however determine if should be rescheduled or fail completely
+ * @param task_id
+ * @param error
+ * @returns
+ */
+export async function failTask(app_id: string, task_id: string, error: any) {
   await db
-    .with('tasks', (db) =>
+    .with('task', (db) =>
+      db
+        .selectFrom('eventboss.task_queue')
+        .selectAll()
+        .where('app_id', '=', app_id)
+        .where('id', '=', task_id)
+        .where('state', '=', TASK_STATE.running)
+        .forUpdate()
+    )
+    .with('dt', (db) =>
+      db
+        .deleteFrom('eventboss.task_queue')
+        .where('app_id', '=', app_id)
+        .where('id', '=', task_id)
+        .where('state', '=', TASK_STATE.running)
+        .whereRef('retry_count', '>=', 'retry_limit')
+    )
+    .with('rt', (db) =>
       db
         .updateTable('eventboss.task_queue')
         .set({
           state: TASK_STATE.retry,
           scheduled_at: scheduleAfterCase,
         })
-        .where('id', '=', task.id)
-        .returningAll()
+        .where('app_id', '=', app_id)
+        .where('id', '=', task_id)
+        .where('state', '=', TASK_STATE.running)
+        .whereRef('retry_count', '<', 'retry_limit')
     )
     .insertInto('eventboss.task_logs')
     .columns(['activity_id', 'app_id', 'data', 'event_id', 'event_name', 'exec_id', 'task_id', 'created_at'])
     .expression((eb) =>
       eb
-        .selectFrom('tasks')
+        .selectFrom('task')
         .select([
-          'tasks.activity_id',
-          'tasks.app_id',
-          sql`json_build_object('result', ${mapCompletionDataArg(error)}::jsonb, 'task', row_to_json(tasks))`.as(
-            'data'
+          'task.activity_id',
+          'task.app_id',
+          sql`json_build_object('result', ${mapCompletionDataArg(error)}::jsonb, 'task', row_to_json(task))`.as('data'),
+          'task.event_id',
+          sql`CASE WHEN retry_count >= retry_limit THEN ${TASK_TRANSITION_STATE.failed} ELSE ${TASK_TRANSITION_STATE.failed_and_rescheduled} END`.as(
+            'event_name'
           ),
-          'tasks.event_id',
-          sql`${TASK_TRANSITION_STATE.failed_and_rescheduled}`.as('event_name'),
-          'tasks.exec_id',
-          'tasks.id',
+          'task.exec_id',
+          'task.id',
           sql`now()`.as('created_at'),
         ])
     )
     .execute();
-}
-
-export function resolveTask<T>(task: _Task, error: any, result: T) {
-  if (error) {
-    return failTask(task, error).catch(() => {});
-  }
-
-  return removeAndLog(task, result, 'completed').catch(() => {});
 }
 
 export function getTasksByActivity<T>(props: { activity_id: string; amount: number; app_id: string }) {
@@ -202,6 +217,7 @@ async function _getTasks<T>(
     .whereRef('tq.id', '=', 'tasks.id')
     .returning([
       'tq.id',
+      'tq.app_id',
       'tq.retry_count',
       'tq.retry_limit',
       'tq.data',
@@ -214,6 +230,7 @@ async function _getTasks<T>(
   return dbJobs.map<Task<T>>((dj) => {
     return {
       id: dj.id,
+      app_id: dj.app_id,
       data: dj.data as unknown as T,
       retry_count: dj.retry_count,
       activity_id: dj.activity_id,
@@ -286,6 +303,27 @@ export async function expireJobsAndRetry() {
 
     return await query.execute();
   });
+}
+
+export function createTasks(tasks: Array<InsertObject<DB, 'eventboss.task_queue'>>) {
+  return db
+    .with('tasks', (db) => db.insertInto('eventboss.task_queue').values(tasks).returningAll())
+    .insertInto('eventboss.task_logs')
+    .columns(['activity_id', 'app_id', 'data', 'event_id', 'event_name', 'exec_id', 'task_id', 'created_at'])
+    .expression((eb) =>
+      eb
+        .selectFrom('tasks')
+        .select([
+          'tasks.activity_id',
+          'tasks.app_id',
+          sql`json_build_object('task', row_to_json(tasks))`.as('data'),
+          'tasks.event_id',
+          sql`${TASK_TRANSITION_STATE.scheduled}`.as('e_name'),
+          'tasks.exec_id',
+          'tasks.id',
+          sql`now()`.as('created_at'),
+        ])
+    );
 }
 
 /**

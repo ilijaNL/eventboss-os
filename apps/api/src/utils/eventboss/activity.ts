@@ -1,5 +1,5 @@
 import db from '@/db';
-import { getTasksByActivity, resolveTask, Task } from './tasks';
+import { completeTask, failTask, getTasksByActivity, Task } from './tasks';
 import { resolveWithinSeconds } from './utils';
 import { createWorker, Worker } from './worker';
 
@@ -11,10 +11,8 @@ export function createActivitySub<T>(props: {
   poolInterval?: number;
   maxConcurrency?: number;
   fetchSize?: number;
-  concurrent?: number;
 }): RegisterFn {
   return async function register(app_id: string) {
-    // get id of activity, throw if not found
     const activity = await db
       .selectFrom('eventboss.activities')
       .where('slug', '=', props.slug)
@@ -27,7 +25,13 @@ export function createActivitySub<T>(props: {
       fetchSize: props.fetchSize ?? 100,
       maxConcurrency: props.maxConcurrency ?? 100,
       poolInternvalInMs: props.poolInterval ?? 1500,
-      resolveJob: resolveTask,
+      resolveJob: (task, err, result) => {
+        if (err) {
+          return failTask(task.app_id, task.id, err);
+        }
+
+        return completeTask(task.app_id, task.id, result);
+      },
       handler: async (task) => {
         return resolveWithinSeconds(props.handler(task.data, task), task.expire_in_seconds);
       },

@@ -1,4 +1,6 @@
+- "!include auth_accounts.yaml"
 - "!include eventboss_activities.yaml"
+- "!include eventboss_app_users.yaml"
 - "!include eventboss_apps.yaml"
 - "!include eventboss_environments.yaml"
 - "!include eventboss_event_activities.yaml"

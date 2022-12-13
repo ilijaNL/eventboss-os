@@ -4,7 +4,7 @@ import db from '@/db';
 import { createStaleWhileRevalidateCache } from '@/utils/swr';
 import { decrypt } from '@/utils/encryption';
 import { createWorker } from './worker';
-import { getTasksByType, resolveTask, Task } from './tasks';
+import { getTasksByType, completeTask, failTask, Task } from './tasks';
 import { resolveWithinSeconds } from './utils';
 import { ActivityConfigType } from 'api-contracts';
 
@@ -87,7 +87,13 @@ export function createWebhookWorker(props: { fetchSize: number; maxConcurrency: 
       fetchSize: props.fetchSize,
       maxConcurrency: props.maxConcurrency,
       poolInternvalInMs: props.poolInterval,
-      resolveJob: resolveTask,
+      resolveJob: (task, err, result) => {
+        if (err) {
+          return failTask(task.app_id, task.id, err);
+        }
+
+        return completeTask(task.app_id, task.id, result);
+      },
       handler: async (task) => {
         return resolveWithinSeconds(webhookHandler(app_id, task), task.expire_in_seconds);
       },

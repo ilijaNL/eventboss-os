@@ -4,11 +4,14 @@ import { eventService } from './events';
 import { appPlugin } from './app';
 import { systemPlugin } from './system';
 
-const platformService: FastifyPluginAsync<{}> = async (fastify) => {
+const managementService: FastifyPluginAsync<{}> = async (fastify) => {
+  // these are app specific
   fastify.register(eventService, { prefix: '/events' });
   fastify.register(actionsPlugin, { prefix: '/activities' });
   fastify.register(appPlugin, { prefix: '/app' });
-  fastify.register(systemPlugin, { prefix: '/s' });
+
+  // this is not app specific
+  fastify.register(systemPlugin);
 
   fastify.post('/test', async (req) => {
     fastify.log.info(req.headers);
@@ -18,4 +21,4 @@ const platformService: FastifyPluginAsync<{}> = async (fastify) => {
   });
 };
 
-export default platformService;
+export default managementService;
